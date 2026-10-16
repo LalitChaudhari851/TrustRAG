@@ -1,0 +1,26 @@
+{
+  "metadata": {
+    "git_commit_hash": "7c23502fefd0cc9ffd5d17cac9e851f917f32b85",
+    "date": "2026-10-16",
+    "evaluation_mode": "single-run (free-tier Groq OTPM rate-limit bound; variance between repeated runs is typically within ~0.05 noise band)",
+    "app_model": "qwen/qwen3.8-27b",
+    "app_temperature": 0.1,
+    "guard_model": "llama-3.1-8b-instant",
+    "guard_temperature": 0,
+    "judge_model": "llama-3.1-8b-instant",
+    "judge_temperature": 0,
+    "golden_dataset_sha256": "4a9d31e1f9bf12e842dbadd805024e05747dd5e54bc7956152ed235101d66edd",
+    "qdrant_point_count": 276,
+    "avg_latency_seconds_per_turn": 9.43,
+    "avg_llm_calls_per_turn": 1.93
+  },
+  "scores": {
+    "tool_correctness": 0.067,
+    "faithfulness": 0.133,
+    "answer_relevancy": 0.2,
+    "context_precision": 0.067,
+    "context_recall": 0.067,
+    "answer_correctness": 0.133
+  },
+  "notes": "Baseline evaluation confirms severe instability under unmitigated Groq OTPM limits: 10 of 15 queries failed with unhandled 429 rate limit exceptions, resulting in fallback internal errors. Tool correctness suffered due to planner routing fallback errors."
+}
