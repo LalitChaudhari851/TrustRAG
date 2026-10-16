@@ -57,5 +57,10 @@ langfuse                    # Live production monitoring, tracing & user feedbac
 # --- EMBEDDINGS (SENTENCE TRANSFORMERS) ---
 sentence-transformers       # Used by FlashRank reranker internally
 langchain_google_genai
-
 langchain-google-vertexai
+
+# --- PERSISTENCE & RESILIENCE ---
+langgraph-checkpoint-sqlite   # Persistent checkpointer for SQLite
+langgraph-checkpoint-postgres # Persistent checkpointer for Postgres
+psycopg[binary,pool]          # Postgres connection pool
+tenacity                      # Robust retry logic with exponential backoff

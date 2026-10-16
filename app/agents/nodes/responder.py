@@ -60,27 +60,16 @@ def generate_node(state: AgentState):
         """
 
     with logfire.span("✍️ LLM Synthesis"):
-        try:
-            max_tokens = 200 if query == "CONVERSATIONAL" else 400
-            create_params = {
-                "messages": [{"role": "user", "content": prompt}],
-                "temperature": 0.1,
-                "max_tokens": max_tokens,
-            }
-            if not PORTKEY_CONFIG:
-                create_params["model"] = f"@{settings.GROQ_SLUG}/{settings.GROQ_MODEL}"
+        max_tokens = 200 if query == "CONVERSATIONAL" else 400
+        create_params = {
+            "messages": [{"role": "user", "content": prompt}],
+            "temperature": 0.1,
+            "max_tokens": max_tokens,
+        }
 
-            response = None
-            for attempt in range(2):
-                try:
-                    response = portkey_client.chat.completions.create(**create_params)
-                    break
-                except Exception as call_err:
-                    if "429" in str(call_err) and attempt == 0:
-                        logfire.warning("429 rate limit encountered in Responder, waiting 4s before retry...")
-                        time.sleep(4)
-                    else:
-                        raise call_err
+        try:
+            from app.gateway import execute_gateway_chat
+            response = execute_gateway_chat(**create_params)
 
             content = response.choices[0].message.content
             cache_status = extract_cache_status(response)
@@ -103,5 +92,17 @@ def generate_node(state: AgentState):
             }
 
         except Exception as e:
-            logfire.error(f"LLM Generation failed: {e}")
-            raise e
+            err_msg = str(e).lower()
+            logfire.error(f"LLM Generation failed after retries: {e}")
+            if "429" in err_msg or "rate limit" in err_msg:
+                fallback_reply = "I apologize, but our reasoning service is currently experiencing very high demand (rate limit reached). Please wait a few moments and try again."
+            else:
+                fallback_reply = "I apologize, but the reasoning service is temporarily unavailable due to a technical error. Please try again shortly."
+
+            return {
+                "final_answer": fallback_reply,
+                "status": "error",
+                "plan": state["plan"] + ["Error: LLM Generation Failed"],
+                "messages": [{"role": "assistant", "content": fallback_reply}]
+            }
+

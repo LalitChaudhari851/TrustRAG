@@ -54,5 +54,10 @@ commands.md
 # Claude Code memory & session data
 .claude/
 
+# Databases & Checkpoints
+*.db
+*.sqlite
+checkpoints.db
+
 # Logs
 *.log

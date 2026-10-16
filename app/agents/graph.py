@@ -42,12 +42,15 @@ workflow.add_edge("retriever", "responder")
 workflow.add_edge("responder", END)
 
 
-# --- MEMORY UPGRADE ---
-# MemorySaver allows the agent to remember conversations based on 'thread_id'
-checkpointer = MemorySaver()
+from app.agents.persistence import get_checkpointer
+
+# --- PERSISTENT MEMORY ---
+# SqliteSaver (WAL mode) by default, PostgresSaver when DATABASE_URL is configured
+checkpointer = get_checkpointer()
 
 
-# 4. Compile the Graph with Memory
+# 4. Compile the Graph with Persistent Memory
 rag_agent = workflow.compile(checkpointer=checkpointer)
+
 
 

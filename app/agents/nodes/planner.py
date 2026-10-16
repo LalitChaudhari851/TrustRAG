@@ -2,8 +2,9 @@ from app.agents.state import AgentState
 from app.gateway import get_langchain_llm
 import logfire
 
-# Portkey-backed LLM: fallback + cache + retry — same .invoke() interface as ChatGroq
-llm = get_langchain_llm(feature="planner")
+# Portkey-backed LLM: fallback + cache + retry with max_retries=0 under unified gateway policy
+llm = get_langchain_llm(feature="planner", max_tokens=50)
+
 
 def planner_node(state: AgentState):
     """

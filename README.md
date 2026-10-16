@@ -29,8 +29,17 @@ graph TD
     Retriever --> Reranker[FlashRank Local Reranker]
     Reranker --> Responder
     Responder --> UI
-    Responder -.-> Memory[(LangGraph MemorySaver)]
+    Responder -.-> Memory[(Persistent Checkpointer\nSQLite WAL / Postgres)]
 ```
+
+> [!NOTE]
+> **Checkpointer Architecture & Concurrency:**
+> By default, conversation states are saved to a persistent SQLite database (`checkpoints.db`) with Write-Ahead Logging (WAL) enabled (`PRAGMA journal_mode=WAL;`). SQLite is intended for local single-worker development. For multi-worker or containerized production autoscaling, set `DATABASE_URL=postgresql://...` to enable connection-pooled `PostgresSaver`.
+>
+> **Security Notice (Demo Limitation):** `thread_id` in `/query` requests is client-supplied and unauthenticated. In an enterprise production deployment, bind thread IDs to authenticated JWT session tokens.
+>
+> **Maintenance & Thread Pruning:** Run `python scripts/prune_checkpoints.py --days 14` to prune old conversations and reclaim disk space.
+
 
 ---
 

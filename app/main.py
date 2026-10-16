@@ -25,14 +25,22 @@ from pydantic import BaseModel
 from typing import Optional
 
 
-# Initialize FastAPI
-app = FastAPI(title="Enterprise Agentic RAG API")
+from contextlib import asynccontextmanager
+from app.agents.persistence import get_checkpointer, close_checkpointer
 
-
-@app.on_event("startup")
-def startup_event():
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup: Initialize rails, warm up embeddings, and initialize checkpointer
     initialize_rails()
     init_embeddings()
+    get_checkpointer()
+    yield
+    # Shutdown: Cleanly close persistent connection pools
+    close_checkpointer()
+
+# Initialize FastAPI with Lifespan
+app = FastAPI(title="Enterprise Agentic RAG API", lifespan=lifespan)
+
 
 class QueryRequest(BaseModel):
     q: str
