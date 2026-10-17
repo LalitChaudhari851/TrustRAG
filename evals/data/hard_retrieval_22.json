@@ -105,7 +105,7 @@
   },
   {
     "id": 14,
-    "question": "What release manifest URL installs the Vertical Pod Autoscaler components in cronjobs.docx?",
+    "question": "What release manifest URL installs the Vertical Pod Autoscaler components?",
     "key_term": "vpa-release-0.13.0.yaml",
     "expected_answer": "kubectl apply -f https://github.com/kubernetes/autoscaler/releases/download/vpa-0.13.0/vpa-release-0.13.0.yaml",
     "expected_source": "cronjobs.docx",

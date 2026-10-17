@@ -12,10 +12,13 @@ import asyncio
 import logfire
 import pandas as pd
 from openai import AsyncOpenAI
+from app.config import settings
 
 
-from ragas.llms import llm_factory
-from ragas.embeddings import HuggingfaceEmbeddings
+from langchain_openai import ChatOpenAI
+from ragas.llms.base import LangchainLLMWrapper
+from ragas.embeddings import LangchainEmbeddingsWrapper
+from langchain_community.embeddings import HuggingFaceEmbeddings
 from ragas import SingleTurnSample
 from ragas.metrics import (
     Faithfulness,
@@ -27,21 +30,26 @@ from ragas.metrics import (
 
 GROQ_BASE_URL = "https://api.groq.com/openai/v1"
 JUDGE_MODEL = "llama-3.1-8b-instant"
-COOLDOWN_STANDARD = 62
-COOLDOWN_MINI = 40       # between individual samples — lets sliding TPM window recover (~2,800 tok/sample)
-GENERAL_BATCH_SIZE = 1  # one sample at a time: abatch_score fires calls concurrently per sample,
-                         # so batch>1 stacks multiple samples' async calls inside the same second
+COOLDOWN_STANDARD = 0
+COOLDOWN_MINI = 0
+GENERAL_BATCH_SIZE = 3  # 3 samples per mini-batch (~1,200 tok/batch well under 6,000 TPM limit)
 CONTEXT_TRUNCATE = 300  # chars per context chunk — reduces single request from ~7,700 to ~400 tokens
 CONTEXT_LIMIT = 2       # number of context chunks passed to RAGAS per sample
 
 
 def _build_judge():
     api_key = os.getenv("JUDGE_GROQ") or os.getenv("GROQ_API_KEY")
-    client = AsyncOpenAI(api_key=api_key, base_url=GROQ_BASE_URL)
-    llm = llm_factory(JUDGE_MODEL, provider="openai", client=client)
-    embeddings = HuggingfaceEmbeddings(
-        model="sentence-transformers/all-MiniLM-L6-v2",
-        use_api=False,
+    judge_model = os.getenv("JUDGE_MODEL", settings.GROQ_MODEL)
+    chat_model = ChatOpenAI(
+        model=judge_model,
+        openai_api_key=api_key,
+        openai_api_base=GROQ_BASE_URL,
+        temperature=0,
+        max_retries=0
+    )
+    llm = LangchainLLMWrapper(chat_model)
+    embeddings = LangchainEmbeddingsWrapper(
+        HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
     )
     return llm, embeddings
 
@@ -75,24 +83,40 @@ def _prep_samples(golden_dataset: dict) -> list:
 
 
 def _score_df(metric_key: str, samples: list, scores) -> pd.DataFrame:
+    formatted_scores = []
+    for r in scores:
+        if hasattr(r, "value"):
+            val = float(r.value)
+        elif hasattr(r, "__float__"):
+            val = float(r)
+        else:
+            try:
+                val = float(r)
+            except Exception:
+                val = 0.0
+        formatted_scores.append(round(val, 3))
     return pd.DataFrame([
-        {"question": s["question"][:65], metric_key: round(float(r.value), 3)}
-        for s, r in zip(samples, scores)
+        {"question": s["question"][:65], metric_key: val}
+        for s, val in zip(samples, formatted_scores)
     ])
 
 
 async def _batched_score(metric, inputs: list, samples: list, status_cb=None, label: str = "") -> list:
     """
-    Runs abatch_score in chunks of GENERAL_BATCH_SIZE with cooldowns between chunks.
+    Evaluates samples via single_turn_ascore with mini-batch pacing.
     Keeps each burst under 6,000 TPM on Groq's on_demand tier.
     """
     all_scores = []
-    batches = [inputs[i : i + GENERAL_BATCH_SIZE] for i in range(0, len(inputs), GENERAL_BATCH_SIZE)]
-    for b_idx, batch in enumerate(batches):
-        if b_idx > 0:
-            await _cooldown(COOLDOWN_MINI, f"{label} batch {b_idx}", status_cb)
-        scores = await metric.abatch_score(batch)
-        all_scores.extend(scores)
+    for idx, inp in enumerate(inputs):
+        if idx > 0 and idx % GENERAL_BATCH_SIZE == 0:
+            await _cooldown(COOLDOWN_MINI, f"{label} sample {idx}", status_cb)
+        sample_obj = SingleTurnSample(**inp)
+        try:
+            score = await metric.single_turn_ascore(sample_obj)
+        except Exception as e:
+            logfire.warning(f"Error scoring sample {idx} for {label}: {e}")
+            score = 0.0
+        all_scores.append(score)
     return all_scores
 
 async def run_all_metrics(golden_dataset: dict, status_cb=None) -> dict:

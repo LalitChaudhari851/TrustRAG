@@ -32,16 +32,9 @@ portkey_client = Portkey(
 
 
 def is_daily_quota_exhaustion(exc: Exception) -> bool:
-    """Detect if 429 error is due to daily token/request exhaustion (TPD / 200k daily limit)."""
+    """Detect if 429 error is due to daily token/request exhaustion (TPD / tokens per day only)."""
     msg = str(exc).lower()
-    return any(term in msg for term in [
-        "limit 200000",
-        "tokens per day",
-        "daily limit",
-        "requests per day",
-        "tpd",
-        "rpd"
-    ])
+    return "tokens per day" in msg or "(tpd)" in msg or " tpd" in msg
 
 
 def _extract_retry_after(exc: Exception) -> Optional[float]:

@@ -39,21 +39,24 @@ def test_ingestion_idempotency_memory_qdrant():
         ensure_collection_exists(client, collection_name, wipe=True)
 
     with tempfile.NamedTemporaryFile("w", suffix=".txt", delete=False, encoding="utf-8") as f:
-        f.write("Line 1: Kubernetes CronJob management.\nLine 2: Scheduled task execution in cluster.")
+        f.write("Line 1: Kubernetes CronJob management and distributed cluster workload orchestration.\nLine 2: Scheduled task execution in enterprise infrastructure with high availability and fault tolerance.")
         temp_path = f.name
+
+    test_manifest_file = temp_path + ".manifest.json"
 
     try:
         mock_dense = [[0.1, 0.2, 0.3, 0.4]]
         mock_sparse = [models.SparseVector(indices=[10, 20], values=[0.5, 0.8])]
 
-        with patch("app.ingestion.processor.embed_texts", return_value=mock_dense), \
+        with patch("app.ingestion.processor.MANIFEST_FILE", test_manifest_file), \
+             patch("app.ingestion.processor.embed_texts", return_value=mock_dense), \
              patch("app.ingestion.processor.embed_sparse_texts", return_value=mock_sparse):
             # First ingestion
-            process_file(temp_path, "sample.txt", "test", client=client, collection_name=collection_name)
+            process_file(temp_path, "sample_idempotent.txt", "test", client=client, collection_name=collection_name)
             count1 = client.count(collection_name).count
 
             # Second ingestion of the exact same file
-            process_file(temp_path, "sample.txt", "test", client=client, collection_name=collection_name)
+            process_file(temp_path, "sample_idempotent.txt", "test", client=client, collection_name=collection_name)
             count2 = client.count(collection_name).count
 
             assert count1 == count2
@@ -61,6 +64,8 @@ def test_ingestion_idempotency_memory_qdrant():
     finally:
         if os.path.exists(temp_path):
             os.remove(temp_path)
+        if os.path.exists(test_manifest_file):
+            os.remove(test_manifest_file)
 
 
 def test_ingestion_edited_file_cleans_stale_chunks():
@@ -77,6 +82,8 @@ def test_ingestion_edited_file_cleans_stale_chunks():
     with tempfile.NamedTemporaryFile("w", suffix=".txt", delete=False, encoding="utf-8") as f:
         temp_path = f.name
 
+    test_manifest_file = temp_path + ".manifest_stale.json"
+
     try:
         # Version 1: 3 paragraphs -> produces 3 chunks
         mock_dense_3 = [[0.1, 0.2, 0.3, 0.4], [0.2, 0.3, 0.4, 0.5], [0.3, 0.4, 0.5, 0.6]]
@@ -87,9 +94,10 @@ def test_ingestion_edited_file_cleans_stale_chunks():
         ]
 
         with open(temp_path, "w", encoding="utf-8") as f:
-            f.write("# Section A\nDetailed content for chunk A.\n\n# Section B\nDetailed content for chunk B.\n\n# Section C\nDetailed content for chunk C.")
+            f.write("# Section A\nDetailed content for chunk A with sufficient explanatory details and enterprise operational specifications to exceed minimum tokens.\n\n# Section B\nDetailed content for chunk B with sufficient explanatory details and enterprise operational specifications to exceed minimum tokens.\n\n# Section C\nDetailed content for chunk C with sufficient explanatory details and enterprise operational specifications to exceed minimum tokens.")
 
-        with patch("app.ingestion.processor.embed_texts", return_value=mock_dense_3), \
+        with patch("app.ingestion.processor.MANIFEST_FILE", test_manifest_file), \
+             patch("app.ingestion.processor.embed_texts", return_value=mock_dense_3), \
              patch("app.ingestion.processor.embed_sparse_texts", return_value=mock_sparse_3):
             process_file(temp_path, "article.txt", "test", client=client, collection_name=collection_name)
             assert client.count(collection_name).count == 3
@@ -99,9 +107,10 @@ def test_ingestion_edited_file_cleans_stale_chunks():
         mock_sparse_1 = [models.SparseVector(indices=[9], values=[1.0])]
 
         with open(temp_path, "w", encoding="utf-8") as f:
-            f.write("# Consolidated Section\nOnly single concise chunk remaining.")
+            f.write("# Consolidated Section\nOnly single consolidated chunk remaining with comprehensive technical details and architecture guidance that satisfies token threshold limits.")
 
-        with patch("app.ingestion.processor.embed_texts", return_value=mock_dense_1), \
+        with patch("app.ingestion.processor.MANIFEST_FILE", test_manifest_file), \
+             patch("app.ingestion.processor.embed_texts", return_value=mock_dense_1), \
              patch("app.ingestion.processor.embed_sparse_texts", return_value=mock_sparse_1):
             process_file(temp_path, "article.txt", "test", client=client, collection_name=collection_name)
             assert client.count(collection_name).count == 1
@@ -113,6 +122,8 @@ def test_ingestion_edited_file_cleans_stale_chunks():
     finally:
         if os.path.exists(temp_path):
             os.remove(temp_path)
+        if os.path.exists(test_manifest_file):
+            os.remove(test_manifest_file)
 
 
 def test_plain_python_rrf():

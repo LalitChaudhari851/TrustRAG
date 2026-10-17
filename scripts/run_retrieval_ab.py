@@ -96,52 +96,59 @@ def run_single_retrieval(
 
         # Qdrant Search
         t2 = time.perf_counter()
-        if use_hybrid:
-            sparse_indices = sparse_vec.indices if isinstance(sparse_vec.indices, list) else sparse_vec.indices.tolist()
-            sparse_values = sparse_vec.values if isinstance(sparse_vec.values, list) else sparse_vec.values.tolist()
-            
-            prefetch = [
-                models.Prefetch(
-                    query=dense_vec,
-                    using="dense",
-                    limit=top_k,
-                    filter=q_filter
-                ),
-                models.Prefetch(
-                    query=models.SparseVector(indices=sparse_indices, values=sparse_values),
-                    using="sparse",
-                    limit=top_k,
-                    filter=q_filter
-                ),
-            ]
-            points_result = client.query_points(
-                collection_name=collection_name,
-                prefetch=prefetch,
-                query=models.FusionQuery(fusion=models.Fusion.RRF),
-                limit=top_k,
-                with_payload=True
-            )
-            retrieved_points = points_result.points
-        else:
-            if collection_name == "enterprise_rag":
-                res_pts = client.query_points(
-                    collection_name=collection_name,
-                    query=dense_vec,
-                    query_filter=q_filter,
-                    limit=top_k,
-                    with_payload=True
-                )
-                retrieved_points = res_pts.points
-            else:
-                res_pts = client.query_points(
-                    collection_name=collection_name,
-                    query=dense_vec,
-                    using="dense",
-                    query_filter=q_filter,
-                    limit=top_k,
-                    with_payload=True
-                )
-                retrieved_points = res_pts.points
+        retrieved_points = []
+        for attempt in range(3):
+            try:
+                if use_hybrid:
+                    sparse_indices = sparse_vec.indices if isinstance(sparse_vec.indices, list) else sparse_vec.indices.tolist()
+                    sparse_values = sparse_vec.values if isinstance(sparse_vec.values, list) else sparse_vec.values.tolist()
+                    prefetch = [
+                        models.Prefetch(
+                            query=dense_vec,
+                            using="dense",
+                            limit=top_k,
+                            filter=q_filter
+                        ),
+                        models.Prefetch(
+                            query=models.SparseVector(indices=sparse_indices, values=sparse_values),
+                            using="sparse",
+                            limit=top_k,
+                            filter=q_filter
+                        ),
+                    ]
+                    points_result = client.query_points(
+                        collection_name=collection_name,
+                        prefetch=prefetch,
+                        query=models.FusionQuery(fusion=models.Fusion.RRF),
+                        limit=top_k,
+                        with_payload=True
+                    )
+                    retrieved_points = points_result.points
+                else:
+                    if collection_name == "enterprise_rag":
+                        res_pts = client.query_points(
+                            collection_name=collection_name,
+                            query=dense_vec,
+                            query_filter=q_filter,
+                            limit=top_k,
+                            with_payload=True
+                        )
+                        retrieved_points = res_pts.points
+                    else:
+                        res_pts = client.query_points(
+                            collection_name=collection_name,
+                            query=dense_vec,
+                            using="dense",
+                            query_filter=q_filter,
+                            limit=top_k,
+                            with_payload=True
+                        )
+                        retrieved_points = res_pts.points
+                break
+            except Exception as query_err:
+                if attempt == 2:
+                    raise query_err
+                time.sleep(1.5)
         t3 = time.perf_counter()
         qdrant_ms = (t3 - t2) * 1000
 
@@ -452,7 +459,7 @@ def find_dense_hybrid_differences(dense_res: Dict[str, Any], hybrid_res: Dict[st
 
 def main():
     print("=== RETRIEVAL A/B BENCHMARK WITH ANSWER METRICS & WARM 3-PASS LATENCY ===")
-    client = QdrantClient(url=settings.QDRANT_URL, api_key=settings.QDRANT_API_KEY)
+    client = QdrantClient(url=settings.QDRANT_URL, api_key=settings.QDRANT_API_KEY, timeout=60.0)
     ranker = get_ranker()
 
     with open("evals/golden_dataset.json", "r", encoding="utf-8") as f:

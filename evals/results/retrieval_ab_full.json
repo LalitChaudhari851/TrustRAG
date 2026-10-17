@@ -1,6 +1,6 @@
 {
   "script": "scripts/run_retrieval_ab.py",
-  "timestamp": "2026-10-17 10:39:15",
+  "timestamp": "2026-10-17 13:22:24",
   "target_collection": "enterprise_rag_v2",
   "warm_latency_passes": 3,
   "golden_controlled_true_only": {
@@ -27,10 +27,10 @@
         "median_chunks_passed": 5
       },
       "latency": {
-        "embed_median_ms": 1197.7,
-        "qdrant_median_ms": 242.9,
-        "rerank_median_ms": 251.7,
-        "total_median_ms": 1686.5
+        "embed_median_ms": 83.2,
+        "qdrant_median_ms": 292.4,
+        "rerank_median_ms": 41.6,
+        "total_median_ms": 429.3
       },
       "queries": [
         {
@@ -523,10 +523,10 @@
         "median_chunks_passed": 5
       },
       "latency": {
-        "embed_median_ms": 1163.1,
-        "qdrant_median_ms": 244.1,
-        "rerank_median_ms": 24.5,
-        "total_median_ms": 1537.6
+        "embed_median_ms": 78.3,
+        "qdrant_median_ms": 291.2,
+        "rerank_median_ms": 18.8,
+        "total_median_ms": 439.5
       },
       "queries": [
         {
@@ -1019,10 +1019,10 @@
         "median_chunks_passed": 5
       },
       "latency": {
-        "embed_median_ms": 1165.6,
-        "qdrant_median_ms": 237.4,
-        "rerank_median_ms": 152.4,
-        "total_median_ms": 1564.1
+        "embed_median_ms": 1840.0,
+        "qdrant_median_ms": 305.0,
+        "rerank_median_ms": 366.6,
+        "total_median_ms": 2645.3
       },
       "queries": [
         {
@@ -1517,10 +1517,10 @@
         "median_chunks_passed": 5
       },
       "latency": {
-        "embed_median_ms": 1139.3,
-        "qdrant_median_ms": 234.7,
-        "rerank_median_ms": 130.1,
-        "total_median_ms": 1514.4
+        "embed_median_ms": 1808.7,
+        "qdrant_median_ms": 318.1,
+        "rerank_median_ms": 357.6,
+        "total_median_ms": 2575.4
       },
       "queries": [
         {
@@ -2013,10 +2013,10 @@
         "median_chunks_passed": 5
       },
       "latency": {
-        "embed_median_ms": 72.3,
-        "qdrant_median_ms": 238.7,
-        "rerank_median_ms": 20.5,
-        "total_median_ms": 336.2
+        "embed_median_ms": 1439.8,
+        "qdrant_median_ms": 282.2,
+        "rerank_median_ms": 195.0,
+        "total_median_ms": 2012.8
       },
       "queries": [
         {
@@ -2509,10 +2509,10 @@
         "median_chunks_passed": 5
       },
       "latency": {
-        "embed_median_ms": 81.9,
-        "qdrant_median_ms": 248.6,
-        "rerank_median_ms": 19.8,
-        "total_median_ms": 357.0
+        "embed_median_ms": 1408.3,
+        "qdrant_median_ms": 273.9,
+        "rerank_median_ms": 212.9,
+        "total_median_ms": 1905.1
       },
       "queries": [
         {
@@ -2977,10 +2977,10 @@
         "median_chunks_passed": 5.0
       },
       "latency": {
-        "embed_median_ms": 1130.2,
-        "qdrant_median_ms": 239.7,
-        "rerank_median_ms": 148.1,
-        "total_median_ms": 1525.3
+        "embed_median_ms": 1341.7,
+        "qdrant_median_ms": 252.1,
+        "rerank_median_ms": 160.4,
+        "total_median_ms": 1763.4
       },
       "queries": [
         {
@@ -3388,7 +3388,7 @@
         },
         {
           "id": 14,
-          "question": "What release manifest URL installs the Vertical Pod Autoscaler components in cronjobs.docx?",
+          "question": "What release manifest URL installs the Vertical Pod Autoscaler components?",
           "expected_source": "cronjobs.docx",
           "expected_section": "1. Resource Right-Sizing",
           "key_term": "vpa-release-0.13.0.yaml",
@@ -3410,12 +3410,12 @@
           ],
           "top_5_sections": [
             "Metric Server Setup",
-            "Step 3: Create a VPA",
             "What is VPA?",
             "Exclude scaling for a specific container",
-            "What is HPA?"
+            "What is HPA?",
+            "Step 3: Create a VPA"
           ],
-          "top_score": 0.9778000116348267
+          "top_score": 0.9991999864578247
         },
         {
           "id": 15,
@@ -3690,10 +3690,10 @@
         "median_chunks_passed": 5.0
       },
       "latency": {
-        "embed_median_ms": 1172.0,
-        "qdrant_median_ms": 240.8,
-        "rerank_median_ms": 175.8,
-        "total_median_ms": 1584.1
+        "embed_median_ms": 1303.9,
+        "qdrant_median_ms": 246.2,
+        "rerank_median_ms": 196.4,
+        "total_median_ms": 1782.7
       },
       "queries": [
         {
@@ -3725,7 +3725,7 @@
             "Understanding Job Status",
             "Checking Job Status with kubectl"
           ],
-          "top_score": 0.9987000226974487
+          "top_score": 0.9987999796867371
         },
         {
           "id": 2,
@@ -4101,7 +4101,7 @@
         },
         {
           "id": 14,
-          "question": "What release manifest URL installs the Vertical Pod Autoscaler components in cronjobs.docx?",
+          "question": "What release manifest URL installs the Vertical Pod Autoscaler components?",
           "expected_source": "cronjobs.docx",
           "expected_section": "1. Resource Right-Sizing",
           "key_term": "vpa-release-0.13.0.yaml",
@@ -4126,9 +4126,9 @@
             "1. Resource Right-Sizing",
             "What is VPA?",
             "Exclude scaling for a specific container",
-            "Step 3: Create a VPA"
+            "What is HPA?"
           ],
-          "top_score": 0.9793000221252441
+          "top_score": 0.9991999864578247
         },
         {
           "id": 15,
@@ -4252,7 +4252,7 @@
             "OVERVIEW OF STEPS",
             "3. Serverless Job Execution"
           ],
-          "top_score": 0.917900025844574
+          "top_score": 0.8930000066757202
         },
         {
           "id": 19,
@@ -4403,10 +4403,10 @@
         "median_chunks_passed": 3.0
       },
       "latency": {
-        "embed_median_ms": 1211.2,
-        "qdrant_median_ms": 238.9,
-        "rerank_median_ms": 172.2,
-        "total_median_ms": 1629.3
+        "embed_median_ms": 93.2,
+        "qdrant_median_ms": 245.5,
+        "rerank_median_ms": 21.6,
+        "total_median_ms": 385.8
       },
       "queries": [
         {
@@ -4432,7 +4432,7 @@
             "Creating a Job Configuration File",
             "Creating the Job"
           ],
-          "top_score": 0.9987999796867371
+          "top_score": 0.9987000226974487
         },
         {
           "id": 2,
@@ -4511,7 +4511,7 @@
             "What Are Jobs?",
             "Introduction"
           ],
-          "top_score": 0.9843999743461609
+          "top_score": 0.9854000210762024
         },
         {
           "id": 5,
@@ -4534,7 +4534,7 @@
           "top_5_sections": [
             "3. Machine Learning Model Training"
           ],
-          "top_score": 0.4966999888420105
+          "top_score": 0.5471000075340271
         },
         {
           "id": 6,
@@ -4768,7 +4768,7 @@
         },
         {
           "id": 14,
-          "question": "What release manifest URL installs the Vertical Pod Autoscaler components in cronjobs.docx?",
+          "question": "What release manifest URL installs the Vertical Pod Autoscaler components?",
           "expected_source": "cronjobs.docx",
           "expected_section": "1. Resource Right-Sizing",
           "key_term": "vpa-release-0.13.0.yaml",
@@ -4789,7 +4789,7 @@
             "Metric Server Setup",
             "1. Resource Right-Sizing"
           ],
-          "top_score": 0.9793000221252441
+          "top_score": 0.9991999864578247
         },
         {
           "id": 15,
@@ -6006,16 +6006,12 @@
       },
       {
         "id": 14,
-        "question": "What release manifest URL installs the Vertical Pod Autoscaler components in cronjobs.docx?",
+        "question": "What release manifest URL installs the Vertical Pod Autoscaler components?",
         "expected_source": "cronjobs.docx",
         "dense_top_5": [
           [
             "pods_autoscale.html",
             "Metric Server Setup"
-          ],
-          [
-            "pods_autoscale.html",
-            "Step 3: Create a VPA"
           ],
           [
             "pods_autoscale.html",
@@ -6028,6 +6024,10 @@
           [
             "pods_autoscale.html",
             "What is HPA?"
+          ],
+          [
+            "pods_autoscale.html",
+            "Step 3: Create a VPA"
           ]
         ],
         "hybrid_top_5": [
@@ -6049,7 +6049,7 @@
           ],
           [
             "pods_autoscale.html",
-            "Step 3: Create a VPA"
+            "What is HPA?"
           ]
         ],
         "dense_source_hit": false,

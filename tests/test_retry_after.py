@@ -43,8 +43,15 @@ def test_extract_retry_after_header_capped_at_20s():
     assert res == 20.0
 
 
-def test_extract_retry_after_daily_limit_ignored():
-    # A message containing 'Limit 200000' or TPD must not parse 200000 as sleep
+def test_extract_retry_after_limit_number_does_not_set_sleep():
+    # A message containing 'Limit 200000' must not set the sleep to 200000; it must extract 1.2s
+    exc = Exception("Rate limit reached. Limit 200000, Used 199000. Please try again in 1.2s.")
+    res = _extract_retry_after(exc)
+    assert res == 1.2
+
+
+def test_extract_retry_after_daily_limit_tpd_fails_fast():
+    # When tokens per day (TPD) is mentioned, fail fast and return None
     exc = Exception("Rate limit reached for model `qwen/qwen3.8-27b` on tokens per day (TPD): Limit 200000, Used 200050.")
     res = _extract_retry_after(exc)
     assert res is None
