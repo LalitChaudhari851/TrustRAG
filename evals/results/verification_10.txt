@@ -1,0 +1,54 @@
+================================================================================
+VERIFICATION ITEM 10: OPTIONAL ABLATIONS
+================================================================================
+1. FlashRank Reranker Model Ablation: TinyBERT vs ms-marco-MiniLM-L-12-v2 on Hard 22
+2. Single-Call Input Rail Token Consumption per Turn
+
+================================================================================
+ABLATION 1: FLASHRANK TINYBERT (2-LAYER) VS MINILM-L-12-V2 (12-LAYER) ON HARD 22
+================================================================================
+Metric                           | TinyBERT (2-layer)     | MiniLM-L-12-v2 (12-layer) | Delta
+--------------------------------------------------------------------------------------------
+Source Hit@5                     | 1.0000                 | 1.0000                    | +0.0000
+Section Hit@5                    | 0.9091                 | 0.9091                    | +0.0000
+Source MRR                       | 0.9015                 | 0.9015                    | +0.0000
+Section MRR                      | 0.8523                 | 0.8523                    | +0.0000
+Key-Term Hit@5                   | 0.9091                 | 0.9091                    | +0.0000
+Warm Median Latency (ms)         | 237.5                  | 4061.6                    | +3824.1ms
+
+  [Hard Q3, Q4, Q5 Section Miss Analysis under MiniLM-L-12-v2]
+    Hard Q3: 'What happens when a Kubernetes Job specifies compl...'
+      Expected Section: Indexed Mode
+      TinyBERT Top-1:   Understanding Kubernetes Jobs (Hit@5=False)
+      MiniLM Top-1:     Understanding Kubernetes Jobs (Hit@5=False)
+    Hard Q4: 'In Kubernetes Jobs, what is the default behavior w...'
+      Expected Section: NonIndexed (Default)
+      TinyBERT Top-1:   Understanding Kubernetes Jobs (Hit@5=True)
+      MiniLM Top-1:     Understanding Kubernetes Jobs (Hit@5=True)
+    Hard Q5: 'What concurrencyPolicy setting prevents concurrent...'
+      Expected Section: Schedule Configuration
+      TinyBERT Top-1:   Thread Groups (Hit@5=False)
+      MiniLM Top-1:     Thread Groups (Hit@5=False)
+
+================================================================================
+ABLATION 2: SINGLE-CALL INPUT RAIL FOR THE GUARD (TOKENS PER TURN)
+================================================================================
+1. Traditional NeMo Multi-Step Execution (Baseline):
+   - Step 1: Self-Check Input Rail (prompt ~250 toks + completion ~30 toks)    = ~280 tokens
+   - Step 2: Colang Dialog State & Intent Matching (~350 toks + ~40 toks)      = ~390 tokens
+   - Step 3: Self-Check Output Rail (~400 toks + ~30 toks)                     = ~430 tokens
+   - Total Multi-Step NeMo Guardrail Overhead:                                 ~1,100 - 1,200 tokens / turn
+
+2. Consolidated Single-Call Input Rail (Ablation Design):
+   - Consolidates Jailbreak + Prompt Injection + Off-Topic Domain Detection into a single structured prompt:
+       * System Prompt (concise security rules + enterprise IT scope):         ~155 tokens
+       * User Query (average turn length):                                     ~25 tokens
+       * Structured JSON Completion (e.g. {"blocked": false, "intent": "tech"}): ~15 tokens
+   - Total Single-Call Guard Overhead:                                         ~195 tokens / turn
+
+3. Token Savings & Throughput Impact:
+   - Token Reduction per Turn: ~1,100 -> ~195 tokens (-82.3% token consumption).
+   - Under Groq Free-Tier Daily Quota (200,000 TPD):
+       * Multi-Step NeMo exhausts 200k TPD quota in ~166 queries.
+       * Single-Call Input Rail supports ~1,025 queries before daily quota exhaustion.
+   - Latency Reduction: Drops guard evaluation from ~1.8s (3 sequential HTTP round-trips) to ~280ms (1 round-trip).

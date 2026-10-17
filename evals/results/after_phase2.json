@@ -1,0 +1,443 @@
+{
+  "metadata": {
+    "git_commit_hash": "24a2b7055b327457bc8c35737d8ea072f4f22529",
+    "date": "2026-10-17",
+    "evaluation_mode": "hybrid + dynamic threshold (calibrated floor 0.08, margin 0.20)",
+    "app_model": "qwen/qwen3.8-27b",
+    "app_temperature": 0.1,
+    "guard_model": "llama-3.1-8b-instant",
+    "guard_temperature": 0,
+    "judge_model": "llama-3.1-8b-instant",
+    "judge_temperature": 0,
+    "golden_dataset_sha256": "e047d3cca350ad0515aab2b5479abed424bfea3a6d5590748cad9a77a689ee8f",
+    "qdrant_point_count": 6070,
+    "avg_latency_seconds_per_turn": 3.46,
+    "infra_errors_count": 12,
+    "refusals_count": 0
+  },
+  "scores": {
+    "tool_correctness": 0.2,
+    "faithfulness": "not measured (Groq TPD limit reached)",
+    "answer_relevancy": "not measured (Groq TPD limit reached)",
+    "context_precision": "not measured (Groq TPD limit reached)",
+    "context_recall": "not measured (Groq TPD limit reached)",
+    "answer_correctness": "not measured (Groq TPD limit reached)"
+  },
+  "retrieval_metrics": {
+    "source_hit@5": 1.0,
+    "source_mrr": 0.9667,
+    "section_hit@5": 0.7333,
+    "section_mrr": 0.6167
+  },
+  "samples": [
+    {
+      "id": 1,
+      "domain": "parallel_work_queue",
+      "question": "How do you start Redis for a Kubernetes work queue?",
+      "reference": "Run kubectl apply -f https://k8s.io/examples/application/job/redis/redis-pod.yaml and kubectl apply -f https://k8s.io/examples/application/job/redis/redis-service.yaml to start a single Redis instance for the work queue.",
+      "relevant_contexts": [
+        "For this example, you will start a single instance of Redis.\n\nRun the following commands:\n\n    kubectl apply -f https://k8s.io/examples/application/job/redis/redis-pod.yaml\n    kubectl apply -f https://k8s.io/examples/application/job/redis/redis-service.yaml",
+        "OVERVIEW OF STEPS\n1. Start a storage service to hold the work queue. (We will use Redis).\n2. Create a queue, and fill it with messages.\n3. Start a Job that works on tasks from the queue."
+      ],
+      "expected_tools": [
+        "retrieve_documents"
+      ],
+      "actual_response": "I apologize, but our reasoning service is currently experiencing very high demand (rate limit reached). Please wait a few moments and try again.",
+      "actual_contexts": [
+        "[Source: parallel_work_queue.txt | Section: General]\n1. Start a storage service to hold the work queue. (We will use Redis).\n2. Create a queue, and fill it with messages.\n3. Start a Job that works on tasks from the queue.",
+        "[Source: parallel_work_queue.txt | Section: General]\nStart a temporary interactive pod for running the Redis CLI:\n\n    kubectl run -i --tty temp --image redis --command \"/bin/sh\"\n\nOnce the prompt appears, connect to Redis and fill the queue (named \"job2\"):\n\n    redis-cli -h redis",
+        "[Source: parallel_work_queue.txt | Section: General]\nIn this example, you will run a Kubernetes Job that runs multiple parallel\ntasks as worker processes, each running as a separate Pod.\n\nIn this example, as each pod is created, it picks up one unit of work\nfrom a task queue, processes it, and repeats until the end of the queue is reached.",
+        "[Source: parallel_work_queue.txt | Section: General]\nFor this example, you will start a single instance of Redis.\n\nRun the following commands:\n\n    kubectl apply -f https://k8s.io/examples/application/job/redis/redis-pod.yaml\n    kubectl apply -f https://k8s.io/examples/application/job/redis/redis-service.yaml",
+        "[Source: parallel_work_queue.txt | Section: General]\nq = rediswq.RedisWQ(name=\"job2\", host=host)\n    print(\"Worker with sessionID: \" +  q.sessionID())\n    print(\"Initial queue state: empty=\" + str(q.empty()))\n    while not q.empty():\n      item = q.lease(lease_secs=10, block=True, timeout=2) \n      if item is not None:\n        itemstr = item.decode(\"utf-8\")\n        print(\"Working on \" + itemstr)\n        time.sleep(10) # Put your actual work here instead of sleep.\n        q.complete(item)\n      else:\n        print(\"Waiting for work\")\n    print(\"Queue empty, exiting\")\n\n\nBuild the image (requires Docker):\n\n    docker build -t job-wq-2 .\n\nPush the image to your registry (replace <username> with your Hub username):\n\n    docker tag job-wq-2 <username>/job-wq-2\n    docker push <username>/job-wq-2"
+      ],
+      "actual_tools_called": [
+        "retrieve_documents"
+      ],
+      "expected_source": "parallel_work_queue.txt",
+      "expected_section": "STEP 1: STARTING REDIS",
+      "latency_s": 3.9,
+      "is_infra_error": false,
+      "is_refusal": false
+    },
+    {
+      "id": 2,
+      "domain": "parallel_work_queue",
+      "question": "What does the parallelism field do in the Kubernetes job-wq-2 manifest?",
+      "reference": "The parallelism field is set to 2 in the job-wq-2 manifest, meaning a maximum of 2 Pods run simultaneously. Each pod picks up one unit of work from the Redis queue, processes it, and repeats until the queue is empty.",
+      "relevant_contexts": [
+        "spec:\n  parallelism: 2\n  template:\n    metadata:\n      name: job-wq-2\n    spec:\n      containers:\n      - name: c\n        image: gcr.io/myproject/job-wq-2\n      restartPolicy: OnFailure",
+        "In this example, as each pod is created, it picks up one unit of work from a task queue, processes it, and repeats until the end of the queue is reached.\n\nNote on Parallelism:\nIn this example, each pod works on several items from the queue and then exits. Workers signal the queue is empty by exiting with success."
+      ],
+      "expected_tools": [
+        "retrieve_documents"
+      ],
+      "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
+      "actual_contexts": [
+        "[Source: parallel_work_queue.txt | Section: STEP 4: DEFINING A JOB]",
+        "[Source: parallel_work_queue.txt | Section: FINE PARALLEL PROCESSING USING A WORK QUEUE]"
+      ],
+      "actual_tools_called": [
+        "unknown"
+      ],
+      "expected_source": "parallel_work_queue.txt",
+      "expected_section": "STEP 4: DEFINING A JOB",
+      "latency_s": 4.35,
+      "is_infra_error": true,
+      "is_refusal": false
+    },
+    {
+      "id": 3,
+      "domain": "parallel_work_queue",
+      "question": "How do you fill the Redis work queue with tasks using the CLI?",
+      "reference": "Start a temporary interactive pod with kubectl run -i --tty temp --image redis --command \"/bin/sh\", connect to Redis using redis-cli -h redis, then push tasks using rpush job2 followed by the task name (e.g. rpush job2 \"apple\"). Use lrange job2 0 -1 to verify the queue contents.",
+      "relevant_contexts": [
+        "Start a temporary interactive pod for running the Redis CLI:\n\n    kubectl run -i --tty temp --image redis --command \"/bin/sh\"\n\nOnce the prompt appears, connect to Redis and fill the queue (named \"job2\"):\n\n    redis-cli -h redis\n\n    # Inside the redis prompt:\n    rpush job2 \"apple\"\n    rpush job2 \"banana\"\n    rpush job2 \"cherry\"\n\n    # Check the list:\n    lrange job2 0 -1"
+      ],
+      "expected_tools": [
+        "retrieve_documents"
+      ],
+      "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
+      "actual_contexts": [
+        "[Source: parallel_work_queue.txt | Section: OVERVIEW OF STEPS]",
+        "[Source: parallel_work_queue.txt | Section: STEP 2: FILLING THE QUEUE WITH TASKS]"
+      ],
+      "actual_tools_called": [
+        "unknown"
+      ],
+      "expected_source": "parallel_work_queue.txt",
+      "expected_section": "STEP 2: FILLING THE QUEUE WITH TASKS",
+      "latency_s": 0.82,
+      "is_infra_error": true,
+      "is_refusal": false
+    },
+    {
+      "id": 4,
+      "domain": "pods_autoscale",
+      "question": "What is the difference between HPA and VPA in Kubernetes?",
+      "reference": "HPA (Horizontal Pod Autoscaler) scales the number of pod replicas up or down based on CPU or custom metrics. VPA (Vertical Pod Autoscaler) adjusts the CPU and memory resource requests and limits for existing pods. HPA adds or removes pods; VPA resizes the resources of existing pods.",
+      "relevant_contexts": [
+        "Horizontal Pod Autoscaling (HPA) automatically scales the number of pods in a replication controller, deployment, or replica set based on observed CPU utilization or other select metrics.",
+        "Autoscaling in Kubernetes ensures that your application can handle varying loads by automatically adjusting the number of running pods or the resources allocated to them. This dynamic adjustment is crucial for maintaining application performance, optimizing resource usage, and reducing operational costs."
+      ],
+      "expected_tools": [
+        "retrieve_documents"
+      ],
+      "actual_response": "I apologize, but our reasoning service is currently experiencing very high demand (rate limit reached). Please wait a few moments and try again.",
+      "actual_contexts": [
+        "[Source: pods_autoscale.html | Section: General]\nHPA & VPA in Kubernetes by Anvesh Muppeda\n\nIn the world of container orchestration, Kubernetes has emerged as the de facto standard. One of its powerful features is autoscaling, which helps maintain application performance and optimize resource usage. In this post, we\u2019ll dive into two main types of autoscaling in Kubernetes: Horizontal Pod Autoscaling (HPA) and Vertical Pod Autoscaling (VPA).",
+        "[Source: pods_autoscale.html | Section: General]\nKubernetes autoscaling, through HPA and VPA, provides robust mechanisms to manage application scalability and resource optimization. By understanding and implementing these autoscaling strategies, you can ensure that your applications are resilient, performant, and cost-effective.",
+        "[Source: pods_autoscale.html | Section: General]\nAutoscaling in Kubernetes ensures that your application can handle varying loads by automatically adjusting the number of running pods or the resources allocated to them. This dynamic adjustment is crucial for maintaining application performance, optimizing resource usage, and reducing operational costs.\n\nHPA & VPA Animation",
+        "[Source: pods_autoscale.html | Section: General]\nBefore testing Horizontal Pod Autoscaler (HPA) and Vertical Pod Autoscaler (VPA), it\u2019s essential to have the Metrics Server installed in your Kubernetes cluster. The Metrics Server collects resource usage metrics from the cluster\u2019s nodes and pods, which are necessary for autoscaling decisions.\n\nYou can install the Metrics Server using either a YAML manifest or the official Helm chart. To install the latest release of the Metrics Server from the YAML manifest, follow these steps:\n\n- Download the Components Manifest: Use kubectl apply to download and apply the Components manifest directly from the latest release of the Metrics Server:\n\n```\n$ kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml\n```\n\nThis command fetches the YAML manifest for the latest release of the Metrics Server from its GitHub repository and applies it to your Kubernetes cluster.\n\n2. Verify Installation: After applying the manifest, verify that the Metrics Server pods are running successfully. You can check the pods in the kube-system namespace:\n\n```\nkubectl get pods -n kube-system | grep metrics-server\n```",
+        "[Source: pods_autoscale.html | Section: General]\nTo set up HPA, you need to define an HPA object in your Kubernetes cluster.\n\nLet\u2019s deploy an example using HPA."
+      ],
+      "actual_tools_called": [
+        "retrieve_documents"
+      ],
+      "expected_source": "pods_autoscale.html",
+      "expected_section": "HPA vs. VPA: Which One to Use?",
+      "latency_s": 32.1,
+      "is_infra_error": false,
+      "is_refusal": false
+    },
+    {
+      "id": 5,
+      "domain": "pods_autoscale",
+      "question": "How do you install the Metrics Server for Kubernetes pod autoscaling?",
+      "reference": "Run kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml to install the Metrics Server. Then verify the installation with kubectl get pods -n kube-system | grep metrics-server.",
+      "relevant_contexts": [
+        "Use kubectl apply to download and apply the Components manifest directly from the latest release of the Metrics Server:\n\n$ kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml\n\nThis command fetches the YAML manifest for the latest release of the Metrics Server from its GitHub repository and applies it to your Kubernetes cluster.",
+        "After applying the manifest, verify that the Metrics Server pods are running successfully. You can check the pods in the kube-system namespace:\nkubectl get pods -n kube-system | grep metrics-server\nYou should see pods related to the Metrics Server running and ready."
+      ],
+      "expected_tools": [
+        "retrieve_documents"
+      ],
+      "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
+      "actual_contexts": [
+        "[Source: pods_autoscale.html | Section: Metric Server Setup]",
+        "[Source: pods_autoscale.html | Section: Metric Server Setup]",
+        "[Source: pods_autoscale.html | Section: What is HPA?]",
+        "[Source: pods_autoscale.html | Section: Step 3: Create a VPA]",
+        "[Source: architecture.pptx | Section: Additional Services]"
+      ],
+      "actual_tools_called": [
+        "unknown"
+      ],
+      "expected_source": "pods_autoscale.html",
+      "expected_section": "Metric Server Setup",
+      "latency_s": 2.72,
+      "is_infra_error": true,
+      "is_refusal": false
+    },
+    {
+      "id": 6,
+      "domain": "pods_autoscale",
+      "question": "Which kubectl commands confirm that the Metrics Server is collecting data?",
+      "reference": "Run kubectl top nodes and kubectl top pods --all-namespaces. If the Metrics Server is properly installed and functioning, both commands return CPU and memory usage metrics for the nodes and pods in the cluster.",
+      "relevant_contexts": [
+        "Once the Metrics Server is up and running, you can confirm that it's collecting metrics by querying the API. For example, you can retrieve the CPU and memory usage metrics for nodes and pods:\n\n$ kubectl top nodes\n$ kubectl top pods --all-namespaces\n\nIf the Metrics Server is properly installed and functioning, you should see CPU and memory usage metrics for nodes and pods in your cluster."
+      ],
+      "expected_tools": [
+        "retrieve_documents"
+      ],
+      "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
+      "actual_contexts": [
+        "[Source: pods_autoscale.html | Section: Metric Server Setup]",
+        "[Source: pods_autoscale.html | Section: Metric Server Setup]"
+      ],
+      "actual_tools_called": [
+        "unknown"
+      ],
+      "expected_source": "pods_autoscale.html",
+      "expected_section": "Metric Server Setup",
+      "latency_s": 0.93,
+      "is_infra_error": true,
+      "is_refusal": false
+    },
+    {
+      "id": 7,
+      "domain": "job_management",
+      "question": "What Databricks CLI command retrieves the details of a specific job?",
+      "reference": "Use databricks jobs get <job-id>. For example, databricks jobs get 478701692316314 returns the full JSON configuration of that job including its settings, creator username, task definitions, and max concurrent runs.",
+      "relevant_contexts": [
+        "To print information about an individual job in a workspace, run the following command:\n\ndatabricks jobs get <job-id>\n\n# Example\ndatabricks jobs get 478701692316314\n\nThis command returns JSON with fields like job_id, settings, creator_user_name, and task configuration."
+      ],
+      "expected_tools": [
+        "retrieve_documents"
+      ],
+      "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
+      "actual_contexts": [
+        "[Source: job_management.html | Section: Get started with the Databricks CLI]",
+        "[Source: job_management.html | Section: Example: Create a job using the CLI]",
+        "[Source: job_management.html | Section: Get started with the Databricks REST API]",
+        "[Source: job_management.html | Section: Run a job using the CLI]",
+        "[Source: job_management.html | Section: Compare tools]"
+      ],
+      "actual_tools_called": [
+        "unknown"
+      ],
+      "expected_source": "job_management.html",
+      "expected_section": "Example: Retrieve a job using the CLI",
+      "latency_s": 0.86,
+      "is_infra_error": true,
+      "is_refusal": false
+    },
+    {
+      "id": 8,
+      "domain": "job_management",
+      "question": "When should you use the Databricks REST API instead of the CLI or SDK?",
+      "reference": "Use the Databricks REST API directly when none of the supported SDK languages (Python, Java, Go, R) are available for your use case, or when you need to automate processes for which no SDK currently exists in your preferred programming language.",
+      "relevant_contexts": [
+        "If none of the above options work for your specific use case, you can use the Databricks REST API directly. Use the REST API directly for use cases such as automating processes where an SDK in your preferred programming language is not currently available."
+      ],
+      "expected_tools": [
+        "retrieve_documents"
+      ],
+      "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
+      "actual_contexts": [
+        "[Source: job_management.html | Section: Compare tools]",
+        "[Source: job_management.html | Section: Automate job creation and management]",
+        "[Source: job_management.html | Section: Get started with the Databricks CLI]",
+        "[Source: job_management.html | Section: View jobs as code]",
+        "[Source: job_management.html | Section: Get started with the Databricks SDK]"
+      ],
+      "actual_tools_called": [
+        "unknown"
+      ],
+      "expected_source": "job_management.html",
+      "expected_section": "Compare tools",
+      "latency_s": 0.39,
+      "is_infra_error": true,
+      "is_refusal": false
+    },
+    {
+      "id": 9,
+      "domain": "job_management",
+      "question": "What are the three main developer tools for managing Databricks jobs programmatically?",
+      "reference": "The three tools are: (1) Databricks CLI \u2014 wraps the REST API, used for one-off tasks and shell scripting; (2) Databricks SDKs \u2014 for building applications in Python, Java, Go, or R; (3) Databricks REST API \u2014 used directly when no SDK is available for your language.",
+      "relevant_contexts": [
+        "The following table compares the Databricks CLI, the Databricks SDKs, and the REST API:\n\nDatabricks CLI: Access Databricks functionality using the command-line interface (CLI), which wraps the REST API. Use the CLI for one-off tasks such as experimentation, shell scripting, and invoking the REST API directly.\nDatabricks SDKs: Develop applications and create custom Databricks workflows using a Databricks SDK, available for Python, Java, Go, or R.\nDatabricks REST API: Use directly for use cases where an SDK is not available."
+      ],
+      "expected_tools": [
+        "retrieve_documents"
+      ],
+      "actual_response": "I apologize, but our reasoning service is currently experiencing very high demand (rate limit reached). Please wait a few moments and try again.",
+      "actual_contexts": [
+        "[Source: job_management.html | Section: Compare tools]",
+        "[Source: job_management.html | Section: Automate job creation and management]"
+      ],
+      "actual_tools_called": [
+        "direct_answer"
+      ],
+      "expected_source": "job_management.html",
+      "expected_section": "Compare tools",
+      "latency_s": 0.91,
+      "is_infra_error": false,
+      "is_refusal": false
+    },
+    {
+      "id": 10,
+      "domain": "cronjobs",
+      "question": "What are the valid restart policy values for a Kubernetes Job pod?",
+      "reference": "A Kubernetes Job supports two valid restart policies: OnFailure (the kubelet restarts the container within the same pod if it crashes) and Never (the pod is marked as failed and the Job controller creates a new pod). The Always policy is not allowed because it would prevent pods from ever completing.",
+      "relevant_contexts": [
+        "Jobs have strict requirements for Pod restart policies:\nOnFailure: Kubelet restarts the container within the same Pod if it crashes.\nNever: Entire Pod is marked as failed, Job controller creates a new Pod.\nAlways: Not allowed (would prevent Pod from ever completing)."
+      ],
+      "expected_tools": [
+        "retrieve_documents"
+      ],
+      "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
+      "actual_contexts": [
+        "[Source: cronjobs.docx | Section: 1. Restart Policy Requirements]",
+        "[Source: monitor_job.docx | Section: Understanding Kubernetes Jobs]",
+        "[Source: cronjobs.docx | Section: What Are Jobs?]",
+        "[Source: monitor_job.docx | Section: Understanding Job Status]",
+        "[Source: monitor_job.docx | Section: Viewing Logs of Completed Jobs]"
+      ],
+      "actual_tools_called": [
+        "unknown"
+      ],
+      "expected_source": "cronjobs.docx",
+      "expected_section": "1. Restart Policy Requirements",
+      "latency_s": 1.11,
+      "is_infra_error": true,
+      "is_refusal": false
+    },
+    {
+      "id": 11,
+      "domain": "cronjobs",
+      "question": "What are the completions and parallelism fields in a Kubernetes Job spec?",
+      "reference": "completions specifies how many pods must successfully complete before the Job is considered done (e.g., completions: 5 requires 5 successful completions). parallelism controls the maximum number of pods that can run at the same time (e.g., parallelism: 3 allows up to 3 concurrent pods).",
+      "relevant_contexts": [
+        "Two critical fields control how Jobs execute:\n\nCompletions\nSpecifies the number of Pods that must successfully complete:\nspec:\n  completions: 5  # Job completes after 5 successful Pod completions\n\nParallelism\nControls maximum concurrent Pods:\nspec:\n  parallelism: 3  # Max 3 Pods running simultaneously"
+      ],
+      "expected_tools": [
+        "retrieve_documents"
+      ],
+      "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
+      "actual_contexts": [
+        "[Source: architecture.pptx | Section: Jobs]",
+        "[Source: cronjobs.docx | Section: 4. Jobs Taking Too Long]",
+        "[Source: cronjobs.docx | Section: 3. Parallel Processing Patterns]",
+        "[Source: cronjobs.docx | Section: NonIndexed (Default)]",
+        "[Source: cronjobs.docx | Section: What Are Jobs?]"
+      ],
+      "actual_tools_called": [
+        "unknown"
+      ],
+      "expected_source": "cronjobs.docx",
+      "expected_section": "Completions and Parallelism",
+      "latency_s": 0.39,
+      "is_infra_error": true,
+      "is_refusal": false
+    },
+    {
+      "id": 12,
+      "domain": "cronjobs",
+      "question": "Which Kubernetes API group does a Job resource belong to?",
+      "reference": "Kubernetes Jobs belong to the batch/v1 API group, which is a stable API. The pod template within a Job is immutable and cannot be modified after the Job is created.",
+      "relevant_contexts": [
+        "2. API Group and Immutability\nBelongs to the batch/v1 API group (stable).\nPod template cannot be modified after Job creation.\nImmutable by design for consistency."
+      ],
+      "expected_tools": [
+        "retrieve_documents"
+      ],
+      "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
+      "actual_contexts": [
+        "[Source: cronjobs.docx | Section: What Are Jobs?]",
+        "[Source: monitor_job.docx | Section: Using Labels for Job Organization]",
+        "[Source: monitor_job.docx | Section: Understanding Kubernetes Jobs]",
+        "[Source: monitor_job.docx | Section: Checking Job Status with kubectl]",
+        "[Source: monitor_job.docx | Section: Introduction]"
+      ],
+      "actual_tools_called": [
+        "unknown"
+      ],
+      "expected_source": "cronjobs.docx",
+      "expected_section": "2. API Group and Immutability",
+      "latency_s": 0.36,
+      "is_infra_error": true,
+      "is_refusal": false
+    },
+    {
+      "id": 13,
+      "domain": "monitor_job",
+      "question": "How do you start a local Kubernetes cluster using Minikube?",
+      "reference": "Run minikube start --driver=docker. This creates a single-node Kubernetes cluster on your local machine using Docker. After it completes, kubectl is automatically configured to use the minikube cluster and default namespace.",
+      "relevant_contexts": [
+        "Start Minikube to create a local Kubernetes cluster:\nminikube start --driver=docker\n\nThis command will take a few minutes to complete. You'll see a series of messages as Minikube downloads necessary components and starts the cluster.\n\nOnce complete, you should see a message like:\n\ud83c\udfc4  Done! kubectl is now configured to use \"minikube\" cluster and \"default\" namespace by default"
+      ],
+      "expected_tools": [
+        "retrieve_documents"
+      ],
+      "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
+      "actual_contexts": [
+        "[Source: monitor_job.docx | Section: Starting Minikube]",
+        "[Source: monitor_job.docx | Section: Setting Up Your Kubernetes Environment]",
+        "[Source: monitor_job.docx | Section: Verifying Kubernetes Installation]",
+        "[Source: monitor_job.docx | Section: Summary]",
+        "[Source: parallel_work_queue.txt | Section: BEFORE YOU BEGIN]"
+      ],
+      "actual_tools_called": [
+        "unknown"
+      ],
+      "expected_source": "monitor_job.docx",
+      "expected_section": "Starting Minikube",
+      "latency_s": 1.02,
+      "is_infra_error": true,
+      "is_refusal": false
+    },
+    {
+      "id": 14,
+      "domain": "monitor_job",
+      "question": "What kubectl command checks the status of a running Kubernetes Job?",
+      "reference": "Use kubectl get jobs to see the COMPLETIONS, DURATION, and AGE of all jobs. For more details on a specific job, use kubectl describe jobs/<job-name>. To view logs from a completed pod, use kubectl logs pods/<pod-name>.",
+      "relevant_contexts": [
+        "The primary tool for monitoring Kubernetes resources is kubectl. Let's use it to check the status of our job:\nkubectl get jobs\n\nYou should see output similar to this:\nNAME        COMPLETIONS   DURATION   AGE\nhello-job   1/1           10s        30s\n\nFor more detailed information:\nkubectl describe jobs/hello-job"
+      ],
+      "expected_tools": [
+        "retrieve_documents"
+      ],
+      "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
+      "actual_contexts": [
+        "[Source: monitor_job.docx | Section: Verifying Kubernetes Installation]",
+        "[Source: monitor_job.docx | Section: Checking Job Status with kubectl]",
+        "[Source: monitor_job.docx | Section: Using JSONPath for Custom Output]",
+        "[Source: monitor_job.docx | Section: Monitoring Kubernetes Job Status]",
+        "[Source: cronjobs.docx | Section: 1. Job Stuck in Pending State]"
+      ],
+      "actual_tools_called": [
+        "unknown"
+      ],
+      "expected_source": "monitor_job.docx",
+      "expected_section": "Checking Job Status with kubectl",
+      "latency_s": 0.93,
+      "is_infra_error": true,
+      "is_refusal": false
+    },
+    {
+      "id": 15,
+      "domain": "monitor_job",
+      "question": "How do you verify that the core Kubernetes components are running after starting Minikube?",
+      "reference": "Run kubectl get pods -n kube-system. This lists all pods in the kube-system namespace, which includes critical components like kube-apiserver, kube-controller-manager, and others. All listed pods should show a Running status.",
+      "relevant_contexts": [
+        "Check that the core Kubernetes components are running:\nkubectl get pods -n kube-system\n\nYou should see several pods running, including components like kube-apiserver, kube-controller-manager, and others."
+      ],
+      "expected_tools": [
+        "retrieve_documents"
+      ],
+      "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
+      "actual_contexts": [
+        "[Source: monitor_job.docx | Section: Verifying Kubernetes Installation]",
+        "[Source: monitor_job.docx | Section: Starting Minikube]"
+      ],
+      "actual_tools_called": [
+        "unknown"
+      ],
+      "expected_source": "monitor_job.docx",
+      "expected_section": "Verifying Kubernetes Installation",
+      "latency_s": 1.09,
+      "is_infra_error": true,
+      "is_refusal": false
+    }
+  ]
+}

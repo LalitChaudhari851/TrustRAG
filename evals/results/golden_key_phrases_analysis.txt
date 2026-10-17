@@ -1,0 +1,99 @@
+================================================================================
+TASK 2: GOLDEN KEY PHRASES ANALYSIS FOR Q3, Q10, Q15
+================================================================================
+
+--- Golden Query Q3 ---
+Question: "How do you fill the Redis work queue with tasks using the CLI?"
+Expected Source:  parallel_work_queue.txt
+Expected Section: STEP 2: FILLING THE QUEUE WITH TASKS
+Current Key Phrase in Code: "rpush job2"
+Reference Answer: "Start a temporary interactive pod with kubectl run -i --tty temp --image redis --command "/bin/sh", connect to Redis using redis-cli -h redis, then push tasks using rpush job2 followed by the task name (e.g. rpush job2 "apple"). Use lrange job2 0 -1 to verify the queue contents."
+Occurrences of "rpush job2" across ALL 199 true chunks in Qdrant: 1
+Inspecting real chunks from expected source 'parallel_work_queue.txt':
+  Chunk 1 [parallel_work_queue.txt -> STEP 2: FILLING THE QUEUE WITH TASKS]:
+    Preview (200 chars): 'Start a temporary interactive pod for running the Redis CLI:\n\n    kubectl run -i --tty temp --image redis --command "/bin/sh"\n\nOnce the prompt appears, connect to Redis and fill the queue (named "job2'
+  Chunk 2 [parallel_work_queue.txt -> ALTERNATIVES]:
+    Preview (200 chars): 'If you have a continuous stream of background processing work to run, consider \nrunning your background workers with a ReplicaSet instead.\n\nConsider using a background processing library such as Resqu'
+  Chunk 3 [parallel_work_queue.txt -> Inside the redis prompt:]:
+    Preview (200 chars): 'rpush job2 "apple"\n    rpush job2 "banana"\n    rpush job2 "cherry"\n    rpush job2 "date"\n    rpush job2 "fig"\n    rpush job2 "grape"\n    rpush job2 "lemon"\n    rpush job2 "melon"\n    rpush job2 "orang'
+  Chunk 4 [parallel_work_queue.txt -> host = os.getenv("REDIS_SERVICE_HOST")]:
+    Preview (200 chars): 'q = rediswq.RedisWQ(name="job2", host=host)\n    print("Worker with sessionID: " +  q.sessionID())\n    print("Initial queue state: empty=" + str(q.empty()))\n    while not q.empty():\n      item = q.leas'
+  Chunk 5 [parallel_work_queue.txt -> FINE PARALLEL PROCESSING USING A WORK QUEUE]:
+    Preview (200 chars): 'In this example, you will run a Kubernetes Job that runs multiple parallel\ntasks as worker processes, each running as a separate Pod.\n\nIn this example, as each pod is created, it picks up one unit of '
+
+  [ANALYSIS & PROPOSAL FOR Q3]:
+  Question asks: 'How do you fill the Redis work queue with tasks using the CLI?'
+    Potential Match [STEP 2: FILLING THE QUEUE WITH TASKS]: 'Start a temporary interactive pod for running the Redis CLI:\n\n    kubectl run -i --tty temp --image redis --command "/bin/sh"\n\nOnce the prompt appears, connect to Redis and fill the queue (named "job2"):\n\n    redis-cli -h redis'
+    Potential Match [host = os.getenv("REDIS_SERVICE_HOST")]: 'q = rediswq.RedisWQ(name="job2", host=host)\n    print("Worker with sessionID: " +  q.sessionID())\n    print("Initial queue state: empty=" + str(q.empty()))\n    while not q.empty():\n      item = q.lease(lease_secs=10, block=True, timeout=2) \n      if item is not None:\n        itemstr = item.decode("u'
+    Potential Match [FINE PARALLEL PROCESSING USING A WORK QUEUE]: 'In this example, you will run a Kubernetes Job that runs multiple parallel\ntasks as worker processes, each running as a separate Pod.\n\nIn this example, as each pod is created, it picks up one unit of work\nfrom a task queue, processes it, and repeats until the end of the queue is reached.'
+    Potential Match [STEP 1: STARTING REDIS]: 'For this example, you will start a single instance of Redis.\n\nRun the following commands:\n\n    kubectl apply -f https://k8s.io/examples/application/job/redis/redis-pod.yaml\n    kubectl apply -f https://k8s.io/examples/application/job/redis/redis-service.yaml'
+    Potential Match [STEP 3: CREATE A CONTAINER IMAGE]: 'You need a Python worker program to read from the queue.\n\nHere is the worker script (worker.py):\n\n    #!/usr/bin/env python\n    import time\n    import rediswq\n\n    host="redis"'
+    Potential Match [BEFORE YOU BEGIN]: 'You need to have a Kubernetes cluster, and the kubectl command-line tool must\nbe configured.\n\nYou will need a container image registry (like Docker Hub) where you can upload \nimages to run in your cluster.\n\nDocumentation Link: https://kubernetes.io/docs/tasks/job/fine-parallel-processing-work-queue/'
+    Potential Match [STEP 4: DEFINING A JOB]: 'Here is the manifest for the Job (job.yaml). \nNote: Replace "gcr.io/myproject" with your image registry path.\n\n    apiVersion: batch/v1\n    kind: Job\n    metadata:\n      name: job-wq-2\n    spec:\n      parallelism: 2\n      template:\n        metadata:\n          name: job-wq-2\n        spec:\n          c'
+    Potential Match [OVERVIEW OF STEPS]: '1. Start a storage service to hold the work queue. (We will use Redis).\n2. Create a queue, and fill it with messages.\n3. Start a Job that works on tasks from the queue.'
+
+--- Golden Query Q10 ---
+Question: "What are the valid restart policy values for a Kubernetes Job pod?"
+Expected Source:  cronjobs.docx
+Expected Section: 1. Restart Policy Requirements
+Current Key Phrase in Code: "2023-05-10"
+Reference Answer: "A Kubernetes Job supports two valid restart policies: OnFailure (the kubelet restarts the container within the same pod if it crashes) and Never (the pod is marked as failed and the Job controller creates a new pod). The Always policy is not allowed because it would prevent pods from ever completing."
+Occurrences of "2023-05-10" across ALL 199 true chunks in Qdrant: 0
+Inspecting real chunks from expected source 'cronjobs.docx':
+  Chunk 1 [cronjobs.docx -> Completions]:
+    Preview (200 chars): 'Specifies the number of Pods that must successfully complete:\nspec:\ncompletions: 5  # Job completes after 5 successful Pod completions'
+  Chunk 2 [cronjobs.docx -> 1. Principle of Least Privilege]:
+    Preview (200 chars): 'Security Pyramid\nRBAC Configuration:\napiVersion: rbac.authorization.k8s.io/v1\nkind: Role\nmetadata:\nnamespace: batch-jobs\nname: job-runner\nrules:\n- apiGroups: [""]\nresources: ["secrets", "configmaps"]\n'
+  Chunk 3 [cronjobs.docx -> 3. Graceful Shutdown Handling]:
+    Preview (200 chars): 'import signal\nimport sys\nimport time\nclass GracefulJobRunner:\ndef __init__(self):\nself.shutdown_requested = False\nsignal.signal(signal.SIGTERM, self.signal_handler)\nsignal.signal(signal.SIGINT, self.s'
+  Chunk 4 [cronjobs.docx -> 1. Data Processing Pipeline]:
+    Preview (200 chars): 'Scenario: Daily ETL job processing customer data\napiVersion: batch/v1\nkind: CronJob\nmetadata:\nname: etl-customer-data\nspec:\nschedule: "0 1 * * *"  # Daily at 1 AM\njobTemplate:\nspec:\ntemplate:\nspec:\nco'
+  Chunk 5 [cronjobs.docx -> 1. Restart Policy Requirements]:
+    Preview (200 chars): 'Jobs have strict requirements for Pod restart policies:\nOnFailure: Kubelet restarts the container within the same Pod if it crashes.\nNever: Entire Pod is marked as failed, Job controller creates a new'
+
+  [ANALYSIS & PROPOSAL FOR Q10]:
+  Question asks: 'What are the valid restart policy values for a Kubernetes Job pod?'
+  '2023-05-10' appears in 0 chunks and is a clear copy-paste date bug.
+    Target restart chunk [1. Data Processing Pipeline]: 'Scenario: Daily ETL job processing customer data\napiVersion: batch/v1\nkind: CronJob\nmetadata:\nname: etl-customer-data\nspec:\nschedule: "0 1 * * *"  # Daily at 1 AM\njobTemplate:\nspec:\ntemplate:\nspec:\ncontainers:\n- name: etl-processor\nimage: my-company/etl-tool:v2.1.0\ncommand: ["python", "etl_pipeline.'
+    Target restart chunk [1. Restart Policy Requirements]: 'Jobs have strict requirements for Pod restart policies:\nOnFailure: Kubelet restarts the container within the same Pod if it crashes.\nNever: Entire Pod is marked as failed, Job controller creates a new Pod.\nAlways: Not allowed (would prevent Pod from ever completing).'
+    Target restart chunk [2. Machine Learning Workflows]: '# MLOps pipeline with Kubernetes Jobs\napiVersion: argoproj.io/v1alpha1\nkind: Workflow\nmetadata:\nname: ml-training-pipeline\nspec:\nentrypoint: ml-pipeline\ntemplates:\n- name: ml-pipeline\ndag:\ntasks:\n- name: data-preparation\ntemplate: data-prep-job\n- name: model-training\ntemplate: training-job\ndepends: '
+    Target restart chunk [2. Job Testing Framework]: 'result = subprocess.run(status_cmd, shell=True, capture_output=True, text=True)\nself.assertEqual(result.stdout.strip(), "1")\ndef test_cronjob_schedule_validation(self):\ninvalid_schedules = [\n"60 * * * *",  # Invalid minute\n"* 25 * * *",  # Invalid hour\n"* * 32 * *",  # Invalid day\n"* * * 13 *",  # I'
+    Target restart chunk [1. Resource-Based Cost Analysis]: 'Cost Breakdown Dashboard\n# Cost-optimized job configuration\napiVersion: batch/v1\nkind: Job\nmetadata:\nname: cost-optimized-job\nlabels:\ncost-center: "data-processing"\nenvironment: "production"\nspec:\ntemplate:\nspec:\n# Use spot instances when possible\nnodeSelector:\nnode-type: "spot"\ntolerations:\n- key: '
+    Target restart chunk [2. Database Maintenance]: 'Scenario: Weekly database cleanup and optimization\napiVersion: batch/v1\nkind: CronJob\nmetadata:\nname: db-maintenance\nspec:\nschedule: "0 3 * * 0"  # Sundays at 3 AM\njobTemplate:\nspec:\ntemplate:\nspec:\ncontainers:\n- name: db-maintenance\nimage: postgres:13-alpine\ncommand:\n- sh\n- -c\n- |\n# Cleanup old log'
+    Target restart chunk [2. Schedule Optimization for Cost Savings]: '# Run during off-peak hours for cost savings\napiVersion: batch/v1\nkind: CronJob\nmetadata:\nname: cost-effective-processing\nspec:\n# Run during off-peak hours (2-4 AM)\nschedule: "0 2 * * *"\ntimeZone: "UTC"\njobTemplate:\nspec:\ntemplate:\nspec:\n# Prefer preemptible/spot instances\naffinity:\nnodeAffinity:\npr'
+    Target restart chunk [1. Event-Driven Jobs with KEDA]: 'Event-Driven Architecture with KEDA\n# KEDA ScaledJob for event-driven processing\napiVersion: keda.sh/v1alpha1\nkind: ScaledJob\nmetadata:\nname: queue-processor\nspec:\njobTargetRef:\ntemplate:\nspec:\ntemplate:\nspec:\ncontainers:\n- name: queue-processor\nimage: my-app/queue-processor:latest\ncommand: ["./proc'
+    Target restart chunk [3. Integration Testing with Helm]: '# tests/job-test.yaml\napiVersion: v1\nkind: Pod\nmetadata:\nname: job-integration-test\nannotations:\n"helm.sh/hook": test\n"helm.sh/hook-weight": "1"\n"helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded\nspec:\nrestartPolicy: Never\ncontainers:\n- name: test-runner\nimage: alpine/k8s:1.24.0\ncomma'
+    Target restart chunk [3. Data Retention Policies]: 'json.dump(audit_entry, f)\nvolumeMounts:\n- name: audit-storage\nmountPath: /audit\nvolumes:\n- name: audit-storage\npersistentVolumeClaim:\nclaimName: audit-logs-pvc\nrestartPolicy: OnFailure'
+    Target restart chunk [Creating Your First Job]: 'Here’s a basic Job manifest example:\napiVersion: batch/v1\nkind: Job\nmetadata:\nname: data-processor\nnamespace: batch-jobs\nspec:\ntemplate:\nspec:\ncontainers:\n- name: processor\nimage: mcr.microsoft.com/powershell:7.2-alpine-3.13\ncommand:\n- pwsh\n- -Command\n- |\nWrite-Host "Starting data processing at $(Ge'
+    Target restart chunk [1. Job State Backup]: 'volumeMounts:\n- name: backup-storage\nmountPath: /backup\nenv:\n- name: AWS_DEFAULT_REGION\nvalue: "us-west-2"\nenvFrom:\n- secretRef:\nname: aws-credentials\nvolumes:\n- name: backup-storage\nemptyDir: {}\nrestartPolicy: OnFailure\nsuccessfulJobsHistoryLimit: 7\nfailedJobsHistoryLimit: 3'
+    Target restart chunk [3. Serverless Job Execution]: '# Virtual Kubelet for serverless job execution\napiVersion: batch/v1\nkind: Job\nmetadata:\nname: serverless-processing\nspec:\ntemplate:\nspec:\n# Use virtual kubelet for serverless execution\nnodeSelector:\ntype: virtual-kubelet\nkubernetes.io/hostname: virtual-kubelet-azure-aci\n# Serverless-optimized tolera'
+    Target restart chunk [1. Audit Logging]: 'else\necho "$(date -Iseconds) [AUDIT] ERROR: Compliance report generation failed"\nexit 1\nfi\n# Security context for compliance\nsecurityContext:\nrunAsNonRoot: true\nrunAsUser: 1001\nallowPrivilegeEscalation: false\nreadOnlyRootFilesystem: true\ncapabilities:\ndrop:\n- ALL\n# Resource limits for predictable be'
+    Target restart chunk [3. Machine Learning Model Training]: 'Scenario: Periodic model retraining with new data\napiVersion: batch/v1\nkind: CronJob\nmetadata:\nname: ml-model-training\nspec:\nschedule: "0 4 * * 1"  # Mondays at 4 AM\njobTemplate:\nspec:\ntemplate:\nspec:\ncontainers:\n- name: model-trainer\nimage: tensorflow/tensorflow:2.8.0-gpu\ncommand: ["python", "train'
+    Target restart chunk [Schedule Configuration]: 'timeZone: "America/New_York"\njobTemplate:\nmetadata:\nlabels:\napp: db-backup\ntype: maintenance\nspec:\ntemplate:\nmetadata:\nlabels:\napp: db-backup\ntype: maintenance\nspec:\ncontainers:\n- name: backup-tool\nimage: postgres:13-alpine\ncommand:\n- sh\n- -c\n- |\npg_dump -h $DB_HOST -U $DB_USER -d $DB_NAME > /backup'
+
+--- Golden Query Q15 ---
+Question: "How do you verify that the core Kubernetes components are running after starting Minikube?"
+Expected Source:  monitor_job.docx
+Expected Section: Verifying Kubernetes Installation
+Current Key Phrase in Code: "kubectl cluster-info"
+Reference Answer: "Run kubectl get pods -n kube-system. This lists all pods in the kube-system namespace, which includes critical components like kube-apiserver, kube-controller-manager, and others. All listed pods should show a Running status."
+Occurrences of "kubectl cluster-info" across ALL 199 true chunks in Qdrant: 0
+Inspecting real chunks from expected source 'monitor_job.docx':
+  Chunk 1 [monitor_job.docx -> Using JSONPath for Custom Output]:
+    Preview (200 chars): 'Kubernetes allows you to use JSONPath to extract specific fields from the output of kubectl commands. This is useful for focusing on particular aspects of your jobs:\nkubectl get job labeled-job -o jso'
+  Chunk 2 [monitor_job.docx -> Monitoring Job Events]:
+    Preview (200 chars): "Kubernetes generates events for various state changes in your jobs. These events can provide valuable information about the lifecycle of your jobs.\nLet's view the events related to our jobs:\nkubectl g"
+  Chunk 3 [monitor_job.docx -> Creating the Job]:
+    Preview (200 chars): "Now let's create the job in our Kubernetes cluster:\nkubectl apply -f hello-job.yaml\nYou should see the output:\njob.batch/hello-job created\nCongratulations! You've just created your first Kubernetes jo"
+  Chunk 4 [monitor_job.docx -> Cleaning Up]:
+    Preview (200 chars): "Before we finish, let's clean up the resources we created:\nkubectl delete job hello-job long-job failed-job counter-job labeled-job\nkubectl delete cronjob simple-cronjob\nThis will remove all the jobs "
+  Chunk 5 [monitor_job.docx -> Viewing Logs of Completed Jobs]:
+    Preview (200 chars): "One of the advantages of Kubernetes jobs is that you can view the logs even after the job has completed. This is very useful for debugging and auditing purposes.\nLet's create a job that will fail, so "
+
+  [ANALYSIS & PROPOSAL FOR Q15]:
+  Question asks: 'How do you verify that the core Kubernetes components are running after starting Minikube?'
+    Target verification chunk [Starting Minikube]: "Now let's start Minikube to create a local Kubernetes cluster:\nminikube start --driver=docker\nThis command will take a few minutes to complete. You'll see a series of messages as Minikube downloads necessary components and starts the cluster.\nOnce complete, you should see a message like:\n🏄  Done! ku"
+    Target verification chunk [Summary]: 'In this tutorial, you have learned how to effectively monitor Kubernetes jobs and analyze their logs. You now know how to:\nSet up a Kubernetes environment using Minikube\nCreate Kubernetes jobs with various configurations\nMonitor job status using kubectl get and kubectl describe\nAccess and analyze jo'
+    Target verification chunk [Verifying Kubernetes Installation]: "Let's verify that our Kubernetes cluster is running correctly by checking the node status:\nkubectl get nodes\nYou should see output similar to this:\nNAME       STATUS   ROLES           AGE     VERSION\nminikube   Ready    control-plane   1m      v1.26.3\nAlso, check that the core Kubernetes components "
+    Target verification chunk [Setting Up Your Kubernetes Environment]: "Before we can monitor Kubernetes jobs, we need to set up a working Kubernetes environment. We'll use Minikube, a tool that creates a single-node Kubernetes cluster on your local machine."
+    Target verification chunk [Installing Minikube]: "Minikube is typically pre-installed on many lab environments. Let's verify the installation by checking the version:\nminikube version\nYou should see output similar to this:\nminikube version: v1.29.0\ncommit: ddac20b4b34a9c8c857fc602203b6ba2679794d3"

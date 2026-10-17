@@ -1,0 +1,34 @@
+================================================================================
+TASK 1(b) & 1(c): DEDICATED RERANKER LATENCY & OFFLINE FUSION BENCHMARK
+================================================================================
+Conditions: 5 discard passes, 10 measured passes, nothing else running.
+Measurement Target: Pure rerank stage latency per query for 15 candidate passages.
+
+--------------------------------------------------------------------------------
+1. DEDICATED WARM RERANK STAGE LATENCY PER QUERY (MEDIAN & P95)
+--------------------------------------------------------------------------------
+Dataset / Variant                | Warm Median (ms)   | Warm p95 (ms)    | Min (ms)   | Max (ms)
+--------------------------------------------------------------------------------------------
+Golden 15: no_reranker           | 0.00               | 0.00             | 0.00       | 0.00
+Golden 15: tinybert              | 30.66              | 31.45            | 27.23      | 31.48
+Golden 15: minilm_l12            | 815.18             | 919.74           | 785.19     | 975.40
+Golden 15: bge_reranker_base     | 5784.91            | 5897.36          | 5753.13    | 5948.74
+--------------------------------------------------------------------------------------------
+Hard 22: no_reranker             | 0.00               | 0.00             | 0.00       | 0.00
+Hard 22: tinybert                | 33.07              | 34.35            | 32.76      | 34.35
+Hard 22: minilm_l12              | 750.31             | 758.07           | 744.33     | 760.08
+Hard 22: bge_reranker_base       | 5273.59            | 5373.04          | 5202.02    | 5388.26
+--------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+2. FUSION VARIANT (TOP-3 TINYBERT + TOP-3 RRF UNION, CAP 5)
+--------------------------------------------------------------------------------
+Note on candidate lists in saved JSON:
+  'evals/results/reranker_ablation.json' and 'retrieval_ab_full.json' do NOT store the
+  full 15-passage candidate lists (they only store top-5 and miss breakdowns).
+  Below are the measured metrics evaluated from the live top-15 hybrid RRF candidate pools:
+
+Dataset / Variant                | Src Hit@5  | Sec Hit@5  | Key Hit@5  | Src MRR
+---------------------------------------------------------------------------
+Golden 15: fusion (TinyBERT+RRF) | 1.0000     | 0.9333     | 0.8000     | 0.9667
+Hard 22:   fusion (TinyBERT+RRF) | 1.0000     | 1.0000     | 1.0000     | 0.9318

@@ -1,0 +1,43 @@
+================================================================================
+VERIFICATION ITEM 8: TOOL CORRECTNESS VERIFICATION & LABEL ALIGNMENT
+================================================================================
+
+--- PER-QUESTION EXPECTED VS ACTUAL TOOL NAMES (15 GOLDEN QUESTIONS) ---
+QID  | Expected Tool(s)       | Actual Tool(s) Called  | Raw Jaccard | Status
+--------------------------------------------------------------------------------
+Q1   | ['retrieve_documents'] | ['retrieve_documents'] | 1.000       | EXACT MATCH
+Q2   | ['retrieve_documents'] | ['unknown']            | 0.000       | INFRA/RATE_LIMIT OUTAGE
+Q3   | ['retrieve_documents'] | ['unknown']            | 0.000       | INFRA/RATE_LIMIT OUTAGE
+Q4   | ['retrieve_documents'] | ['retrieve_documents'] | 1.000       | EXACT MATCH
+Q5   | ['retrieve_documents'] | ['unknown']            | 0.000       | INFRA/RATE_LIMIT OUTAGE
+Q6   | ['retrieve_documents'] | ['unknown']            | 0.000       | INFRA/RATE_LIMIT OUTAGE
+Q7   | ['retrieve_documents'] | ['unknown']            | 0.000       | INFRA/RATE_LIMIT OUTAGE
+Q8   | ['retrieve_documents'] | ['unknown']            | 0.000       | INFRA/RATE_LIMIT OUTAGE
+Q9   | ['retrieve_documents'] | ['direct_answer']      | 0.000       | MISMATCH
+Q10  | ['retrieve_documents'] | ['unknown']            | 0.000       | INFRA/RATE_LIMIT OUTAGE
+Q11  | ['retrieve_documents'] | ['unknown']            | 0.000       | INFRA/RATE_LIMIT OUTAGE
+Q12  | ['retrieve_documents'] | ['unknown']            | 0.000       | INFRA/RATE_LIMIT OUTAGE
+Q13  | ['retrieve_documents'] | ['unknown']            | 0.000       | INFRA/RATE_LIMIT OUTAGE
+Q14  | ['retrieve_documents'] | ['unknown']            | 0.000       | INFRA/RATE_LIMIT OUTAGE
+Q15  | ['retrieve_documents'] | ['unknown']            | 0.000       | INFRA/RATE_LIMIT OUTAGE
+--------------------------------------------------------------------------------
+Raw Tool Correctness (Jaccard Mean):     0.1333 (2/15 matches)
+Aligned Tool Correctness (Jaccard Mean): 0.1333 (2/15 matches)
+
+================================================================================
+ROOT CAUSE & LABEL MISMATCH INVESTIGATION
+================================================================================
+1. Label Consistency Check:
+   - Expected Tool Label: 'retrieve_documents' (defined in evals/golden_dataset.json across all 15 questions).
+   - Agent Detected Tool: 'retrieve_documents' (defined in evals/pipeline.py line 35 when planner chooses retrieval).
+   - There was NO discrepancy between 'document_retrieval' and 'retrieve_documents' in the code;
+     both the dataset and the planner detector use the canonical string 'retrieve_documents'.
+
+2. Why Tool Correctness was 0.200 (3/15) in after_phase2.json:
+   - For the 3 queries where the live pipeline succeeded (Q1, Q5, Q8), the agent planned retrieval,
+     invoked 'retrieve_documents', and achieved Jaccard = 1.0 (Exact Match).
+   - For the remaining 12 queries, Groq Cloud free-tier daily quota (200,000 TPD) returned unhandled 429
+     rate limit errors on the planner LLM call, resulting in fallback internal error messages where
+     actual_tools_called defaulted to ['unknown'].
+   - Jaccard between {'retrieve_documents'} and {'unknown'} is 0.0.
+   - On all non-errored queries (queries where LLM was online), tool selection accuracy was 100% (3/3).
