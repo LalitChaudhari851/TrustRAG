@@ -105,13 +105,18 @@ def _clean_user_message(content: str) -> str:
 
 def guard(message: str) -> tuple[bool, str | None]:
     """
-    Run a user message through the NeMo rails gate.
+    Run a user message through the guardrails gate.
+    Routes to single_call or NeMo according to settings.GUARD_MODE.
 
     Returns:
         (True,  rail_response) — a rail fired or infra error; return this response immediately,
                                 skip the RAG pipeline entirely (Fail Closed).
         (False, None)          — message is clean; proceed to LangGraph.
     """
+    if getattr(settings, "GUARD_MODE", "nemo").lower() == "single_call":
+        from app.guardrails.single_call import guard_single_call
+        return guard_single_call(message)
+
     if _rails is None:
         logfire.warning("⚠️ Guardrails not initialised — failing closed for safety.")
         return True, INFRA_UNAVAILABLE_MESSAGE

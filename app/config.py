@@ -22,6 +22,7 @@ class Settings:
     GROQ_API_KEY = os.getenv("GROQ_API_KEY")
     GROQ_MODEL = os.getenv("GROQ_MODEL", "qwen/qwen3.8-27b")
     GUARDRAIL_MODEL = os.getenv("GUARDRAIL_MODEL", "llama-3.1-8b-instant")
+    GUARD_MODE = os.getenv("GUARD_MODE", "nemo").lower()  # nemo | single_call
     GROQ_FALLBACK_API_KEY = os.getenv("GROQ_FALLBACK_API_KEY")
 
 
