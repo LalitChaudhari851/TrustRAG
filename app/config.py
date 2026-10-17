@@ -11,12 +11,19 @@ class Settings:
     # --- VECTOR DB (QDRANT) ---
     QDRANT_URL = os.getenv("QDRANT_CLUSTER_ENDPOINT")
     QDRANT_API_KEY = os.getenv("QDRANT_API_KEY")
-    QDRANT_COLLECTION = "enterprise_rag"
+    QDRANT_COLLECTION = os.getenv("QDRANT_COLLECTION", "enterprise_rag_v2")
+    DENSE_EMBEDDING_MODEL = os.getenv("DENSE_EMBEDDING_MODEL", "all-mpnet-base-v2")
+    HYBRID_SEARCH = os.getenv("HYBRID_SEARCH", "true").lower() == "true"
+    RERANKER_MIN_SCORE = float(os.getenv("RERANKER_MIN_SCORE", "0.08"))
+    RERANKER_RELATIVE_MARGIN = float(os.getenv("RERANKER_RELATIVE_MARGIN", "0.20"))
+    PROJECT_UUID_NAMESPACE = os.getenv("PROJECT_UUID_NAMESPACE", "e38b3687-9418-4b7d-b6a4-22b6478d1326")
 
     # --- REASONING ENGINE (GROQ) ---
     GROQ_API_KEY = os.getenv("GROQ_API_KEY")
     GROQ_MODEL = os.getenv("GROQ_MODEL", "qwen/qwen3.8-27b")
+    GUARDRAIL_MODEL = os.getenv("GUARDRAIL_MODEL", "llama-3.1-8b-instant")
     GROQ_FALLBACK_API_KEY = os.getenv("GROQ_FALLBACK_API_KEY")
+
 
     # --- LLM GATEWAY (PORTKEY) ---
     PORTKEY_API_KEY = os.getenv("PORTKEY_API_KEY")

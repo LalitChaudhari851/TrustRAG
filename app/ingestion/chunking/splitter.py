@@ -1,30 +1,169 @@
-from typing import List
+from typing import List, Dict, Any, Optional
 import logfire
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from transformers import AutoTokenizer
 
-def chunk_text(text: str, chunk_size: int = 1500) -> List[str]:
+_tokenizer: Optional[AutoTokenizer] = None
+
+def get_tokenizer() -> AutoTokenizer:
+    global _tokenizer
+    if _tokenizer is None:
+        _tokenizer = AutoTokenizer.from_pretrained("sentence-transformers/all-mpnet-base-v2")
+    return _tokenizer
+
+
+def count_tokens(text: str) -> int:
+    tok = get_tokenizer()
+    return len(tok.encode(text, add_special_tokens=True))
+
+
+def chunk_text(text: str, chunk_size: int = 1200, chunk_overlap: int = 200) -> List[str]:
     """
-    Simple semantic-ish chunker that splits by paragraphs.
-    Ensures chunks do not exceed the specified size.
+    Splits text using RecursiveCharacterTextSplitter.
+    Maintained for backwards compatibility.
     """
-    with logfire.span("✂️ Text Chunking", text_length=len(text)):
-        if not text.strip(): 
-            return []
-            
-        paragraphs = text.split("\n\n")
-        chunks = []
-        current_chunk = ""
-        
-        for p in paragraphs:
-            if len(current_chunk) + len(p) < chunk_size:
-                current_chunk += p + "\n\n"
-            else:
-                if current_chunk.strip():
-                    chunks.append(current_chunk.strip())
-                current_chunk = p + "\n\n"
-        
-        if current_chunk.strip():
-            chunks.append(current_chunk.strip())
-            
-        valid_chunks = [c for c in chunks if c.strip()]
-        logfire.info(f"✅ Generated {len(valid_chunks)} chunks")
-        return valid_chunks
+    if not text.strip():
+        return []
+    splitter = RecursiveCharacterTextSplitter(
+        chunk_size=chunk_size,
+        chunk_overlap=chunk_overlap,
+        separators=["\n\n", "\n", " ", ""]
+    )
+    return splitter.split_text(text)
+
+
+def is_low_alpha_chunk(text: str, min_alpha_ratio: float = 0.40) -> bool:
+    if not text or not text.strip():
+        return True
+    alpha_count = sum(1 for c in text if c.isalpha())
+    return (alpha_count / len(text)) < min_alpha_ratio
+
+
+def enforce_token_limits(
+    sub_texts: List[str],
+    max_tokens: int = 384,
+    min_tokens: int = 15
+) -> List[str]:
+    """
+    Enforces token constraints on text chunks:
+    1. Re-splits any chunk exceeding max_tokens (384) into smaller valid pieces.
+    2. Merges chunks under min_tokens (15) into the preceding chunk if capacity allows,
+       or drops them if standalone.
+    """
+    # 1. Expand over-long chunks
+    refined: List[str] = []
+    fine_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=700,
+        chunk_overlap=100,
+        separators=["\n\n", "\n", "; ", " ", ""]
+    )
+
+    for piece in sub_texts:
+        piece = piece.strip()
+        if not piece or is_low_alpha_chunk(piece):
+            continue
+        n_tok = count_tokens(piece)
+        if n_tok <= max_tokens:
+            refined.append(piece)
+        else:
+            # Re-split over-long chunk
+            smaller = fine_splitter.split_text(piece)
+            for sm in smaller:
+                sm = sm.strip()
+                if not sm or is_low_alpha_chunk(sm):
+                    continue
+                if count_tokens(sm) <= max_tokens:
+                    refined.append(sm)
+                else:
+                    # Fallback further if still over 384
+                    ultra_fine = RecursiveCharacterTextSplitter(
+                        chunk_size=400,
+                        chunk_overlap=50,
+                        separators=["\n", " ", ""]
+                    )
+                    for u in ultra_fine.split_text(sm):
+                        u = u.strip()
+                        if u and not is_low_alpha_chunk(u):
+                            refined.append(u)
+
+    # 2. Merge or drop chunks under min_tokens (15)
+    merged: List[str] = []
+    for piece in refined:
+        n_tok = count_tokens(piece)
+        if n_tok < min_tokens:
+            if merged:
+                # Try to merge with preceding chunk if within max_tokens
+                candidate = f"{merged[-1]}\n\n{piece}"
+                if count_tokens(candidate) <= max_tokens:
+                    merged[-1] = candidate
+                    continue
+            # Drop if cannot merge and under 15 tokens
+            continue
+        merged.append(piece)
+
+    return merged
+
+
+def split_units(
+    units: List[Dict[str, Any]],
+    chunk_size: int = 1200,
+    chunk_overlap: int = 200,
+    max_tokens: int = 384,
+    min_tokens: int = 15
+) -> List[Dict[str, Any]]:
+    """
+    Splits each unit (page, slide, or section) separately using RecursiveCharacterTextSplitter,
+    ensuring page, slide, and header metadata remain strictly accurate on every resulting chunk.
+    Enforces token guard:
+      - Max tokens: 384 (all-mpnet-base-v2 context limit)
+      - Min tokens: 15 (merges into preceding chunk or drops low-information fragments)
+      - Drops low-alpha chunks (< 40%)
+    """
+    with logfire.span("✂️ Splitting Document Units", unit_count=len(units)):
+        splitter = RecursiveCharacterTextSplitter(
+            chunk_size=chunk_size,
+            chunk_overlap=chunk_overlap,
+            separators=["\n\n", "\n", " ", ""]
+        )
+        chunks: List[Dict[str, Any]] = []
+        chunk_index = 0
+
+        for unit in units:
+            unit_text = unit.get("text", "").strip()
+            if not unit_text:
+                continue
+
+            raw_sub_texts = splitter.split_text(unit_text)
+            bounded_sub_texts = enforce_token_limits(
+                raw_sub_texts,
+                max_tokens=max_tokens,
+                min_tokens=min_tokens
+            )
+
+            for sub_text in bounded_sub_texts:
+                chunk_dict: Dict[str, Any] = {
+                    "chunk_index": chunk_index,
+                    "text": sub_text.strip()
+                }
+                # Consistent key scheme: 'section' is always present; 'page' and 'slide' are optional
+                if "section" in unit:
+                    chunk_dict["section"] = unit["section"]
+                elif "slide_title" in unit:
+                    chunk_dict["section"] = unit["slide_title"]
+                elif "page" in unit:
+                    chunk_dict["section"] = f"Page {unit['page']}"
+                else:
+                    chunk_dict["section"] = "General"
+
+                if "page" in unit:
+                    chunk_dict["page"] = unit["page"]
+                    if "total_pages" in unit:
+                        chunk_dict["total_pages"] = unit["total_pages"]
+                if "slide" in unit:
+                    chunk_dict["slide"] = unit["slide"]
+
+                chunks.append(chunk_dict)
+                chunk_index += 1
+
+        logfire.info(f"✅ Generated {len(chunks)} bounded chunks from {len(units)} units")
+        return chunks

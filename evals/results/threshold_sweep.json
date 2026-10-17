@@ -1,0 +1,342 @@
+{
+  "script": "scripts/run_controlled_eval.py",
+  "ranker_model": "ms-marco-TinyBERT-L-2-v2",
+  "floors_tested": [
+    0.05,
+    0.12,
+    0.2
+  ],
+  "margins_tested": [
+    0.3,
+    0.4,
+    0.5
+  ],
+  "sweep_grid": [
+    {
+      "floor": 0.05,
+      "margin": 0.3,
+      "golden_false_refusals": 0,
+      "golden_total": 15,
+      "hard_false_refusals": 0,
+      "hard_total": 22,
+      "negatives_refused": 5,
+      "negatives_total": 5,
+      "negative_refusal_rate": 1.0,
+      "status": "RECOMMENDED"
+    },
+    {
+      "floor": 0.05,
+      "margin": 0.4,
+      "golden_false_refusals": 0,
+      "golden_total": 15,
+      "hard_false_refusals": 0,
+      "hard_total": 22,
+      "negatives_refused": 5,
+      "negatives_total": 5,
+      "negative_refusal_rate": 1.0,
+      "status": "RECOMMENDED"
+    },
+    {
+      "floor": 0.05,
+      "margin": 0.5,
+      "golden_false_refusals": 0,
+      "golden_total": 15,
+      "hard_false_refusals": 0,
+      "hard_total": 22,
+      "negatives_refused": 5,
+      "negatives_total": 5,
+      "negative_refusal_rate": 1.0,
+      "status": "RECOMMENDED"
+    },
+    {
+      "floor": 0.12,
+      "margin": 0.3,
+      "golden_false_refusals": 0,
+      "golden_total": 15,
+      "hard_false_refusals": 0,
+      "hard_total": 22,
+      "negatives_refused": 5,
+      "negatives_total": 5,
+      "negative_refusal_rate": 1.0,
+      "status": "RECOMMENDED"
+    },
+    {
+      "floor": 0.12,
+      "margin": 0.4,
+      "golden_false_refusals": 0,
+      "golden_total": 15,
+      "hard_false_refusals": 0,
+      "hard_total": 22,
+      "negatives_refused": 5,
+      "negatives_total": 5,
+      "negative_refusal_rate": 1.0,
+      "status": "RECOMMENDED"
+    },
+    {
+      "floor": 0.12,
+      "margin": 0.5,
+      "golden_false_refusals": 0,
+      "golden_total": 15,
+      "hard_false_refusals": 0,
+      "hard_total": 22,
+      "negatives_refused": 5,
+      "negatives_total": 5,
+      "negative_refusal_rate": 1.0,
+      "status": "RECOMMENDED"
+    },
+    {
+      "floor": 0.2,
+      "margin": 0.3,
+      "golden_false_refusals": 0,
+      "golden_total": 15,
+      "hard_false_refusals": 0,
+      "hard_total": 22,
+      "negatives_refused": 5,
+      "negatives_total": 5,
+      "negative_refusal_rate": 1.0,
+      "status": "RECOMMENDED"
+    },
+    {
+      "floor": 0.2,
+      "margin": 0.4,
+      "golden_false_refusals": 0,
+      "golden_total": 15,
+      "hard_false_refusals": 0,
+      "hard_total": 22,
+      "negatives_refused": 5,
+      "negatives_total": 5,
+      "negative_refusal_rate": 1.0,
+      "status": "RECOMMENDED"
+    },
+    {
+      "floor": 0.2,
+      "margin": 0.5,
+      "golden_false_refusals": 0,
+      "golden_total": 15,
+      "hard_false_refusals": 0,
+      "hard_total": 22,
+      "negatives_refused": 5,
+      "negatives_total": 5,
+      "negative_refusal_rate": 1.0,
+      "status": "RECOMMENDED"
+    }
+  ],
+  "query_top_scores": {
+    "golden_queries": [
+      {
+        "id": 1,
+        "score": 0.9991587400436401,
+        "q": "How do you start Redis for a Kubernetes work queue"
+      },
+      {
+        "id": 2,
+        "score": 0.9970845580101013,
+        "q": "What does the parallelism field do in the Kubernet"
+      },
+      {
+        "id": 3,
+        "score": 0.9994803071022034,
+        "q": "How do you fill the Redis work queue with tasks us"
+      },
+      {
+        "id": 4,
+        "score": 0.9973459243774414,
+        "q": "What is the difference between HPA and VPA in Kube"
+      },
+      {
+        "id": 5,
+        "score": 0.9998742341995239,
+        "q": "How do you install the Metrics Server for Kubernet"
+      },
+      {
+        "id": 6,
+        "score": 0.9993236064910889,
+        "q": "Which kubectl commands confirm that the Metrics Se"
+      },
+      {
+        "id": 7,
+        "score": 0.998970627784729,
+        "q": "What Databricks CLI command retrieves the details "
+      },
+      {
+        "id": 8,
+        "score": 0.999386191368103,
+        "q": "When should you use the Databricks REST API instea"
+      },
+      {
+        "id": 9,
+        "score": 0.9996598958969116,
+        "q": "What are the three main developer tools for managi"
+      },
+      {
+        "id": 10,
+        "score": 0.9957147240638733,
+        "q": "What are the valid restart policy values for a Kub"
+      },
+      {
+        "id": 11,
+        "score": 0.9983898401260376,
+        "q": "What are the completions and parallelism fields in"
+      },
+      {
+        "id": 12,
+        "score": 0.9955084323883057,
+        "q": "Which Kubernetes API group does a Job resource bel"
+      },
+      {
+        "id": 13,
+        "score": 0.9999122619628906,
+        "q": "How do you start a local Kubernetes cluster using "
+      },
+      {
+        "id": 14,
+        "score": 0.9996505975723267,
+        "q": "What kubectl command checks the status of a runnin"
+      },
+      {
+        "id": 15,
+        "score": 0.9994872808456421,
+        "q": "How do you verify that the core Kubernetes compone"
+      }
+    ],
+    "hard_queries": [
+      {
+        "id": 1,
+        "score": 0.9986847043037415,
+        "q": "What is the backoffLimit set to in hello-job.yaml "
+      },
+      {
+        "id": 2,
+        "score": 0.9213145971298218,
+        "q": "What ttlSecondsAfterFinished value is configured f"
+      },
+      {
+        "id": 3,
+        "score": 0.9956235289573669,
+        "q": "What happens when a Kubernetes Job specifies compl"
+      },
+      {
+        "id": 4,
+        "score": 0.9843693971633911,
+        "q": "In Kubernetes Jobs, what is the default behavior w"
+      },
+      {
+        "id": 5,
+        "score": 0.5292977094650269,
+        "q": "What concurrencyPolicy setting prevents concurrent"
+      },
+      {
+        "id": 6,
+        "score": 0.9982495903968811,
+        "q": "What activeDeadlineSeconds value is specified as a"
+      },
+      {
+        "id": 7,
+        "score": 0.9976275563240051,
+        "q": "What exact command starts Minikube with the Docker"
+      },
+      {
+        "id": 8,
+        "score": 0.9992208480834961,
+        "q": "What Databricks CLI command prints information abo"
+      },
+      {
+        "id": 9,
+        "score": 0.99935382604599,
+        "q": "What Databricks CLI command creates a job using a "
+      },
+      {
+        "id": 10,
+        "score": 0.9998396635055542,
+        "q": "What CLI command triggers a run for a Databricks j"
+      },
+      {
+        "id": 11,
+        "score": 0.9978417158126831,
+        "q": "What kubectl command displays live CPU consumption"
+      },
+      {
+        "id": 12,
+        "score": 0.9997373223304749,
+        "q": "How do you verify that the Metrics Server pods are"
+      },
+      {
+        "id": 13,
+        "score": 0.9999679327011108,
+        "q": "How do you exclude scaling for a specific containe"
+      },
+      {
+        "id": 14,
+        "score": 0.9769708514213562,
+        "q": "What release manifest URL installs the Vertical Po"
+      },
+      {
+        "id": 15,
+        "score": 0.9992759823799133,
+        "q": "What restartPolicy causes Kubelet to restart a con"
+      },
+      {
+        "id": 16,
+        "score": 0.9999587535858154,
+        "q": "What command starts a temporary interactive pod fo"
+      },
+      {
+        "id": 17,
+        "score": 0.9987640380859375,
+        "q": "What parallelism value is specified in the job-wq-"
+      },
+      {
+        "id": 18,
+        "score": 0.9238367676734924,
+        "q": "What hostname does the worker script connect to fo"
+      },
+      {
+        "id": 19,
+        "score": 0.9997305274009705,
+        "q": "What policy engine in Kubernetes evaluates workloa"
+      },
+      {
+        "id": 20,
+        "score": 0.9994211196899414,
+        "q": "What apiserver field does the Kubelet PodSync daem"
+      },
+      {
+        "id": 21,
+        "score": 0.9983851909637451,
+        "q": "What is the fundamental networking rule regarding "
+      },
+      {
+        "id": 22,
+        "score": 0.9998437166213989,
+        "q": "What flag is used with kubectl logs to follow job "
+      }
+    ],
+    "negative_queries": [
+      {
+        "id": "HN1",
+        "score": 2.8976193789276294e-05,
+        "q": "What is the recommended dosage of amoxicillin for "
+      },
+      {
+        "id": "HN2",
+        "score": 0.0002119217097060755,
+        "q": "How do you implement quicksort in Rust with SIMD A"
+      },
+      {
+        "id": "HN3",
+        "score": 8.586265903431922e-05,
+        "q": "What are the quantum gate fidelity requirements fo"
+      },
+      {
+        "id": "HN4",
+        "score": 1.3733736523136031e-05,
+        "q": "Who was the Roman emperor during the eruption of M"
+      },
+      {
+        "id": "HN5",
+        "score": 1.2875137144874316e-05,
+        "q": "Explain how to bake a sourdough bread starter from"
+      }
+    ]
+  }
+}

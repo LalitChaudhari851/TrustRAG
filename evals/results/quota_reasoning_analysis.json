@@ -1,0 +1,64 @@
+{
+  "timestamp": "2026-10-16 20:10:06",
+  "calls": [
+    {
+      "name": "Planner (Default Qwen)",
+      "model": "qwen/qwen3.8-27b",
+      "latency_ms": 985.0,
+      "prompt_tokens": 45,
+      "completion_tokens": 22,
+      "reasoning_tokens": 0,
+      "total_tokens": 67,
+      "contains_think_tag": false,
+      "extra_body": null
+    },
+    {
+      "name": "Planner (Qwen + reasoning_format='hidden')",
+      "model": "qwen/qwen3.8-27b",
+      "latency_ms": 186.6,
+      "prompt_tokens": 45,
+      "completion_tokens": 22,
+      "reasoning_tokens": 0,
+      "total_tokens": 67,
+      "contains_think_tag": false,
+      "extra_body": {
+        "reasoning_format": "hidden"
+      }
+    },
+    {
+      "name": "Responder (Default Qwen)",
+      "model": "qwen/qwen3.8-27b",
+      "latency_ms": 139.1,
+      "prompt_tokens": 60,
+      "completion_tokens": 35,
+      "reasoning_tokens": 0,
+      "total_tokens": 95,
+      "contains_think_tag": false,
+      "extra_body": null
+    },
+    {
+      "name": "Responder (Qwen + reasoning_format='hidden')",
+      "model": "qwen/qwen3.8-27b",
+      "latency_ms": 202.8,
+      "prompt_tokens": 60,
+      "completion_tokens": 35,
+      "reasoning_tokens": 0,
+      "total_tokens": 95,
+      "contains_think_tag": false,
+      "extra_body": {
+        "reasoning_format": "hidden"
+      }
+    },
+    {
+      "name": "Guard (Default Qwen)",
+      "model": "qwen/qwen3.8-27b",
+      "latency_ms": 208.5,
+      "prompt_tokens": 50,
+      "completion_tokens": 64,
+      "reasoning_tokens": 0,
+      "total_tokens": 114,
+      "contains_think_tag": false,
+      "extra_body": null
+    }
+  ]
+}

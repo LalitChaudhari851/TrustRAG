@@ -1,0 +1,1251 @@
+{
+  "script": "scripts/run_threshold_sweep.py",
+  "timestamp": "2026-10-17 09:45:20",
+  "collection": "enterprise_rag_v2",
+  "ranker_model": "ms-marco-TinyBERT-L-2-v2",
+  "score_distributions": {
+    "golden_15": {
+      "min": 0.9955000281333923,
+      "max": 0.9998999834060669,
+      "mean": 0.9986000061035156,
+      "median": 0.9993000030517578,
+      "p10": 0.9959999918937683,
+      "p90": 0.9998999834060669
+    },
+    "hard_22": {
+      "min": 0.4966999888420105,
+      "max": 1.0,
+      "mean": 0.9679999947547913,
+      "median": 0.9987000226974487,
+      "p10": 0.9366000294685364,
+      "p90": 0.9998000264167786
+    },
+    "negatives_k8s_9": {
+      "min": 9.999999747378752e-05,
+      "max": 0.9994000196456909,
+      "mean": 0.6837999820709229,
+      "median": 0.9603000283241272,
+      "p10": 9.999999747378752e-05,
+      "p90": 0.9994000196456909
+    },
+    "negatives_noisy_9": {
+      "min": 0.07959999889135361,
+      "max": 0.9998999834060669,
+      "mean": 0.8561000227928162,
+      "median": 0.9843999743461609,
+      "p10": 0.07959999889135361,
+      "p90": 0.9998999834060669
+    }
+  },
+  "sweep_grid": [
+    {
+      "floor": 0.05,
+      "margin": 0.2,
+      "positives_count": 37,
+      "false_refusals": 0,
+      "false_refusal_rate": 0.0,
+      "true_acceptance_rate": 1.0,
+      "negatives_count": 18,
+      "true_rejections": 2,
+      "true_rejection_rate": 0.1111,
+      "balanced_score": 0.2,
+      "avg_chunks_passed_when_accepted": 3.43
+    },
+    {
+      "floor": 0.05,
+      "margin": 0.3,
+      "positives_count": 37,
+      "false_refusals": 0,
+      "false_refusal_rate": 0.0,
+      "true_acceptance_rate": 1.0,
+      "negatives_count": 18,
+      "true_rejections": 2,
+      "true_rejection_rate": 0.1111,
+      "balanced_score": 0.2,
+      "avg_chunks_passed_when_accepted": 3.57
+    },
+    {
+      "floor": 0.05,
+      "margin": 0.4,
+      "positives_count": 37,
+      "false_refusals": 0,
+      "false_refusal_rate": 0.0,
+      "true_acceptance_rate": 1.0,
+      "negatives_count": 18,
+      "true_rejections": 2,
+      "true_rejection_rate": 0.1111,
+      "balanced_score": 0.2,
+      "avg_chunks_passed_when_accepted": 3.65
+    },
+    {
+      "floor": 0.05,
+      "margin": 0.5,
+      "positives_count": 37,
+      "false_refusals": 0,
+      "false_refusal_rate": 0.0,
+      "true_acceptance_rate": 1.0,
+      "negatives_count": 18,
+      "true_rejections": 2,
+      "true_rejection_rate": 0.1111,
+      "balanced_score": 0.2,
+      "avg_chunks_passed_when_accepted": 3.73
+    },
+    {
+      "floor": 0.08,
+      "margin": 0.2,
+      "positives_count": 37,
+      "false_refusals": 0,
+      "false_refusal_rate": 0.0,
+      "true_acceptance_rate": 1.0,
+      "negatives_count": 18,
+      "true_rejections": 3,
+      "true_rejection_rate": 0.1667,
+      "balanced_score": 0.2857,
+      "avg_chunks_passed_when_accepted": 3.43
+    },
+    {
+      "floor": 0.08,
+      "margin": 0.3,
+      "positives_count": 37,
+      "false_refusals": 0,
+      "false_refusal_rate": 0.0,
+      "true_acceptance_rate": 1.0,
+      "negatives_count": 18,
+      "true_rejections": 3,
+      "true_rejection_rate": 0.1667,
+      "balanced_score": 0.2857,
+      "avg_chunks_passed_when_accepted": 3.57
+    },
+    {
+      "floor": 0.08,
+      "margin": 0.4,
+      "positives_count": 37,
+      "false_refusals": 0,
+      "false_refusal_rate": 0.0,
+      "true_acceptance_rate": 1.0,
+      "negatives_count": 18,
+      "true_rejections": 3,
+      "true_rejection_rate": 0.1667,
+      "balanced_score": 0.2857,
+      "avg_chunks_passed_when_accepted": 3.65
+    },
+    {
+      "floor": 0.08,
+      "margin": 0.5,
+      "positives_count": 37,
+      "false_refusals": 0,
+      "false_refusal_rate": 0.0,
+      "true_acceptance_rate": 1.0,
+      "negatives_count": 18,
+      "true_rejections": 3,
+      "true_rejection_rate": 0.1667,
+      "balanced_score": 0.2857,
+      "avg_chunks_passed_when_accepted": 3.73
+    },
+    {
+      "floor": 0.1,
+      "margin": 0.2,
+      "positives_count": 37,
+      "false_refusals": 0,
+      "false_refusal_rate": 0.0,
+      "true_acceptance_rate": 1.0,
+      "negatives_count": 18,
+      "true_rejections": 3,
+      "true_rejection_rate": 0.1667,
+      "balanced_score": 0.2857,
+      "avg_chunks_passed_when_accepted": 3.43
+    },
+    {
+      "floor": 0.1,
+      "margin": 0.3,
+      "positives_count": 37,
+      "false_refusals": 0,
+      "false_refusal_rate": 0.0,
+      "true_acceptance_rate": 1.0,
+      "negatives_count": 18,
+      "true_rejections": 3,
+      "true_rejection_rate": 0.1667,
+      "balanced_score": 0.2857,
+      "avg_chunks_passed_when_accepted": 3.57
+    },
+    {
+      "floor": 0.1,
+      "margin": 0.4,
+      "positives_count": 37,
+      "false_refusals": 0,
+      "false_refusal_rate": 0.0,
+      "true_acceptance_rate": 1.0,
+      "negatives_count": 18,
+      "true_rejections": 3,
+      "true_rejection_rate": 0.1667,
+      "balanced_score": 0.2857,
+      "avg_chunks_passed_when_accepted": 3.65
+    },
+    {
+      "floor": 0.1,
+      "margin": 0.5,
+      "positives_count": 37,
+      "false_refusals": 0,
+      "false_refusal_rate": 0.0,
+      "true_acceptance_rate": 1.0,
+      "negatives_count": 18,
+      "true_rejections": 3,
+      "true_rejection_rate": 0.1667,
+      "balanced_score": 0.2857,
+      "avg_chunks_passed_when_accepted": 3.73
+    },
+    {
+      "floor": 0.12,
+      "margin": 0.2,
+      "positives_count": 37,
+      "false_refusals": 0,
+      "false_refusal_rate": 0.0,
+      "true_acceptance_rate": 1.0,
+      "negatives_count": 18,
+      "true_rejections": 3,
+      "true_rejection_rate": 0.1667,
+      "balanced_score": 0.2857,
+      "avg_chunks_passed_when_accepted": 3.43
+    },
+    {
+      "floor": 0.12,
+      "margin": 0.3,
+      "positives_count": 37,
+      "false_refusals": 0,
+      "false_refusal_rate": 0.0,
+      "true_acceptance_rate": 1.0,
+      "negatives_count": 18,
+      "true_rejections": 3,
+      "true_rejection_rate": 0.1667,
+      "balanced_score": 0.2857,
+      "avg_chunks_passed_when_accepted": 3.57
+    },
+    {
+      "floor": 0.12,
+      "margin": 0.4,
+      "positives_count": 37,
+      "false_refusals": 0,
+      "false_refusal_rate": 0.0,
+      "true_acceptance_rate": 1.0,
+      "negatives_count": 18,
+      "true_rejections": 3,
+      "true_rejection_rate": 0.1667,
+      "balanced_score": 0.2857,
+      "avg_chunks_passed_when_accepted": 3.65
+    },
+    {
+      "floor": 0.12,
+      "margin": 0.5,
+      "positives_count": 37,
+      "false_refusals": 0,
+      "false_refusal_rate": 0.0,
+      "true_acceptance_rate": 1.0,
+      "negatives_count": 18,
+      "true_rejections": 3,
+      "true_rejection_rate": 0.1667,
+      "balanced_score": 0.2857,
+      "avg_chunks_passed_when_accepted": 3.73
+    },
+    {
+      "floor": 0.15,
+      "margin": 0.2,
+      "positives_count": 37,
+      "false_refusals": 0,
+      "false_refusal_rate": 0.0,
+      "true_acceptance_rate": 1.0,
+      "negatives_count": 18,
+      "true_rejections": 3,
+      "true_rejection_rate": 0.1667,
+      "balanced_score": 0.2857,
+      "avg_chunks_passed_when_accepted": 3.43
+    },
+    {
+      "floor": 0.15,
+      "margin": 0.3,
+      "positives_count": 37,
+      "false_refusals": 0,
+      "false_refusal_rate": 0.0,
+      "true_acceptance_rate": 1.0,
+      "negatives_count": 18,
+      "true_rejections": 3,
+      "true_rejection_rate": 0.1667,
+      "balanced_score": 0.2857,
+      "avg_chunks_passed_when_accepted": 3.57
+    },
+    {
+      "floor": 0.15,
+      "margin": 0.4,
+      "positives_count": 37,
+      "false_refusals": 0,
+      "false_refusal_rate": 0.0,
+      "true_acceptance_rate": 1.0,
+      "negatives_count": 18,
+      "true_rejections": 3,
+      "true_rejection_rate": 0.1667,
+      "balanced_score": 0.2857,
+      "avg_chunks_passed_when_accepted": 3.65
+    },
+    {
+      "floor": 0.15,
+      "margin": 0.5,
+      "positives_count": 37,
+      "false_refusals": 0,
+      "false_refusal_rate": 0.0,
+      "true_acceptance_rate": 1.0,
+      "negatives_count": 18,
+      "true_rejections": 3,
+      "true_rejection_rate": 0.1667,
+      "balanced_score": 0.2857,
+      "avg_chunks_passed_when_accepted": 3.73
+    },
+    {
+      "floor": 0.2,
+      "margin": 0.2,
+      "positives_count": 37,
+      "false_refusals": 0,
+      "false_refusal_rate": 0.0,
+      "true_acceptance_rate": 1.0,
+      "negatives_count": 18,
+      "true_rejections": 3,
+      "true_rejection_rate": 0.1667,
+      "balanced_score": 0.2857,
+      "avg_chunks_passed_when_accepted": 3.43
+    },
+    {
+      "floor": 0.2,
+      "margin": 0.3,
+      "positives_count": 37,
+      "false_refusals": 0,
+      "false_refusal_rate": 0.0,
+      "true_acceptance_rate": 1.0,
+      "negatives_count": 18,
+      "true_rejections": 3,
+      "true_rejection_rate": 0.1667,
+      "balanced_score": 0.2857,
+      "avg_chunks_passed_when_accepted": 3.57
+    },
+    {
+      "floor": 0.2,
+      "margin": 0.4,
+      "positives_count": 37,
+      "false_refusals": 0,
+      "false_refusal_rate": 0.0,
+      "true_acceptance_rate": 1.0,
+      "negatives_count": 18,
+      "true_rejections": 3,
+      "true_rejection_rate": 0.1667,
+      "balanced_score": 0.2857,
+      "avg_chunks_passed_when_accepted": 3.65
+    },
+    {
+      "floor": 0.2,
+      "margin": 0.5,
+      "positives_count": 37,
+      "false_refusals": 0,
+      "false_refusal_rate": 0.0,
+      "true_acceptance_rate": 1.0,
+      "negatives_count": 18,
+      "true_rejections": 3,
+      "true_rejection_rate": 0.1667,
+      "balanced_score": 0.2857,
+      "avg_chunks_passed_when_accepted": 3.73
+    },
+    {
+      "floor": 0.25,
+      "margin": 0.2,
+      "positives_count": 37,
+      "false_refusals": 0,
+      "false_refusal_rate": 0.0,
+      "true_acceptance_rate": 1.0,
+      "negatives_count": 18,
+      "true_rejections": 3,
+      "true_rejection_rate": 0.1667,
+      "balanced_score": 0.2857,
+      "avg_chunks_passed_when_accepted": 3.43
+    },
+    {
+      "floor": 0.25,
+      "margin": 0.3,
+      "positives_count": 37,
+      "false_refusals": 0,
+      "false_refusal_rate": 0.0,
+      "true_acceptance_rate": 1.0,
+      "negatives_count": 18,
+      "true_rejections": 3,
+      "true_rejection_rate": 0.1667,
+      "balanced_score": 0.2857,
+      "avg_chunks_passed_when_accepted": 3.57
+    },
+    {
+      "floor": 0.25,
+      "margin": 0.4,
+      "positives_count": 37,
+      "false_refusals": 0,
+      "false_refusal_rate": 0.0,
+      "true_acceptance_rate": 1.0,
+      "negatives_count": 18,
+      "true_rejections": 3,
+      "true_rejection_rate": 0.1667,
+      "balanced_score": 0.2857,
+      "avg_chunks_passed_when_accepted": 3.65
+    },
+    {
+      "floor": 0.25,
+      "margin": 0.5,
+      "positives_count": 37,
+      "false_refusals": 0,
+      "false_refusal_rate": 0.0,
+      "true_acceptance_rate": 1.0,
+      "negatives_count": 18,
+      "true_rejections": 3,
+      "true_rejection_rate": 0.1667,
+      "balanced_score": 0.2857,
+      "avg_chunks_passed_when_accepted": 3.73
+    },
+    {
+      "floor": 0.3,
+      "margin": 0.2,
+      "positives_count": 37,
+      "false_refusals": 0,
+      "false_refusal_rate": 0.0,
+      "true_acceptance_rate": 1.0,
+      "negatives_count": 18,
+      "true_rejections": 3,
+      "true_rejection_rate": 0.1667,
+      "balanced_score": 0.2857,
+      "avg_chunks_passed_when_accepted": 3.43
+    },
+    {
+      "floor": 0.3,
+      "margin": 0.3,
+      "positives_count": 37,
+      "false_refusals": 0,
+      "false_refusal_rate": 0.0,
+      "true_acceptance_rate": 1.0,
+      "negatives_count": 18,
+      "true_rejections": 3,
+      "true_rejection_rate": 0.1667,
+      "balanced_score": 0.2857,
+      "avg_chunks_passed_when_accepted": 3.57
+    },
+    {
+      "floor": 0.3,
+      "margin": 0.4,
+      "positives_count": 37,
+      "false_refusals": 0,
+      "false_refusal_rate": 0.0,
+      "true_acceptance_rate": 1.0,
+      "negatives_count": 18,
+      "true_rejections": 3,
+      "true_rejection_rate": 0.1667,
+      "balanced_score": 0.2857,
+      "avg_chunks_passed_when_accepted": 3.65
+    },
+    {
+      "floor": 0.3,
+      "margin": 0.5,
+      "positives_count": 37,
+      "false_refusals": 0,
+      "false_refusal_rate": 0.0,
+      "true_acceptance_rate": 1.0,
+      "negatives_count": 18,
+      "true_rejections": 3,
+      "true_rejection_rate": 0.1667,
+      "balanced_score": 0.2857,
+      "avg_chunks_passed_when_accepted": 3.73
+    }
+  ],
+  "optimal_setting": {
+    "floor": 0.08,
+    "margin": 0.2,
+    "positives_count": 37,
+    "false_refusals": 0,
+    "false_refusal_rate": 0.0,
+    "true_acceptance_rate": 1.0,
+    "negatives_count": 18,
+    "true_rejections": 3,
+    "true_rejection_rate": 0.1667,
+    "balanced_score": 0.2857,
+    "avg_chunks_passed_when_accepted": 3.43
+  },
+  "per_query_details": {
+    "golden_15": [
+      {
+        "question": "How do you start Redis for a Kubernetes work queue?",
+        "top_score": 0.9991999864578247,
+        "top_source": "parallel_work_queue.txt",
+        "top_section": "OVERVIEW OF STEPS",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9991999864578247,
+          0.9955000281333923,
+          0.9814000129699707,
+          0.9650999903678894,
+          0.887499988079071
+        ]
+      },
+      {
+        "question": "What does the parallelism field do in the Kubernetes job-wq-2 manifest?",
+        "top_score": 0.9969000220298767,
+        "top_source": "parallel_work_queue.txt",
+        "top_section": "STEP 4: DEFINING A JOB",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9969000220298767,
+          0.9383999705314636,
+          0.7483000159263611,
+          0.45570001006126404,
+          0.3587999939918518
+        ]
+      },
+      {
+        "question": "How do you fill the Redis work queue with tasks using the CLI?",
+        "top_score": 0.9994999766349792,
+        "top_source": "parallel_work_queue.txt",
+        "top_section": "OVERVIEW OF STEPS",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9994999766349792,
+          0.998199999332428,
+          0.3375000059604645,
+          0.09830000251531601,
+          0.07999999821186066
+        ]
+      },
+      {
+        "question": "What is the difference between HPA and VPA in Kubernetes?",
+        "top_score": 0.9972000122070312,
+        "top_source": "pods_autoscale.html",
+        "top_section": "\u21e2 HPA & VPA in Kubernetes with a Practical Example",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9972000122070312,
+          0.986299991607666,
+          0.9262999892234802,
+          0.9204999804496765,
+          0.840399980545044
+        ]
+      },
+      {
+        "question": "How do you install the Metrics Server for Kubernetes pod autoscaling?",
+        "top_score": 0.9998999834060669,
+        "top_source": "pods_autoscale.html",
+        "top_section": "Metric Server Setup",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9998999834060669,
+          0.9986000061035156,
+          0.9860000014305115,
+          0.9830999970436096,
+          0.9829999804496765
+        ]
+      },
+      {
+        "question": "Which kubectl commands confirm that the Metrics Server is collecting data?",
+        "top_score": 0.9993000030517578,
+        "top_source": "pods_autoscale.html",
+        "top_section": "Metric Server Setup",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9993000030517578,
+          0.9797000288963318,
+          0.08169999718666077,
+          0.04100000113248825,
+          0.030400000512599945
+        ]
+      },
+      {
+        "question": "What Databricks CLI command retrieves the details of a specific job?",
+        "top_score": 0.9990000128746033,
+        "top_source": "job_management.html",
+        "top_section": "Get started with the Databricks CLI",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9990000128746033,
+          0.9973999857902527,
+          0.9951000213623047,
+          0.9937999844551086,
+          0.9933000206947327
+        ]
+      },
+      {
+        "question": "When should you use the Databricks REST API instead of the CLI or SDK?",
+        "top_score": 0.9994000196456909,
+        "top_source": "job_management.html",
+        "top_section": "Compare tools",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9994000196456909,
+          0.9957000017166138,
+          0.9805999994277954,
+          0.91839998960495,
+          0.8514000177383423
+        ]
+      },
+      {
+        "question": "What are the three main developer tools for managing Databricks jobs programmatically?",
+        "top_score": 0.9995999932289124,
+        "top_source": "job_management.html",
+        "top_section": "Compare tools",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9995999932289124,
+          0.9966999888420105,
+          0.5156999826431274,
+          0.1907999962568283,
+          0.14190000295639038
+        ]
+      },
+      {
+        "question": "What are the valid restart policy values for a Kubernetes Job pod?",
+        "top_score": 0.9959999918937683,
+        "top_source": "cronjobs.docx",
+        "top_section": "1. Restart Policy Requirements",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9959999918937683,
+          0.9923999905586243,
+          0.9891999959945679,
+          0.983299970626831,
+          0.9509000182151794
+        ]
+      },
+      {
+        "question": "What are the completions and parallelism fields in a Kubernetes Job spec?",
+        "top_score": 0.9983000159263611,
+        "top_source": "architecture.pptx",
+        "top_section": "Jobs",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9983000159263611,
+          0.992900013923645,
+          0.9912999868392944,
+          0.9894999861717224,
+          0.9736999869346619
+        ]
+      },
+      {
+        "question": "Which Kubernetes API group does a Job resource belong to?",
+        "top_score": 0.9955000281333923,
+        "top_source": "cronjobs.docx",
+        "top_section": "What Are Jobs?",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9955000281333923,
+          0.9800000190734863,
+          0.928600013256073,
+          0.8953999876976013,
+          0.8061000108718872
+        ]
+      },
+      {
+        "question": "How do you start a local Kubernetes cluster using Minikube?",
+        "top_score": 0.9998999834060669,
+        "top_source": "monitor_job.docx",
+        "top_section": "Starting Minikube",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9998999834060669,
+          0.9983999729156494,
+          0.9939000010490417,
+          0.9750999808311462,
+          0.9057000279426575
+        ]
+      },
+      {
+        "question": "What kubectl command checks the status of a running Kubernetes Job?",
+        "top_score": 0.9995999932289124,
+        "top_source": "monitor_job.docx",
+        "top_section": "Verifying Kubernetes Installation",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9995999932289124,
+          0.9994000196456909,
+          0.9980999827384949,
+          0.9973000288009644,
+          0.9969000220298767
+        ]
+      },
+      {
+        "question": "How do you verify that the core Kubernetes components are running after starting Minikube?",
+        "top_score": 0.9994999766349792,
+        "top_source": "monitor_job.docx",
+        "top_section": "Verifying Kubernetes Installation",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9994999766349792,
+          0.9922999739646912,
+          0.753000020980835,
+          0.6521000266075134,
+          0.6121000051498413
+        ]
+      }
+    ],
+    "hard_22": [
+      {
+        "question": "What is the backoffLimit set to in hello-job.yaml in Kubernetes?",
+        "top_score": 0.9987999796867371,
+        "top_source": "monitor_job.docx",
+        "top_section": "Creating a Job Configuration File",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9987999796867371,
+          0.9865000247955322,
+          0.7817999720573425,
+          0.6967999935150146,
+          0.5983999967575073
+        ]
+      },
+      {
+        "question": "What ttlSecondsAfterFinished value is configured for cost-effective job processing?",
+        "top_score": 0.9366000294685364,
+        "top_source": "cronjobs.docx",
+        "top_section": "2. Schedule Optimization for Cost Savings",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9366000294685364,
+          0.43230000138282776,
+          0.3188999891281128,
+          0.019300000742077827,
+          0.0003000000142492354
+        ]
+      },
+      {
+        "question": "What happens when a Kubernetes Job specifies completionMode: Indexed?",
+        "top_score": 0.9952999949455261,
+        "top_source": "monitor_job.docx",
+        "top_section": "Understanding Kubernetes Jobs",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9952999949455261,
+          0.9933000206947327,
+          0.9782000184059143,
+          0.9527000188827515,
+          0.7020000219345093
+        ]
+      },
+      {
+        "question": "In Kubernetes Jobs, what is the default behavior when completionMode is NonIndexed?",
+        "top_score": 0.9854000210762024,
+        "top_source": "monitor_job.docx",
+        "top_section": "Understanding Kubernetes Jobs",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9854000210762024,
+          0.9782999753952026,
+          0.8752999901771545,
+          0.4438000023365021,
+          0.1388999968767166
+        ]
+      },
+      {
+        "question": "What concurrencyPolicy setting prevents concurrent runs of a scheduled CronJob?",
+        "top_score": 0.4966999888420105,
+        "top_source": "cronjobs.docx",
+        "top_section": "3. Machine Learning Model Training",
+        "top_source_type": "true",
+        "all_scores": [
+          0.4966999888420105,
+          0.029500000178813934,
+          0.010999999940395355,
+          0.004900000058114529,
+          0.0038999998942017555
+        ]
+      },
+      {
+        "question": "What activeDeadlineSeconds value is specified as an anti-pattern for jobs without checkpointing?",
+        "top_score": 0.998199999332428,
+        "top_source": "cronjobs.docx",
+        "top_section": "1. Long-Running Jobs Without Checkpointing",
+        "top_source_type": "true",
+        "all_scores": [
+          0.998199999332428,
+          0.9943000078201294,
+          0.984499990940094,
+          0.07909999787807465,
+          0.013000000268220901
+        ]
+      },
+      {
+        "question": "What exact command starts Minikube with the Docker container driver?",
+        "top_score": 0.9976999759674072,
+        "top_source": "monitor_job.docx",
+        "top_section": "Starting Minikube",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9976999759674072,
+          0.01140000019222498,
+          0.002099999925121665,
+          0.0012000000569969416,
+          0.0005000000237487257
+        ]
+      },
+      {
+        "question": "What Databricks CLI command prints information about an individual job in a workspace?",
+        "top_score": 0.9991999864578247,
+        "top_source": "job_management.html",
+        "top_section": "Example: Retrieve a job using the CLI",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9991999864578247,
+          0.9983000159263611,
+          0.9977999925613403,
+          0.9976999759674072,
+          0.9952999949455261
+        ]
+      },
+      {
+        "question": "What Databricks CLI command creates a job using a JSON configuration file?",
+        "top_score": 0.9994000196456909,
+        "top_source": "job_management.html",
+        "top_section": "Example: Create a job using the CLI",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9994000196456909,
+          0.998199999332428,
+          0.9976999759674072,
+          0.9972000122070312,
+          0.9957000017166138
+        ]
+      },
+      {
+        "question": "What CLI command triggers a run for a Databricks job that has already been created?",
+        "top_score": 0.9998000264167786,
+        "top_source": "job_management.html",
+        "top_section": "Run a job using the CLI",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9998000264167786,
+          0.9969000220298767,
+          0.996399998664856,
+          0.9943000078201294,
+          0.9868000149726868
+        ]
+      },
+      {
+        "question": "What kubectl command displays live CPU consumption of pods during HPA testing?",
+        "top_score": 0.9977999925613403,
+        "top_source": "pods_autoscale.html",
+        "top_section": "Step 4: Testing",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9977999925613403,
+          0.9947999715805054,
+          0.9666000008583069,
+          0.9517999887466431,
+          0.9193000197410583
+        ]
+      },
+      {
+        "question": "How do you verify that the Metrics Server pods are running in the kube-system namespace?",
+        "top_score": 0.9997000098228455,
+        "top_source": "pods_autoscale.html",
+        "top_section": "Metric Server Setup",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9997000098228455,
+          0.9991000294685364,
+          0.9939000010490417,
+          0.8446000218391418,
+          0.79830002784729
+        ]
+      },
+      {
+        "question": "How do you exclude scaling for a specific container in a VPA resource configuration?",
+        "top_score": 1.0,
+        "top_source": "pods_autoscale.html",
+        "top_section": "Exclude scaling for a specific container",
+        "top_source_type": "true",
+        "all_scores": [
+          1.0,
+          0.9794999957084656,
+          0.9646000266075134,
+          0.5026999711990356,
+          0.3142000138759613
+        ]
+      },
+      {
+        "question": "What release manifest URL installs the Vertical Pod Autoscaler components in cronjobs.docx?",
+        "top_score": 0.9793000221252441,
+        "top_source": "pods_autoscale.html",
+        "top_section": "Metric Server Setup",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9793000221252441,
+          0.9444000124931335,
+          0.039500001817941666,
+          0.015399999916553497,
+          0.009399999864399433
+        ]
+      },
+      {
+        "question": "What restartPolicy causes Kubelet to restart a container within the same Pod if it crashes?",
+        "top_score": 0.9993000030517578,
+        "top_source": "cronjobs.docx",
+        "top_section": "1. Restart Policy Requirements",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9993000030517578,
+          0.10019999742507935,
+          0.07050000131130219,
+          0.0471000000834465,
+          0.004699999932199717
+        ]
+      },
+      {
+        "question": "What command starts a temporary interactive pod for running the Redis CLI?",
+        "top_score": 1.0,
+        "top_source": "parallel_work_queue.txt",
+        "top_section": "STEP 2: FILLING THE QUEUE WITH TASKS",
+        "top_source_type": "true",
+        "all_scores": [
+          1.0,
+          0.13079999387264252,
+          0.015300000086426735,
+          0.0026000000070780516,
+          0.0010000000474974513
+        ]
+      },
+      {
+        "question": "What parallelism value is specified in the job-wq-2 manifest?",
+        "top_score": 0.9987000226974487,
+        "top_source": "parallel_work_queue.txt",
+        "top_section": "STEP 4: DEFINING A JOB",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9987000226974487,
+          0.9082000255584717,
+          0.12449999898672104,
+          0.07699999958276749,
+          0.02319999970495701
+        ]
+      },
+      {
+        "question": "What hostname does the worker script connect to for Redis in STEP 3?",
+        "top_score": 0.917900025844574,
+        "top_source": "parallel_work_queue.txt",
+        "top_section": "STEP 3: CREATE A CONTAINER IMAGE",
+        "top_source_type": "true",
+        "all_scores": [
+          0.917900025844574,
+          0.857699990272522,
+          0.003100000089034438,
+          0.0008999999845400453,
+          0.00019999999494757503
+        ]
+      },
+      {
+        "question": "What policy engine in Kubernetes evaluates workload requirements and places them on matching resources?",
+        "top_score": 0.9998000264167786,
+        "top_source": "architecture.pptx",
+        "top_section": "kube-scheduler",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9998000264167786,
+          0.9685999751091003,
+          0.9453999996185303,
+          0.8406000137329102,
+          0.8353000283241272
+        ]
+      },
+      {
+        "question": "What apiserver field does the Kubelet PodSync daemon filter on to find its assigned pods?",
+        "top_score": 0.9994000196456909,
+        "top_source": "architecture.pptx",
+        "top_section": "Kubelet - PodSync",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9994000196456909,
+          0.9835000038146973,
+          0.25110000371932983,
+          0.03590000048279762,
+          0.026599999517202377
+        ]
+      },
+      {
+        "question": "What is the fundamental networking rule regarding Pod-to-Pod communication in Kubernetes?",
+        "top_score": 0.9983999729156494,
+        "top_source": "architecture.pptx",
+        "top_section": "Networking - Fundamental Rules",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9983999729156494,
+          0.9929999709129333,
+          0.8719000220298767,
+          0.8422999978065491,
+          0.8392000198364258
+        ]
+      },
+      {
+        "question": "What flag is used with kubectl logs to follow job pod output in real-time?",
+        "top_score": 0.9998000264167786,
+        "top_source": "monitor_job.docx",
+        "top_section": "Following Logs in Real-Time",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9998000264167786,
+          0.9955000281333923,
+          0.9735000133514404,
+          0.9544000029563904,
+          0.8865000009536743
+        ]
+      }
+    ],
+    "negatives_k8s_9": [
+      {
+        "question": "How do I configure an NGINX Ingress controller with TLS termination in Kubernetes?",
+        "top_score": 0.9781000018119812,
+        "top_source": "monitor_job.docx",
+        "top_section": "Understanding Kubernetes Jobs",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9781000018119812,
+          0.9376999735832214,
+          0.05090000107884407,
+          0.023800000548362732,
+          0.021299999207258224
+        ]
+      },
+      {
+        "question": "How do RBAC RoleBinding and ClusterRoleBinding resources restrict service account permissions?",
+        "top_score": 0.9994000196456909,
+        "top_source": "architecture.pptx",
+        "top_section": "Concepts - Auth and Identity (RBAC)",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9994000196456909,
+          0.9172000288963318,
+          0.7337999939918518,
+          0.6480000019073486,
+          0.07429999858140945
+        ]
+      },
+      {
+        "question": "How does Istio service mesh manage mutual TLS (mTLS) traffic between envoy sidecars?",
+        "top_score": 9.999999747378752e-05,
+        "top_source": "A NUMA API for Linux - Novell (2005).pdf",
+        "top_section": "Page 4",
+        "top_source_type": "noisy",
+        "all_scores": [
+          9.999999747378752e-05,
+          9.999999747378752e-05,
+          9.999999747378752e-05,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "question": "How do Helm post-install and pre-delete hooks execute during chart release upgrades?",
+        "top_score": 0.5705999732017517,
+        "top_source": "cronjobs.docx",
+        "top_section": "3. Integration Testing with Helm",
+        "top_source_type": "true",
+        "all_scores": [
+          0.5705999732017517,
+          0.02410000003874302,
+          0.0008999999845400453,
+          0.0003000000142492354,
+          9.999999747378752e-05
+        ]
+      },
+      {
+        "question": "How do Kubernetes NetworkPolicy ingress CIDR rules restrict pod-to-pod network traffic?",
+        "top_score": 0.6693000197410583,
+        "top_source": "architecture.pptx",
+        "top_section": "Concepts\t- Workloads",
+        "top_source_type": "true",
+        "all_scores": [
+          0.6693000197410583,
+          0.5570999979972839,
+          0.15279999375343323,
+          0.14569999277591705,
+          0.094200000166893
+        ]
+      },
+      {
+        "question": "How does PodDisruptionBudget ensure application availability during node drain operations?",
+        "top_score": 0.004999999888241291,
+        "top_source": "A Primer on Memory Consistency and Cache Coherence (10.1.1.225.9278).pdf",
+        "top_section": "Page 80",
+        "top_source_type": "noisy",
+        "all_scores": [
+          0.004999999888241291,
+          0.0020000000949949026,
+          0.0019000000320374966,
+          0.0017999999690800905,
+          0.000699999975040555
+        ]
+      },
+      {
+        "question": "How do PersistentVolume dynamic provisioners interact with CSI storage drivers in Kubernetes?",
+        "top_score": 0.9922999739646912,
+        "top_source": "architecture.pptx",
+        "top_section": "Concepts\t- Storage",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9922999739646912,
+          0.009999999776482582,
+          0.006599999964237213,
+          0.003100000089034438,
+          0.0027000000700354576
+        ]
+      },
+      {
+        "question": "How does kube-scheduler handle node affinity, anti-affinity, and pod topology spread constraints?",
+        "top_score": 0.9793999791145325,
+        "top_source": "architecture.pptx",
+        "top_section": "kube-scheduler",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9793999791145325,
+          0.9715999960899353,
+          0.6585999727249146,
+          0.21140000224113464,
+          0.04100000113248825
+        ]
+      },
+      {
+        "question": "How do Kubernetes Custom Resource Definitions (CRDs) register custom controllers with the API server?",
+        "top_score": 0.9603000283241272,
+        "top_source": "architecture.pptx",
+        "top_section": "kube-apiserver",
+        "top_source_type": "true",
+        "all_scores": [
+          0.9603000283241272,
+          0.949400007724762,
+          0.6909000277519226,
+          0.1996999979019165,
+          0.04919999837875366
+        ]
+      }
+    ],
+    "negatives_noisy_9": [
+      {
+        "question": "How does the Linux kernel manage 5-level paging and Extended Page Tables (EPT) for virtual memory?",
+        "top_score": 0.9904000163078308,
+        "top_source": "A Journey in Creating an Operating System Kernel - The 539Kernel Book (Nov 2022).pdf",
+        "top_section": "Page 163",
+        "top_source_type": "noisy",
+        "all_scores": [
+          0.9904000163078308,
+          0.9760000109672546,
+          0.9728999733924866,
+          0.970300018787384,
+          0.9678999781608582
+        ]
+      },
+      {
+        "question": "How does C++ exception stack unwinding work on Windows x64 architecture?",
+        "top_score": 0.9904000163078308,
+        "top_source": "2018 CppCon Unwinding the Stack - Exploring how C++ Exceptions work on Windows - James McNellis.pdf",
+        "top_section": "Page 1",
+        "top_source_type": "noisy",
+        "all_scores": [
+          0.9904000163078308,
+          0.21050000190734863,
+          0.1306000053882599,
+          0.0697999969124794,
+          0.0697999969124794
+        ]
+      },
+      {
+        "question": "What are the core techniques in the Burrows-Wheeler block-sorting lossless data compression algorithm?",
+        "top_score": 0.9998999834060669,
+        "top_source": "A Block-sorting Lossless Data Compression Algorithm - May 10th, 1994 (SRC-RR-124).pdf",
+        "top_section": "Page 3",
+        "top_source_type": "noisy",
+        "all_scores": [
+          0.9998999834060669,
+          0.9995999932289124,
+          0.9908999800682068,
+          0.5314000248908997,
+          0.259799987077713
+        ]
+      },
+      {
+        "question": "What are the compiler error patterns identified in student data across 37 million compilations?",
+        "top_score": 0.9557999968528748,
+        "top_source": "37 Million Compilations - Investigating Novice Programming Mistakes in Large-Scale Student Data (fp1187-altadmri).pdf",
+        "top_section": "Page 1",
+        "top_source_type": "noisy",
+        "all_scores": [
+          0.9557999968528748,
+          0.5012999773025513,
+          0.02850000001490116,
+          0.02539999969303608,
+          0.007199999876320362
+        ]
+      },
+      {
+        "question": "What are the formal verification rules in the Standard Annotation Language (SAL) for buffer overflows?",
+        "top_score": 0.07959999889135361,
+        "top_source": "A Brief Introduction to the Standard Annotation Language (SAL) - 2006.pdf",
+        "top_section": "Page 1",
+        "top_source_type": "noisy",
+        "all_scores": [
+          0.07959999889135361,
+          0.06289999932050705,
+          0.008899999782443047,
+          0.007000000216066837,
+          0.0012000000569969416
+        ]
+      },
+      {
+        "question": "How do 100G Ethernet optical transceivers handle SerDes framing and forward error correction?",
+        "top_score": 0.9771000146865845,
+        "top_source": "100G Networking Technology Overview - Slides - Toronto (August 2016).pdf",
+        "top_section": "Page 19",
+        "top_source_type": "noisy",
+        "all_scores": [
+          0.9771000146865845,
+          0.42100000381469727,
+          0.23680000007152557,
+          0.003000000026077032,
+          0.0012000000569969416
+        ]
+      },
+      {
+        "question": "How does transactional memory optimization improve concurrency in HTM-enabled dynamic data structures?",
+        "top_score": 0.9970999956130981,
+        "top_source": "A Case Study in Optimizing HTM-Enabled Dynamic Data Structures - Patricia Tries (2015).pdf",
+        "top_section": "Page 1",
+        "top_source_type": "noisy",
+        "all_scores": [
+          0.9970999956130981,
+          0.9962999820709229,
+          0.9944999814033508,
+          0.9933000206947327,
+          0.9918000102043152
+        ]
+      },
+      {
+        "question": "What are the multidimensional schema design principles for OLAP star and snowflake queries?",
+        "top_score": 0.7300000190734863,
+        "top_source": "A Brief Tutorial on Database Queries, Data Mining, and OLAP (hamel-197-manuscript-final).pdf",
+        "top_section": "Page 3",
+        "top_source_type": "noisy",
+        "all_scores": [
+          0.7300000190734863,
+          0.03180000185966492,
+          0.005200000014156103,
+          0.0026000000070780516,
+          0.00139999995008111
+        ]
+      },
+      {
+        "question": "How do feedforward neural networks compute backpropagation error gradients with sigmoid activation?",
+        "top_score": 0.9843999743461609,
+        "top_source": "A Brief Introduction to Neural Networks (neuronalenetze-en-zeta2-2col-dkrieselcom).pdf",
+        "top_section": "Page 117",
+        "top_source_type": "noisy",
+        "all_scores": [
+          0.9843999743461609,
+          0.9718000292778015,
+          0.9398000240325928,
+          0.359499990940094,
+          0.09780000150203705
+        ]
+      }
+    ]
+  }
+}

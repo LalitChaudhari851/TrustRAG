@@ -1,0 +1,178 @@
+[
+  {
+    "id": 1,
+    "question": "What is the backoffLimit set to in hello-job.yaml in Kubernetes?",
+    "key_term": "backoffLimit: 4",
+    "expected_answer": "Has a backoffLimit of 4, meaning it will retry up to 4 times if it fails",
+    "expected_source": "monitor_job.docx",
+    "expected_section": "Creating a Job Configuration File"
+  },
+  {
+    "id": 2,
+    "question": "What ttlSecondsAfterFinished value is configured for cost-effective job processing?",
+    "key_term": "ttlSecondsAfterFinished: 3600",
+    "expected_answer": "ttlSecondsAfterFinished: 3600",
+    "expected_source": "cronjobs.docx",
+    "expected_section": "2. Schedule Optimization for Cost Savings"
+  },
+  {
+    "id": 3,
+    "question": "What happens when a Kubernetes Job specifies completionMode: Indexed?",
+    "key_term": "completionMode: Indexed",
+    "expected_answer": "Each Pod gets a unique completion index",
+    "expected_source": "cronjobs.docx",
+    "expected_section": "Indexed Mode"
+  },
+  {
+    "id": 4,
+    "question": "In Kubernetes Jobs, what is the default behavior when completionMode is NonIndexed?",
+    "key_term": "completionMode: NonIndexed",
+    "expected_answer": "All Pods are identical",
+    "expected_source": "cronjobs.docx",
+    "expected_section": "NonIndexed (Default)"
+  },
+  {
+    "id": 5,
+    "question": "What concurrencyPolicy setting prevents concurrent runs of a scheduled CronJob?",
+    "key_term": "concurrencyPolicy: Forbid",
+    "expected_answer": "concurrencyPolicy: Forbid",
+    "expected_source": "cronjobs.docx",
+    "expected_section": "Schedule Configuration"
+  },
+  {
+    "id": 6,
+    "question": "What activeDeadlineSeconds value is specified as an anti-pattern for jobs without checkpointing?",
+    "key_term": "activeDeadlineSeconds: 86400",
+    "expected_answer": "activeDeadlineSeconds: 86400",
+    "expected_source": "cronjobs.docx",
+    "expected_section": "1. Long-Running Jobs Without Checkpointing"
+  },
+  {
+    "id": 7,
+    "question": "What exact command starts Minikube with the Docker container driver?",
+    "key_term": "minikube start --driver=docker",
+    "expected_answer": "minikube start --driver=docker",
+    "expected_source": "monitor_job.docx",
+    "expected_section": "Starting Minikube"
+  },
+  {
+    "id": 8,
+    "question": "What Databricks CLI command prints information about an individual job in a workspace?",
+    "key_term": "databricks jobs get",
+    "expected_answer": "databricks jobs get <job-id>",
+    "expected_source": "job_management.html",
+    "expected_section": "Example: Retrieve a job using the CLI"
+  },
+  {
+    "id": 9,
+    "question": "What Databricks CLI command creates a job using a JSON configuration file?",
+    "key_term": "databricks jobs create --json",
+    "expected_answer": "databricks jobs create --json @<file-path>",
+    "expected_source": "job_management.html",
+    "expected_section": "Example: Create a job using the CLI"
+  },
+  {
+    "id": 10,
+    "question": "What CLI command triggers a run for a Databricks job that has already been created?",
+    "key_term": "databricks jobs run-now",
+    "expected_answer": "The databricks jobs run-now CLI command triggers a run for a job that you have already created",
+    "expected_source": "job_management.html",
+    "expected_section": "Run a job using the CLI"
+  },
+  {
+    "id": 11,
+    "question": "What kubectl command displays live CPU consumption of pods during HPA testing?",
+    "key_term": "kubectl top po",
+    "expected_answer": "kubectl top po",
+    "expected_source": "pods_autoscale.html",
+    "expected_section": "Step 4: Testing"
+  },
+  {
+    "id": 12,
+    "question": "How do you verify that the Metrics Server pods are running in the kube-system namespace?",
+    "key_term": "kubectl get pods -n kube-system | grep metrics-server",
+    "expected_answer": "kubectl get pods -n kube-system | grep metrics-server",
+    "expected_source": "pods_autoscale.html",
+    "expected_section": "Metric Server Setup"
+  },
+  {
+    "id": 13,
+    "question": "How do you exclude scaling for a specific container in a VPA resource configuration?",
+    "key_term": "VerticalPodAutoscaler",
+    "expected_answer": "set the mode for that container to",
+    "expected_source": "pods_autoscale.html",
+    "expected_section": "Exclude scaling for a specific container"
+  },
+  {
+    "id": 14,
+    "question": "What release manifest URL installs the Vertical Pod Autoscaler components in cronjobs.docx?",
+    "key_term": "vpa-release-0.13.0.yaml",
+    "expected_answer": "kubectl apply -f https://github.com/kubernetes/autoscaler/releases/download/vpa-0.13.0/vpa-release-0.13.0.yaml",
+    "expected_source": "cronjobs.docx",
+    "expected_section": "1. Resource Right-Sizing"
+  },
+  {
+    "id": 15,
+    "question": "What restartPolicy causes Kubelet to restart a container within the same Pod if it crashes?",
+    "key_term": "OnFailure",
+    "expected_answer": "OnFailure: Kubelet restarts the container within the same Pod if it crashes",
+    "expected_source": "cronjobs.docx",
+    "expected_section": "1. Restart Policy Requirements"
+  },
+  {
+    "id": 16,
+    "question": "What command starts a temporary interactive pod for running the Redis CLI?",
+    "key_term": "kubectl run -i --tty temp --image redis",
+    "expected_answer": "kubectl run -i --tty temp --image redis --command \"/bin/sh\"",
+    "expected_source": "parallel_work_queue.txt",
+    "expected_section": "STEP 2: FILLING THE QUEUE WITH TASKS"
+  },
+  {
+    "id": 17,
+    "question": "What parallelism value is specified in the job-wq-2 manifest?",
+    "key_term": "parallelism: 2",
+    "expected_answer": "parallelism: 2",
+    "expected_source": "parallel_work_queue.txt",
+    "expected_section": "STEP 4: DEFINING A JOB"
+  },
+  {
+    "id": 18,
+    "question": "What hostname does the worker script connect to for Redis in STEP 3?",
+    "key_term": "host=\"redis\"",
+    "expected_answer": "host=\"redis\"",
+    "expected_source": "parallel_work_queue.txt",
+    "expected_section": "STEP 3: CREATE A CONTAINER IMAGE"
+  },
+  {
+    "id": 19,
+    "question": "What policy engine in Kubernetes evaluates workload requirements and places them on matching resources?",
+    "key_term": "kube-scheduler",
+    "expected_answer": "evaluates workload  requirements and attempts to place it on a matching resource",
+    "expected_source": "architecture.pptx",
+    "expected_section": "kube-scheduler"
+  },
+  {
+    "id": 20,
+    "question": "What apiserver field does the Kubelet PodSync daemon filter on to find its assigned pods?",
+    "key_term": "NodeName",
+    "expected_answer": "The kubelet daemon on every node polls the apiserver filtering  for pods matching its own",
+    "expected_source": "architecture.pptx",
+    "expected_section": "Kubelet - PodSync"
+  },
+  {
+    "id": 21,
+    "question": "What is the fundamental networking rule regarding Pod-to-Pod communication in Kubernetes?",
+    "key_term": "without NAT",
+    "expected_answer": "All Pods can communicate with all other Pods without NAT",
+    "expected_source": "architecture.pptx",
+    "expected_section": "Networking - Fundamental Rules"
+  },
+  {
+    "id": 22,
+    "question": "What flag is used with kubectl logs to follow job pod output in real-time?",
+    "key_term": "kubectl logs -f",
+    "expected_answer": "kubectl logs -f <pod-name>",
+    "expected_source": "monitor_job.docx",
+    "expected_section": "Following Logs in Real-Time"
+  }
+]

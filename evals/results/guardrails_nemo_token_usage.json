@@ -1,0 +1,277 @@
+{
+  "script": "scripts/measure_guardrails_nemo_llm_calls.py",
+  "timestamp": "2026-10-17 10:41:39",
+  "model": "qwen/qwen3.8-27b",
+  "daily_limit_tokens": 200000,
+  "turns_per_day": 69,
+  "averages": {
+    "guard": {
+      "avg_llm_calls": 3,
+      "prompt": 1831.6,
+      "completion": 174,
+      "total": 2005.6
+    },
+    "planner": {
+      "prompt": 142.4,
+      "completion": 7.8,
+      "total": 150.2
+    },
+    "responder": {
+      "prompt": 556.6,
+      "completion": 155,
+      "total": 711.6
+    },
+    "turn_totals": {
+      "prompt": 2530.6,
+      "completion": 336.8,
+      "total": 2867.4
+    }
+  },
+  "turns": [
+    {
+      "turn": 1,
+      "query": "What are the restart policies for CronJobs in Kubernetes?",
+      "guard": {
+        "llm_calls_count": 3,
+        "prompt_tokens": 1776,
+        "completion_tokens": 158,
+        "total_tokens": 1934,
+        "latency_ms": 3643.7,
+        "calls_detail": [
+          {
+            "task": "generate_user_intent",
+            "prompt_tokens": 706,
+            "completion_tokens": 64,
+            "duration_s": 0.6878261566162109
+          },
+          {
+            "task": "generate_next_steps",
+            "prompt_tokens": 293,
+            "completion_tokens": 30,
+            "duration_s": 0.15354013442993164
+          },
+          {
+            "task": "generate_bot_message",
+            "prompt_tokens": 777,
+            "completion_tokens": 64,
+            "duration_s": 0.24959707260131836
+          }
+        ]
+      },
+      "planner": {
+        "prompt_tokens": 140,
+        "completion_tokens": 7,
+        "total_tokens": 147,
+        "latency_ms": 112.1
+      },
+      "responder": {
+        "prompt_tokens": 699,
+        "completion_tokens": 163,
+        "total_tokens": 862,
+        "latency_ms": 478.5
+      },
+      "turn_totals": {
+        "prompt_tokens": 2615,
+        "completion_tokens": 328,
+        "total_tokens": 2943,
+        "total_latency_ms": 4234.3
+      }
+    },
+    {
+      "turn": 2,
+      "query": "How do I monitor the status of a Kubernetes Job with kubectl?",
+      "guard": {
+        "llm_calls_count": 3,
+        "prompt_tokens": 1776,
+        "completion_tokens": 157,
+        "total_tokens": 1933,
+        "latency_ms": 930.6,
+        "calls_detail": [
+          {
+            "task": "generate_user_intent",
+            "prompt_tokens": 701,
+            "completion_tokens": 64,
+            "duration_s": 0.3084390163421631
+          },
+          {
+            "task": "generate_next_steps",
+            "prompt_tokens": 294,
+            "completion_tokens": 29,
+            "duration_s": 0.15523767471313477
+          },
+          {
+            "task": "generate_bot_message",
+            "prompt_tokens": 781,
+            "completion_tokens": 64,
+            "duration_s": 0.25711560249328613
+          }
+        ]
+      },
+      "planner": {
+        "prompt_tokens": 143,
+        "completion_tokens": 4,
+        "total_tokens": 147,
+        "latency_ms": 92.3
+      },
+      "responder": {
+        "prompt_tokens": 744,
+        "completion_tokens": 284,
+        "total_tokens": 1028,
+        "latency_ms": 701.7
+      },
+      "turn_totals": {
+        "prompt_tokens": 2663,
+        "completion_tokens": 445,
+        "total_tokens": 3108,
+        "total_latency_ms": 1724.6
+      }
+    },
+    {
+      "turn": 3,
+      "query": "What is Horizontal Pod Autoscaling and what metrics does it use?",
+      "guard": {
+        "llm_calls_count": 3,
+        "prompt_tokens": 1878,
+        "completion_tokens": 192,
+        "total_tokens": 2070,
+        "latency_ms": 984.8,
+        "calls_detail": [
+          {
+            "task": "generate_user_intent",
+            "prompt_tokens": 704,
+            "completion_tokens": 64,
+            "duration_s": 0.28878307342529297
+          },
+          {
+            "task": "generate_next_steps",
+            "prompt_tokens": 344,
+            "completion_tokens": 64,
+            "duration_s": 0.22813820838928223
+          },
+          {
+            "task": "generate_bot_message",
+            "prompt_tokens": 830,
+            "completion_tokens": 64,
+            "duration_s": 0.25408363342285156
+          }
+        ]
+      },
+      "planner": {
+        "prompt_tokens": 142,
+        "completion_tokens": 8,
+        "total_tokens": 150,
+        "latency_ms": 99.6
+      },
+      "responder": {
+        "prompt_tokens": 636,
+        "completion_tokens": 132,
+        "total_tokens": 768,
+        "latency_ms": 382.9
+      },
+      "turn_totals": {
+        "prompt_tokens": 2656,
+        "completion_tokens": 332,
+        "total_tokens": 2988,
+        "total_latency_ms": 1467.3
+      }
+    },
+    {
+      "turn": 4,
+      "query": "How do you configure SRIOV network virtual functions on Intel NICs?",
+      "guard": {
+        "llm_calls_count": 3,
+        "prompt_tokens": 1903,
+        "completion_tokens": 192,
+        "total_tokens": 2095,
+        "latency_ms": 1502.6,
+        "calls_detail": [
+          {
+            "task": "generate_user_intent",
+            "prompt_tokens": 707,
+            "completion_tokens": 64,
+            "duration_s": 0.7081167697906494
+          },
+          {
+            "task": "generate_next_steps",
+            "prompt_tokens": 354,
+            "completion_tokens": 64,
+            "duration_s": 0.22110724449157715
+          },
+          {
+            "task": "generate_bot_message",
+            "prompt_tokens": 842,
+            "completion_tokens": 64,
+            "duration_s": 0.2781710624694824
+          }
+        ]
+      },
+      "planner": {
+        "prompt_tokens": 144,
+        "completion_tokens": 11,
+        "total_tokens": 155,
+        "latency_ms": 121.3
+      },
+      "responder": {
+        "prompt_tokens": 284,
+        "completion_tokens": 101,
+        "total_tokens": 385,
+        "latency_ms": 300.7
+      },
+      "turn_totals": {
+        "prompt_tokens": 2331,
+        "completion_tokens": 304,
+        "total_tokens": 2635,
+        "total_latency_ms": 1924.6
+      }
+    },
+    {
+      "turn": 5,
+      "query": "What does the backoffLimit parameter do in a Kubernetes Job manifest?",
+      "guard": {
+        "llm_calls_count": 3,
+        "prompt_tokens": 1825,
+        "completion_tokens": 171,
+        "total_tokens": 1996,
+        "latency_ms": 957.6,
+        "calls_detail": [
+          {
+            "task": "generate_user_intent",
+            "prompt_tokens": 698,
+            "completion_tokens": 64,
+            "duration_s": 0.32953596115112305
+          },
+          {
+            "task": "generate_next_steps",
+            "prompt_tokens": 320,
+            "completion_tokens": 43,
+            "duration_s": 0.1897287368774414
+          },
+          {
+            "task": "generate_bot_message",
+            "prompt_tokens": 807,
+            "completion_tokens": 64,
+            "duration_s": 0.2720637321472168
+          }
+        ]
+      },
+      "planner": {
+        "prompt_tokens": 143,
+        "completion_tokens": 9,
+        "total_tokens": 152,
+        "latency_ms": 4128.5
+      },
+      "responder": {
+        "prompt_tokens": 420,
+        "completion_tokens": 95,
+        "total_tokens": 515,
+        "latency_ms": 4324.2
+      },
+      "turn_totals": {
+        "prompt_tokens": 2388,
+        "completion_tokens": 275,
+        "total_tokens": 2663,
+        "total_latency_ms": 9410.3
+      }
+    }
+  ]
+}

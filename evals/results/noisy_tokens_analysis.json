@@ -1,0 +1,62 @@
+{
+  "script": "scripts/analyze_noisy_tokens_before.py",
+  "total_raw_chunks": 5718,
+  "chunks_exceeding_384": 214,
+  "pct_exceeding_384": 3.7425673312346976,
+  "chunks_under_15": 56,
+  "pct_under_15": 0.9793634137810423,
+  "sample_over_384": [
+    {
+      "file": "A Brief Introduction to Neural Networks (neuronalenetze-en-zeta2-2col-dkrieselcom).pdf",
+      "tokens": 446,
+      "snippet": "the name delta rule): \u2202Errp(W ) \u2202wi,\u2126 =\u2212(tp,\u2126\u2212op,\u2126 )\u00b7\u2202op,\u2126 \u2202wi,\u2126 (5.12) =\u2212\u03b4p,\u2126\u00b7\u2202op,\u2126 \u2202wi,\u2126 (5.13) Th"
+    },
+    {
+      "file": "A Brief Introduction to Neural Networks (neuronalenetze-en-zeta2-2col-dkrieselcom).pdf",
+      "tokens": 415,
+      "snippet": "dkriesel.com 5.3 The multilayer perceptron GFED @ABCi1  @@@@@@@@@ **UUUUUUUUUUUUUUUUUUUUUUUUU GFED @"
+    },
+    {
+      "file": "A Brief Introduction to Neural Networks (neuronalenetze-en-zeta2-2col-dkrieselcom).pdf",
+      "tokens": 385,
+      "snippet": "Chapter 5 The perceptron, backpropagation and its variants dkriesel.com This summand is referred to "
+    },
+    {
+      "file": "A Brief Introduction to Neural Networks (neuronalenetze-en-zeta2-2col-dkrieselcom).pdf",
+      "tokens": 557,
+      "snippet": "dkriesel.com 6.2 Information processing of an RBF network  GFED @ABC ||yyyyyyyyyy  \"\"EEEEEEEEEE ((RR"
+    },
+    {
+      "file": "A Brief Introduction to Neural Networks (neuronalenetze-en-zeta2-2col-dkrieselcom).pdf",
+      "tokens": 562,
+      "snippet": "Chapter 6 Radial basis functions dkriesel.com Gaussian 1 \u22122 \u22121  0  1x \u22122 \u22121 0 1 2 y \u22121 \u22120.5  0  0.5 "
+    }
+  ],
+  "sample_under_15": [
+    {
+      "file": "100G Networking Technology Overview - Slides - Toronto (August 2016).pdf",
+      "tokens": 10,
+      "snippet": "100G Cabling and Connectors 6"
+    },
+    {
+      "file": "2018 CppCon Unwinding the Stack - Exploring how C++ Exceptions work on Windows - James McNellis.pdf",
+      "tokens": 9,
+      "snippet": "What Happens When  Something Goes Wrong?"
+    },
+    {
+      "file": "2018 CppCon Unwinding the Stack - Exploring how C++ Exceptions work on Windows - James McNellis.pdf",
+      "tokens": 11,
+      "snippet": "A:\\> Once Upon A Time\u2026"
+    },
+    {
+      "file": "2018 CppCon Unwinding the Stack - Exploring how C++ Exceptions work on Windows - James McNellis.pdf",
+      "tokens": 6,
+      "snippet": "Making Things Right\u2026"
+    },
+    {
+      "file": "2018 CppCon Unwinding the Stack - Exploring how C++ Exceptions work on Windows - James McNellis.pdf",
+      "tokens": 13,
+      "snippet": "A:\\> Let\u2019s Write an Exception Handler"
+    }
+  ]
+}

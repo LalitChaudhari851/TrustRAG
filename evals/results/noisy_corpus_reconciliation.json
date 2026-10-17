@@ -1,0 +1,19 @@
+{
+  "script": "scripts/reconcile_noisy_files.py",
+  "data_dir": "DATA/noisy_data",
+  "total_files": 58,
+  "total_chunks_after_cleaning": 5718,
+  "by_extension": {
+    "pdf": { "files": 47, "units": 2103, "chunks": 5115 },
+    "docx": { "files": 2, "units": 280, "chunks": 529 },
+    "txt": { "files": 4, "units": 4, "chunks": 31 },
+    "pptx": { "files": 2, "units": 12, "chunks": 22 },
+    "html": { "files": 3, "units": 3, "chunks": 21 }
+  },
+  "explanation_of_difference": {
+    "previous_unfiltered_estimate": 5902,
+    "cleaned_total": 5718,
+    "reduction": 184,
+    "cause": "PDF cleaning pipeline dropped 180 low-alpha/dot-leader chunks (e.g. TOCs and non-alphabetic tables) + text splitter cleaned whitespace."
+  }
+}

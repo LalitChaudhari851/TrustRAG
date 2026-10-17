@@ -31,8 +31,29 @@ portkey_client = Portkey(
 )
 
 
+def is_daily_quota_exhaustion(exc: Exception) -> bool:
+    """Detect if 429 error is due to daily token/request exhaustion (TPD / 200k daily limit)."""
+    msg = str(exc).lower()
+    return any(term in msg for term in [
+        "limit 200000",
+        "tokens per day",
+        "daily limit",
+        "requests per day",
+        "tpd",
+        "rpd"
+    ])
+
+
 def _extract_retry_after(exc: Exception) -> Optional[float]:
-    """Extract Retry-After header or message in seconds from 429 response if present."""
+    """
+    Extract Retry-After header or message in seconds from 429 response if present.
+    Strictly anchored on 'try again in|retry after|wait' to avoid matching arbitrary numbers like 'Limit 200000'.
+    Caps sleep at 20.0s.
+    Returns None if daily quota is exhausted.
+    """
+    if is_daily_quota_exhaustion(exc):
+        return None
+
     msg = str(exc)
     # Check for direct headers attribute if available on HTTP response
     response = getattr(exc, "response", None)
@@ -41,15 +62,22 @@ def _extract_retry_after(exc: Exception) -> Optional[float]:
         retry_after = headers.get("retry-after") or headers.get("Retry-After")
         if retry_after:
             try:
-                return float(retry_after)
+                val = float(retry_after)
+                return min(val, 20.0)
             except (ValueError, TypeError):
                 pass
                 
-    # Search message for 'try again in Xs' or 'retry after Xs'
-    match = re.search(r"(?:try again in|retry after|wait)\s+([\d\.]+)\s*(?:s|seconds)?", msg, re.IGNORECASE)
+    # Search message strictly anchored on 'try again in', 'retry after', or 'wait'
+    match = re.search(r"(?:try again in|retry after|wait)\s+([\d\.]+)\s*(ms|s|seconds)?", msg, re.IGNORECASE)
     if match:
         try:
-            return float(match.group(1))
+            val = float(match.group(1))
+            unit = (match.group(2) or "s").lower()
+            if unit == "ms":
+                seconds = val / 1000.0
+            else:
+                seconds = val
+            return min(seconds, 20.0)
         except (ValueError, TypeError):
             pass
     return None
@@ -58,12 +86,17 @@ def _extract_retry_after(exc: Exception) -> Optional[float]:
 def is_retryable_exception(exc: Exception) -> bool:
     """
     Retry only transient infra/rate issues:
-    - HTTP 429 (Rate limit)
+    - HTTP 429 (Transient burst Rate limit)
     - HTTP 503 (Service unavailable / server overloaded)
     - Network / Connection timeouts / Connection errors
     
     NEVER retry client errors (HTTP 400, 401, 403, 404).
+    NEVER retry when daily token/request quota (TPD) is exhausted (fail fast).
     """
+    if is_daily_quota_exhaustion(exc):
+        logfire.error("🛑 Daily quota (TPD/RPD) exhausted on LLM provider. Failing fast without retrying.")
+        return False
+
     msg = str(exc).lower()
     status_code = getattr(exc, "status_code", None) or getattr(exc, "code", None)
     

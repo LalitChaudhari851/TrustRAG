@@ -1,0 +1,53 @@
+{
+  "script": "scripts/benchmark_embeddings_tokens.py",
+  "model_name": "sentence-transformers/all-mpnet-base-v2",
+  "max_seq_length": 384,
+  "chunks_analyzed": 212,
+  "avg_token_length": 123.71698113207547,
+  "min_token_length": 3,
+  "max_token_length": 478,
+  "chunks_exceeding_384": 6,
+  "pct_exceeding": 2.8301886792452833,
+  "exceeded_samples": [
+    {
+      "source": "cronjobs.docx",
+      "section": "1. Job State Backup",
+      "token_length": 420,
+      "snippet": "# Backup CronJob definitions apiVersion: batch/v1 kind: CronJob metadata: name: backup-job-definitions spec: schedule: \"0 6 * * *\"  # Daily at 6 AM jo"
+    },
+    {
+      "source": "cronjobs.docx",
+      "section": "3. Data Retention Policies",
+      "token_length": 402,
+      "snippet": "# Automated cleanup job for compliance apiVersion: batch/v1 kind: CronJob metadata: name: data-retention-cleanup spec: schedule: \"0 3 * * 0\"  # Weekly"
+    },
+    {
+      "source": "cronjobs.docx",
+      "section": "3. Data Recovery Procedures",
+      "token_length": 478,
+      "snippet": "f\"--selector=job-name={job_name}\", \"-o\", \"json\" ] result = subprocess.run(cmd, capture_output=True, text=True, check=True) pods = json.loads(result.st"
+    },
+    {
+      "source": "cronjobs.docx",
+      "section": "2. Job Testing Framework",
+      "token_length": 446,
+      "snippet": "import unittest import subprocess import time import yaml class JobTestCase(unittest.TestCase): def setUp(self): self.namespace = \"test-jobs\" subproce"
+    },
+    {
+      "source": "cronjobs.docx",
+      "section": "3. Data Recovery Procedures",
+      "token_length": 446,
+      "snippet": "#!/usr/bin/env python3 \"\"\" Job Data Recovery Script Recovers data from failed or incomplete jobs \"\"\" import subprocess import json import sys from dat"
+    },
+    {
+      "source": "cronjobs.docx",
+      "section": "3. Data Recovery Procedures",
+      "token_length": 387,
+      "snippet": "recovery_job = original_job.copy() # Update metadata recovery_job['metadata']['name'] = f\"{original_job['metadata']['name']}-recovery-{int(datetime.no"
+    }
+  ],
+  "warm_throughput_chunks_per_sec": 4.503242651210399,
+  "elapsed_seconds": 47.07718779999959,
+  "noisy_corpus_chunks": 5718,
+  "noisy_corpus_estimated_minutes": 21.162528289339438
+}

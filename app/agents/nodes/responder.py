@@ -34,16 +34,29 @@ def generate_node(state: AgentState):
         "{user_msg}"
         """
     else:
+        # Check if threshold left zero documents
+        docs = [d for d in state.get("documents", []) if d and str(d).strip()]
+        if not docs:
+            logfire.info("Zero documents passed retrieval threshold — returning grounded refusal.")
+            refusal = "I do not have enough context in the documentation to answer this question accurately."
+            return {
+                "final_answer": refusal,
+                "status": "Insufficient context.",
+                "plan": state.get("plan", []) + ["Refusal: Insufficient Context"],
+                "messages": [{"role": "assistant", "content": refusal}]
+            }
+
         logfire.info("Generating technical RAG response.")
         max_context_chars = 25000
         full_context = ""
 
-        for doc in state["documents"]:
+        for doc in docs:
             if len(full_context) + len(doc) < max_context_chars:
                 full_context += doc + "\n\n"
             else:
                 logfire.warning("Context truncated to fit Groq TPM limits.")
                 break
+
 
         prompt = f"""
         You are a Senior Technical Architect.

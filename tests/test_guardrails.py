@@ -77,3 +77,25 @@ def test_guardrails_infra_failure_fails_closed(mock_rails_singleton):
     assert blocked is True
     assert response == INFRA_UNAVAILABLE_MESSAGE
     assert "temporarily unavailable" in response.lower()
+
+
+def test_query_endpoint_when_guardrail_llm_unavailable(mock_rails_singleton):
+    """
+    When Guardrail LLM throws 429 or is down, /query fails closed safely:
+    returns INFRA_UNAVAILABLE_MESSAGE, status 'Blocked by guardrails.',
+    and skips LangGraph execution.
+    """
+    from fastapi.testclient import TestClient
+    from app.main import app
+
+    mock_rails_singleton.generate.side_effect = RuntimeError("429 Rate limit reached on guardrail LLM")
+
+    client = TestClient(app)
+    response = client.post("/query", json={"q": "What is Kubernetes?", "thread_id": "test_failure_thread"})
+    assert response.status_code == 200
+    data = response.json()
+    assert data["answer"] == INFRA_UNAVAILABLE_MESSAGE
+    assert data["status"] == "Blocked by guardrails."
+    assert "Retrieval: Skipped" in data["thought_process"]
+    assert data["sources"] == []
+

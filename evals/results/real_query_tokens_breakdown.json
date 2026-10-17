@@ -1,0 +1,171 @@
+{
+  "script": "scripts/measure_real_query_tokens.py",
+  "timestamp": "2026-10-17 09:49:15",
+  "model": "qwen/qwen3.8-27b",
+  "daily_limit_tokens": 200000,
+  "estimated_turns_per_day": 196,
+  "averages": {
+    "guard": {
+      "prompt": 66.4,
+      "completion": 72.6,
+      "total": 139
+    },
+    "planner": {
+      "prompt": 142.4,
+      "completion": 7.8,
+      "total": 150.2
+    },
+    "responder": {
+      "prompt": 575.6,
+      "completion": 152,
+      "total": 727.6
+    },
+    "turn_totals": {
+      "prompt": 784.4,
+      "completion": 232.4,
+      "total": 1016.8
+    }
+  },
+  "turns": [
+    {
+      "turn": 1,
+      "query": "What are the restart policies for CronJobs in Kubernetes?",
+      "guard": {
+        "prompt_tokens": 64,
+        "completion_tokens": 71,
+        "total_tokens": 135,
+        "latency_ms": 601.7
+      },
+      "planner": {
+        "prompt_tokens": 140,
+        "completion_tokens": 7,
+        "total_tokens": 147,
+        "latency_ms": 167.6
+      },
+      "responder": {
+        "prompt_tokens": 794,
+        "completion_tokens": 148,
+        "total_tokens": 942,
+        "latency_ms": 493.7
+      },
+      "turn_totals": {
+        "prompt_tokens": 998,
+        "completion_tokens": 226,
+        "total_tokens": 1224,
+        "latency_ms": 1263.1
+      }
+    },
+    {
+      "turn": 2,
+      "query": "How do I monitor the status of a Kubernetes Job with kubectl?",
+      "guard": {
+        "prompt_tokens": 67,
+        "completion_tokens": 66,
+        "total_tokens": 133,
+        "latency_ms": 204.1
+      },
+      "planner": {
+        "prompt_tokens": 143,
+        "completion_tokens": 4,
+        "total_tokens": 147,
+        "latency_ms": 88.8
+      },
+      "responder": {
+        "prompt_tokens": 744,
+        "completion_tokens": 284,
+        "total_tokens": 1028,
+        "latency_ms": 718.1
+      },
+      "turn_totals": {
+        "prompt_tokens": 954,
+        "completion_tokens": 354,
+        "total_tokens": 1308,
+        "latency_ms": 1011.0
+      }
+    },
+    {
+      "turn": 3,
+      "query": "What is Horizontal Pod Autoscaling and what metrics does it use?",
+      "guard": {
+        "prompt_tokens": 66,
+        "completion_tokens": 66,
+        "total_tokens": 132,
+        "latency_ms": 210.9
+      },
+      "planner": {
+        "prompt_tokens": 142,
+        "completion_tokens": 8,
+        "total_tokens": 150,
+        "latency_ms": 102.3
+      },
+      "responder": {
+        "prompt_tokens": 636,
+        "completion_tokens": 132,
+        "total_tokens": 768,
+        "latency_ms": 392.9
+      },
+      "turn_totals": {
+        "prompt_tokens": 844,
+        "completion_tokens": 206,
+        "total_tokens": 1050,
+        "latency_ms": 706.1
+      }
+    },
+    {
+      "turn": 4,
+      "query": "How do you configure SRIOV network virtual functions on Intel NICs?",
+      "guard": {
+        "prompt_tokens": 68,
+        "completion_tokens": 77,
+        "total_tokens": 145,
+        "latency_ms": 224.4
+      },
+      "planner": {
+        "prompt_tokens": 144,
+        "completion_tokens": 11,
+        "total_tokens": 155,
+        "latency_ms": 104.2
+      },
+      "responder": {
+        "prompt_tokens": 284,
+        "completion_tokens": 101,
+        "total_tokens": 385,
+        "latency_ms": 299.8
+      },
+      "turn_totals": {
+        "prompt_tokens": 496,
+        "completion_tokens": 189,
+        "total_tokens": 685,
+        "latency_ms": 628.4
+      }
+    },
+    {
+      "turn": 5,
+      "query": "What does the backoffLimit parameter do in a Kubernetes Job manifest?",
+      "guard": {
+        "prompt_tokens": 67,
+        "completion_tokens": 83,
+        "total_tokens": 150,
+        "latency_ms": 234.3
+      },
+      "planner": {
+        "prompt_tokens": 143,
+        "completion_tokens": 9,
+        "total_tokens": 152,
+        "latency_ms": 103.4
+      },
+      "responder": {
+        "prompt_tokens": 420,
+        "completion_tokens": 95,
+        "total_tokens": 515,
+        "latency_ms": 296.1
+      },
+      "turn_totals": {
+        "prompt_tokens": 630,
+        "completion_tokens": 187,
+        "total_tokens": 817,
+        "latency_ms": 633.8
+      }
+    }
+  ]
+}

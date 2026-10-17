@@ -15,9 +15,9 @@ from openai import AsyncOpenAI
 
 
 from ragas.llms import llm_factory
-from ragas.embeddings import HuggingFaceEmbeddings
+from ragas.embeddings import HuggingfaceEmbeddings
 from ragas import SingleTurnSample
-from ragas.metrics.collections import (
+from ragas.metrics import (
     Faithfulness,
     AnswerRelevancy,
     ContextPrecision,
@@ -39,7 +39,7 @@ def _build_judge():
     api_key = os.getenv("JUDGE_GROQ") or os.getenv("GROQ_API_KEY")
     client = AsyncOpenAI(api_key=api_key, base_url=GROQ_BASE_URL)
     llm = llm_factory(JUDGE_MODEL, provider="openai", client=client)
-    embeddings = HuggingFaceEmbeddings(
+    embeddings = HuggingfaceEmbeddings(
         model="sentence-transformers/all-MiniLM-L6-v2",
         use_api=False,
     )
@@ -226,3 +226,105 @@ async def run_all_metrics(golden_dataset: dict, status_cb=None) -> dict:
             status_cb("✅ All 6 experiments complete!")
 
     return results
+
+
+def compute_retrieval_metrics(samples: list) -> dict:
+    """
+    Computes deterministic retrieval-only metrics (zero LLM calls):
+      - source_hit@5: proportion of queries where expected_source is in top-5 retrieved chunks (required)
+      - source_mrr: Mean Reciprocal Rank of first occurrence of expected_source
+      - section_hit@5: proportion of queries where expected_source AND expected_section match in top-5
+      - section_mrr: Mean Reciprocal Rank of first occurrence where both match
+    """
+    src_hits_at_5 = 0
+    src_rr_total = 0.0
+    sec_hits_at_5 = 0
+    sec_rr_total = 0.0
+    valid_count = 0
+
+    per_sample_results = []
+
+    for s in samples:
+        expected_src = s.get("expected_source")
+        expected_sec = s.get("expected_section")
+        if not expected_src:
+            continue
+        valid_count += 1
+
+        contexts = s.get("actual_contexts", [])
+        src_ranks = []
+        sec_ranks = []
+
+        for idx, ctx in enumerate(contexts):
+            rank = idx + 1
+            src_str = ""
+            sec_str = ""
+
+            if isinstance(ctx, dict):
+                src_str = ctx.get("source", "")
+                sec_str = ctx.get("section", "")
+            elif isinstance(ctx, str):
+                # Standard format: "[Source: <source> | Section: <section>]\n<content>"
+                if "[Source:" in ctx:
+                    parts = ctx.split("[Source:", 1)[1]
+                    if "|" in parts:
+                        src_part, rest = parts.split("|", 1)
+                        src_str = src_part.strip()
+                        if "Section:" in rest:
+                            sec_str = rest.split("Section:", 1)[1].split("]", 1)[0].strip()
+                    elif "]" in parts:
+                        src_str = parts.split("]", 1)[0].strip()
+                else:
+                    src_str = ctx
+
+            # 1. Source match (required)
+            matches_source = expected_src.lower() in src_str.lower()
+            if matches_source:
+                src_ranks.append(rank)
+
+            # 2. Section match (reported separately)
+            if matches_source and expected_sec:
+                # Direct substring match between expected_section and retrieved section
+                if (expected_sec.lower() in sec_str.lower() or
+                    sec_str.lower() in expected_sec.lower() or
+                    expected_sec.lower() in (ctx if isinstance(ctx, str) else ctx.get("content", "")).lower()):
+                    sec_ranks.append(rank)
+
+        # Source Hit & MRR
+        src_first_rank = src_ranks[0] if src_ranks else None
+        src_hit = 1.0 if (src_first_rank and src_first_rank <= 5) else 0.0
+        src_rr = 1.0 / src_first_rank if src_first_rank else 0.0
+        src_hits_at_5 += src_hit
+        src_rr_total += src_rr
+
+        # Section Hit & MRR
+        sec_first_rank = sec_ranks[0] if sec_ranks else None
+        sec_hit = 1.0 if (sec_first_rank and sec_first_rank <= 5) else 0.0
+        sec_rr = 1.0 / sec_first_rank if sec_first_rank else 0.0
+        sec_hits_at_5 += sec_hit
+        sec_rr_total += sec_rr
+
+        per_sample_results.append({
+            "question": s.get("question", "")[:65],
+            "expected_source": expected_src,
+            "expected_section": expected_sec,
+            "source_rank": src_first_rank,
+            "source_hit@5": src_hit,
+            "source_rr": round(src_rr, 3),
+            "section_rank": sec_first_rank,
+            "section_hit@5": sec_hit,
+            "section_rr": round(sec_rr, 3),
+        })
+
+    total = valid_count if valid_count > 0 else 1
+    return {
+        "hit@5": round(src_hits_at_5 / total, 3),
+        "mrr": round(src_rr_total / total, 3),
+        "source_hit@5": round(src_hits_at_5 / total, 3),
+        "source_mrr": round(src_rr_total / total, 3),
+        "section_hit@5": round(sec_hits_at_5 / total, 3),
+        "section_mrr": round(sec_rr_total / total, 3),
+        "details": per_sample_results
+    }
+
+

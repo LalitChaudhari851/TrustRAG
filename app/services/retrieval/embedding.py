@@ -3,7 +3,7 @@ import logfire
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from app.config import settings
 
-BATCH_SIZE = 50
+BATCH_SIZE = 64
 _GEMINI_DIM = 3072
 _FALLBACK_DIM = 768  # all-mpnet-base-v2
 
@@ -52,6 +52,12 @@ def _init():
         _model_type = "fallback"
 
 
+def warmup_embeddings() -> None:
+    """Preloads the embedding model and executes a warmup inference."""
+    _init()
+    _ = embed_query("warmup embedding probe")
+
+
 # ── Public helpers ─────────────────────────────────────────────────────────────
 
 def get_embedding_dim() -> int:
@@ -83,7 +89,7 @@ def _embed_batch(batch: list[str]) -> list[list[float]]:
                     raise
         raise RuntimeError("Gemini rate limit persisted after 4 attempts.")
     else:
-        return _active_model.encode(batch, show_progress_bar=False).tolist()
+        return _active_model.encode(batch, batch_size=BATCH_SIZE, show_progress_bar=False).tolist()
 
 
 # ── Public API (same signatures as before) ─────────────────────────────────────
@@ -103,3 +109,51 @@ def embed_texts(texts: list[str]) -> list[list[float]]:
         with logfire.span("Embed batch", model=_model_type, start=i, size=len(batch)):
             all_embeddings.extend(_embed_batch(batch))
     return all_embeddings
+
+
+# ── Sparse (BM25) Embeddings ───────────────────────────────────────────────────
+
+_sparse_model = None
+
+def _get_sparse_model():
+    global _sparse_model
+    if _sparse_model is None:
+        from fastembed import SparseTextEmbedding
+        logfire.info("Loading FastEmbed BM25 sparse text embedding model (Qdrant/bm25)...")
+        _sparse_model = SparseTextEmbedding(model_name="Qdrant/bm25")
+    return _sparse_model
+
+
+def embed_sparse_texts(texts: list[str]):
+    """
+    Computes BM25 sparse embeddings for ingestion documents using FastEmbed embed().
+    Returns a list of Qdrant models.SparseVector objects.
+    """
+    from qdrant_client.http import models
+    model = _get_sparse_model()
+    with logfire.span("Sparse Embed Documents", count=len(texts)):
+        sparse_embeddings = list(model.embed(texts))
+        return [
+            models.SparseVector(
+                indices=emb.indices.tolist(),
+                values=emb.values.tolist(),
+            )
+            for emb in sparse_embeddings
+        ]
+
+
+def embed_sparse_query(query: str):
+    """
+    Computes BM25 sparse query embedding using FastEmbed query_embed().
+    Returns a Qdrant models.SparseVector object.
+    """
+    from qdrant_client.http import models
+    model = _get_sparse_model()
+    with logfire.span("Sparse Embed Query", query=query[:60]):
+        query_embeddings = list(model.query_embed(query))
+        emb = query_embeddings[0]
+        return models.SparseVector(
+            indices=emb.indices.tolist(),
+            values=emb.values.tolist(),
+        )
+

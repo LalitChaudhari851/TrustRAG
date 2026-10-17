@@ -21,25 +21,49 @@ INFRA_UNAVAILABLE_MESSAGE = (
 def initialize_rails() -> None:
     """
     Build the NeMo LLMRails singleton at app startup.
-    Dynamically aligns with settings.GROQ_MODEL.
+    Uses settings.GUARDRAIL_MODEL with graceful fallback to settings.GROQ_MODEL
+    if the configured guard model is not available (404) on the active Groq key.
     """
     global _rails
 
-    guard_llm = ChatGroq(
-        api_key=settings.GROQ_API_KEY,
-        model=settings.GROQ_MODEL,
-        temperature=0,
-        max_tokens=64,
-        max_retries=0  # Retries controlled by tenacity
-    )
+    active_guard_model = settings.GUARDRAIL_MODEL
 
+    try:
+        guard_llm = ChatGroq(
+            api_key=settings.GROQ_API_KEY,
+            model=active_guard_model,
+            temperature=0,
+            max_tokens=64,
+            max_retries=0  # Retries controlled by tenacity
+        )
+        # Test model availability
+        guard_llm.invoke("probe")
+    except Exception as e:
+        if "model_not_found" in str(e).lower() or "404" in str(e):
+            logfire.warning(
+                f"⚠️ GUARDRAIL_MODEL '{active_guard_model}' not found on Groq. "
+                f"Falling back to GROQ_MODEL '{settings.GROQ_MODEL}'."
+            )
+            active_guard_model = settings.GROQ_MODEL
+            guard_llm = ChatGroq(
+                api_key=settings.GROQ_API_KEY,
+                model=active_guard_model,
+                temperature=0,
+                max_tokens=64,
+                max_retries=0
+            )
+        else:
+            raise
+
+    yaml_content = YAML_CONTENT.replace(settings.GUARDRAIL_MODEL, active_guard_model)
     config = RailsConfig.from_content(
         colang_content=COLANG_CONTENT,
-        yaml_content=YAML_CONTENT
+        yaml_content=yaml_content
     )
 
     _rails = LLMRails(config, llm=guard_llm)
-    logfire.info(f"🛡️ NeMo Guardrails initialised ({settings.GROQ_MODEL}).")
+    logfire.info(f"🛡️ NeMo Guardrails initialised ({active_guard_model}).")
+
 
 
 @retry(
@@ -101,20 +125,35 @@ def guard(message: str) -> tuple[bool, str | None]:
             # Fail closed with distinct message (do NOT pass through, do NOT fake policy refusal)
             return True, INFRA_UNAVAILABLE_MESSAGE
 
-        # Case A: Check primary signal — activated rails log
+        # Log activated_rails and raw rail output for auditing
         rail_names = [getattr(r, "name", str(r)).lower() for r in activated]
-        has_blocked_rail = any("refuse" in r or "handle off topic" in r or "jailbreak" in r for r in rail_names)
+        logfire.info(f"🛡️ NeMo Raw Output: '{content}' | activated_rails={rail_names}")
 
-        # Check secondary signal — structured blocked marker
+        # Primary Signal: Check activated rails log for blocking flow
+        # In Colang, blocking flows are named 'handle off topic' or 'jailbreak protection',
+        # and their bot actions are 'refuse off topic' or 'refuse jailbreak'.
+        has_blocked_rail = any(
+            r in ("handle off topic", "jailbreak protection", "refuse off topic", "refuse jailbreak")
+            or "refuse" in r
+            for r in rail_names
+        )
+
+        # Secondary Signal: Structured marker prefix explicitly injected by our bot refusal actions
         has_marker = BLOCKED_MARKER in content
 
-        # Check tertiary signal — indicators
-        has_indicator = any(indicator in content for indicator in RAIL_INDICATORS)
+        # Tertiary Signal: NeMo built-in safety fallback refusal
+        # When NeMo's LLM detects an off-topic or safety violation that doesn't cleanly match
+        # a Colang flow, it produces its built-in fallback: "I'm sorry, I can't respond to that."
+        # This is an EXACT match check, NOT a broad substring match, preventing false positives on legitimate queries.
+        is_nemo_fallback = content.strip().lower() == "i'm sorry, i can't respond to that."
 
-        if has_blocked_rail or has_marker or has_indicator:
+        if has_blocked_rail or has_marker or is_nemo_fallback:
             cleaned_reply = _clean_user_message(content)
+            if not cleaned_reply or is_nemo_fallback:
+                cleaned_reply = "I'm an Enterprise IT Assistant focused on Kubernetes, Intel hardware, and networking. I cannot assist with this request."
             logfire.info(f"🛡️ Guardrails fired (blocked) | query='{message[:80]}'")
             return True, cleaned_reply
 
         logfire.info("✅ Guardrails passed.")
         return False, None
+

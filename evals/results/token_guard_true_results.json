@@ -1,0 +1,155 @@
+{
+  "script": "scripts/test_token_guard_true.py",
+  "total_chunks_before": 212,
+  "total_chunks_after": 199,
+  "chunks_exceeding_384": 0,
+  "chunks_under_15": 0,
+  "per_file": {
+    "architecture.pptx": {
+      "units": 64,
+      "chunks_after": 51,
+      "token_lengths_min": 15,
+      "token_lengths_max": 177,
+      "token_lengths_avg": 69.8,
+      "over_384": 0,
+      "under_15": 0
+    },
+    "cronjobs.docx": {
+      "units": 55,
+      "chunks_after": 64,
+      "token_lengths_min": 23,
+      "token_lengths_max": 367,
+      "token_lengths_avg": 174.7,
+      "over_384": 0,
+      "under_15": 0
+    },
+    "job_management.html": {
+      "units": 13,
+      "chunks_after": 14,
+      "token_lengths_min": 45,
+      "token_lengths_max": 309,
+      "token_lengths_avg": 156.1,
+      "over_384": 0,
+      "under_15": 0
+    },
+    "monitor_job.docx": {
+      "units": 26,
+      "chunks_after": 28,
+      "token_lengths_min": 38,
+      "token_lengths_max": 339,
+      "token_lengths_avg": 133.3,
+      "over_384": 0,
+      "under_15": 0
+    },
+    "parallel_work_queue.txt": {
+      "units": 12,
+      "chunks_after": 11,
+      "token_lengths_min": 47,
+      "token_lengths_max": 239,
+      "token_lengths_avg": 91.7,
+      "over_384": 0,
+      "under_15": 0
+    },
+    "pods_autoscale.html": {
+      "units": 26,
+      "chunks_after": 31,
+      "token_lengths_min": 34,
+      "token_lengths_max": 320,
+      "token_lengths_avg": 147.0,
+      "over_384": 0,
+      "under_15": 0
+    }
+  },
+  "resolved_target_sections": [
+    {
+      "section": "2. Job Testing Framework",
+      "chunk_index": 37,
+      "token_count": 256,
+      "snippet": "import unittest import subprocess import time import yaml class JobTestCase(unittest.TestCase): def setUp(self): self.na"
+    },
+    {
+      "section": "2. Job Testing Framework",
+      "chunk_index": 38,
+      "token_count": 205,
+      "snippet": "self.assertEqual(result.returncode, 0) # Wait for completion job_name = job_manifest['metadata']['name'] wait_cmd = f\"ku"
+    },
+    {
+      "section": "2. Job Testing Framework",
+      "chunk_index": 39,
+      "token_count": 362,
+      "snippet": "result = subprocess.run(status_cmd, shell=True, capture_output=True, text=True) self.assertEqual(result.stdout.strip(), "
+    },
+    {
+      "section": "1. Job State Backup",
+      "chunk_index": 41,
+      "token_count": 246,
+      "snippet": "# Backup CronJob definitions apiVersion: batch/v1 kind: CronJob metadata: name: backup-job-definitions spec: schedule: \""
+    },
+    {
+      "section": "1. Job State Backup",
+      "chunk_index": 42,
+      "token_count": 176,
+      "snippet": "# Backup ConfigMaps and Secrets used by jobs kubectl get configmaps,secrets --all-namespaces -l component=batch-job -o y"
+    },
+    {
+      "section": "1. Job State Backup",
+      "chunk_index": 43,
+      "token_count": 95,
+      "snippet": "volumeMounts: - name: backup-storage mountPath: /backup env: - name: AWS_DEFAULT_REGION value: \"us-west-2\" envFrom: - se"
+    },
+    {
+      "section": "3. Data Recovery Procedures",
+      "chunk_index": 45,
+      "token_count": 247,
+      "snippet": "#!/usr/bin/env python3 \"\"\" Job Data Recovery Script Recovers data from failed or incomplete jobs \"\"\" import subprocess i"
+    },
+    {
+      "section": "3. Data Recovery Procedures",
+      "chunk_index": 46,
+      "token_count": 230,
+      "snippet": "jobs = json.loads(result.stdout) failed_jobs = [] for job in jobs['items']: job_time = datetime.fromisoformat( job['stat"
+    },
+    {
+      "section": "3. Data Recovery Procedures",
+      "chunk_index": 47,
+      "token_count": 277,
+      "snippet": "f\"--selector=job-name={job_name}\", \"-o\", \"json\" ] result = subprocess.run(cmd, capture_output=True, text=True, check=Tru"
+    },
+    {
+      "section": "3. Data Recovery Procedures",
+      "chunk_index": 48,
+      "token_count": 225,
+      "snippet": "recovery_data[pod_name] = { 'logs': log_result.stdout, 'files': files_result.stdout.split('\\n') if files_result.returnco"
+    },
+    {
+      "section": "3. Data Recovery Procedures",
+      "chunk_index": 49,
+      "token_count": 255,
+      "snippet": "recovery_job = original_job.copy() # Update metadata recovery_job['metadata']['name'] = f\"{original_job['metadata']['nam"
+    },
+    {
+      "section": "3. Data Recovery Procedures",
+      "chunk_index": 50,
+      "token_count": 164,
+      "snippet": "return recovery_job if __name__ == \"__main__\": manager = JobRecoveryManager() failed_jobs = manager.find_failed_jobs() f"
+    },
+    {
+      "section": "3. Data Retention Policies",
+      "chunk_index": 57,
+      "token_count": 212,
+      "snippet": "# Automated cleanup job for compliance apiVersion: batch/v1 kind: CronJob metadata: name: data-retention-cleanup spec: s"
+    },
+    {
+      "section": "3. Data Retention Policies",
+      "chunk_index": 58,
+      "token_count": 207,
+      "snippet": "cutoff_date = datetime.now() - retention_period print(f\"Cleaning {data_type} older than {cutoff_date}\") # Log for audit "
+    },
+    {
+      "section": "3. Data Retention Policies",
+      "chunk_index": 59,
+      "token_count": 61,
+      "snippet": "json.dump(audit_entry, f) volumeMounts: - name: audit-storage mountPath: /audit volumes: - name: audit-storage persisten"
+    }
+  ]
+}

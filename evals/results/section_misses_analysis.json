@@ -1,0 +1,124 @@
+[
+  {
+    "dataset": "Golden 15",
+    "id": 4,
+    "question": "What is the difference between HPA and VPA in Kubernetes?",
+    "expected_source": "pods_autoscale.html",
+    "expected_section": "HPA vs. VPA: Which One to Use?",
+    "retrieved_top1_source": "pods_autoscale.html",
+    "retrieved_top1_section": "\u21e2 HPA & VPA in Kubernetes with a Practical Example",
+    "retrieved_sections_top5": [
+      "\u21e2 HPA & VPA in Kubernetes with a Practical Example",
+      "Conclusion",
+      "HPA Practical Example",
+      "Introduction to Kubernetes Autoscaling",
+      "Metric Server Setup"
+    ],
+    "expected_reference": "HPA (Horizontal Pod Autoscaler) scales the number of pod replicas up or down based on CPU or custom metrics. VPA (Vertical Pod Autoscaler) adjusts the CPU and memory resource requests and limits for existing pods. HPA adds or removes pods; VPA resizes the resources of existing pods."
+  },
+  {
+    "dataset": "Golden 15",
+    "id": 7,
+    "question": "What Databricks CLI command retrieves the details of a specific job?",
+    "expected_source": "job_management.html",
+    "expected_section": "Example: Retrieve a job using the CLI",
+    "retrieved_top1_source": "job_management.html",
+    "retrieved_top1_section": "Get started with the Databricks CLI",
+    "retrieved_sections_top5": [
+      "Get started with the Databricks CLI",
+      "Example: Create a job using the CLI",
+      "Get started with the Databricks REST API",
+      "Run a job using the CLI",
+      "Compare tools"
+    ],
+    "expected_reference": "Use databricks jobs get <job-id>. For example, databricks jobs get 478701692316314 returns the full JSON configuration of that job including its settings, creator username, task definitions, and max concurrent runs."
+  },
+  {
+    "dataset": "Golden 15",
+    "id": 11,
+    "question": "What are the completions and parallelism fields in a Kubernetes Job spec?",
+    "expected_source": "cronjobs.docx",
+    "expected_section": "Completions and Parallelism",
+    "retrieved_top1_source": "architecture.pptx",
+    "retrieved_top1_section": "Jobs",
+    "retrieved_sections_top5": [
+      "Jobs",
+      "4. Jobs Taking Too Long",
+      "3. Parallel Processing Patterns",
+      "NonIndexed (Default)",
+      "What Are Jobs?"
+    ],
+    "expected_reference": "completions specifies how many pods must successfully complete before the Job is considered done (e.g., completions: 5 requires 5 successful completions). parallelism controls the maximum number of pods that can run at the same time (e.g., parallelism: 3 allows up to 3 concurrent pods)."
+  },
+  {
+    "dataset": "Golden 15",
+    "id": 12,
+    "question": "Which Kubernetes API group does a Job resource belong to?",
+    "expected_source": "cronjobs.docx",
+    "expected_section": "2. API Group and Immutability",
+    "retrieved_top1_source": "cronjobs.docx",
+    "retrieved_top1_section": "What Are Jobs?",
+    "retrieved_sections_top5": [
+      "What Are Jobs?",
+      "Using Labels for Job Organization",
+      "Understanding Kubernetes Jobs",
+      "Checking Job Status with kubectl",
+      "Introduction"
+    ],
+    "expected_reference": "Kubernetes Jobs belong to the batch/v1 API group, which is a stable API. The pod template within a Job is immutable and cannot be modified after the Job is created."
+  },
+  {
+    "dataset": "Hard 22",
+    "id": 3,
+    "question": "What happens when a Kubernetes Job specifies completionMode: Indexed?",
+    "expected_source": "cronjobs.docx",
+    "expected_section": "Indexed Mode",
+    "retrieved_top1_source": "monitor_job.docx",
+    "retrieved_top1_section": "Understanding Kubernetes Jobs",
+    "retrieved_sections_top5": [
+      "Understanding Kubernetes Jobs",
+      "What Are Jobs?",
+      "Introduction",
+      "Viewing Logs of Completed Jobs",
+      "Understanding Job Status"
+    ],
+    "key_term": "completionMode: Indexed",
+    "expected_answer": "Each Pod gets a unique completion index"
+  },
+  {
+    "dataset": "Hard 22",
+    "id": 4,
+    "question": "In Kubernetes Jobs, what is the default behavior when completionMode is NonIndexed?",
+    "expected_source": "cronjobs.docx",
+    "expected_section": "NonIndexed (Default)",
+    "retrieved_top1_source": "monitor_job.docx",
+    "retrieved_top1_section": "Understanding Kubernetes Jobs",
+    "retrieved_sections_top5": [
+      "Understanding Kubernetes Jobs",
+      "What Are Jobs?",
+      "Introduction",
+      "Introduction",
+      "Analyzing Kubernetes Job Logs"
+    ],
+    "key_term": "completionMode: NonIndexed",
+    "expected_answer": "All Pods are identical"
+  },
+  {
+    "dataset": "Hard 22",
+    "id": 5,
+    "question": "What concurrencyPolicy setting prevents concurrent runs of a scheduled CronJob?",
+    "expected_source": "cronjobs.docx",
+    "expected_section": "Schedule Configuration",
+    "retrieved_top1_source": "cronjobs.docx",
+    "retrieved_top1_section": "3. Machine Learning Model Training",
+    "retrieved_sections_top5": [
+      "3. Machine Learning Model Training",
+      "What Are CronJobs?",
+      "Creating a CronJob for Scheduled Execution",
+      "2. Schedule Optimization for Cost Savings",
+      "2. Job Testing Framework"
+    ],
+    "key_term": "concurrencyPolicy: Forbid",
+    "expected_answer": "concurrencyPolicy: Forbid"
+  }
+]
