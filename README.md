@@ -158,6 +158,15 @@ streamlit run evals/app.py
 
 ---
 
+## Known Limitations & Production Caveats
+
+1. **Corpus Ingestion Disparity**: The noisy background corpus (`DATA/noisy_data`, 58 documents, 5,871 chunks in Qdrant) was indexed under chunking policy `v3.0-tokenguard-drop`, where text fragments under 15 tokens were discarded. The technical target corpus (`DATA/true_data`, 6 documents, 197 chunks in Qdrant) was indexed under chunking policy `v3.1-tokenguard-merge-384max`, where fragments under 15 tokens are merged into preceding headers/sections to guarantee 100% source text and command completeness (e.g. CLI pipelines like `redis-cli`, `rpush`, `lrange`).
+2. **Document Parsing (No OCR)**: Document parsing operates locally via `pypdf`, `pdfplumber`, `python-docx`, and `python-pptx` without an optical character recognition (OCR) engine. Scanned raster PDFs or bitmap diagram texts in the corpus are not extracted.
+3. **Free-Tier LLM Quotas**: The system runs against Groq's free-tier rate limits (200,000 tokens/day). With planner LLM rewrite bypass on standalone technical queries, `GUARD_MODE=single_call` consumes 967.0 tokens/turn (~206.8 turns/day), whereas full NeMo multi-step execution consumes 2,498.0 tokens/turn (~80.1 turns/day).
+4. **Guardrail Evaluation Scope**: Single-call input safety guardrail accuracy (100% on 20 non-infra test cases) was verified on the 22-case development dataset (`evals/data/guardrails_dev_dataset.json`). Full evaluation against unseen adversary distributions requires running the held-out evaluation runner (`scripts/run_single_call_accuracy.py --dataset PATH`) against proprietary red-team prompts.
+
+---
+
 ## Documentation Index
 
 | # | Guide | What it covers |
@@ -177,3 +186,4 @@ streamlit run evals/app.py
 ---
 
 *Built for High-Scale Enterprise Document Intelligence.*
+

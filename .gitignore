@@ -58,6 +58,12 @@ commands.md
 *.db
 *.sqlite
 checkpoints.db
+*.db-shm
+*.db-wal
+*.db-journal
 
 # Logs
 *.log
+
+# Scratch scripts and temporary files
+scratch/

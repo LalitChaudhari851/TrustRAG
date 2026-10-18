@@ -147,7 +147,7 @@
     },
     {
       "id": 14,
-      "question": "What release manifest URL installs the Vertical Pod Autoscaler components in cronjobs.docx?",
+      "question": "What release manifest URL installs the Vertical Pod Autoscaler components?",
       "source": "cronjobs.docx",
       "section": "1. Resource Right-Sizing",
       "src_exists": true,

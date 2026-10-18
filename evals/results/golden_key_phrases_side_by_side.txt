@@ -1,0 +1,22 @@
+===================================================================================================================
+SIDE-BY-SIDE GOLDEN KEY-PHRASE HIT@5 BENCHMARK (ORIGINAL VS TIGHTENED ANSWER-BEARING)
+===================================================================================================================
+Q#   | Original Phrase           | Orig Hit@5 | Tightened Answer-Bearing Phrase                         | Tight Hit@5
+-------------------------------------------------------------------------------------------------------------------
+Q1   | redis-pod.yaml            | True       | redis-pod.yaml                                          | True       
+Q2   | parallelism: 2            | True       | parallelism: 2                                          | True       
+Q3   | rpush job2                | True       | rpush job2                                              | True       
+Q4   | HPA                       | True       | adjusting the number of running pods                    | True       
+Q5   | components.yaml           | True       | components.yaml                                         | True       
+Q6   | kubectl top nodes         | True       | kubectl top nodes                                       | True       
+Q7   | databricks jobs get       | True       | databricks jobs get                                     | True       
+Q8   | REST API                  | True       | language is not currently available                     | True       
+Q9   | CLI                       | True       | Databricks CLI, the Databricks SDKs, and the REST API   | True       
+Q10  | 2023-05-10                | False      | OnFailure                                               | True       
+Q11  | completions               | True       | completions                                             | True       
+Q12  | batch/v1                  | True       | batch/v1                                                | True       
+Q13  | minikube start            | True       | minikube start                                          | True       
+Q14  | kubectl get jobs          | True       | COMPLETIONS   DURATION   AGE                            | True       
+Q15  | kubectl cluster-info      | False      | kubectl get pods -n kube-system                         | True       
+-------------------------------------------------------------------------------------------------------------------
+TOTAL: Original Hit@5 = 13/15 (0.8667) | Tightened Hit@5 = 15/15 (1.0000)

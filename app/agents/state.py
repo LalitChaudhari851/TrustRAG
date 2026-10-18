@@ -2,7 +2,7 @@ from typing import TypedDict, List, Annotated
 import operator
 
 
-class AgentState(TypedDict):
+class AgentState(TypedDict, total=False):
     # Using Annotated with operator.add ensures that messages 
     # are appended to the history rather than replaced.
     messages: Annotated[List[dict], operator.add]
@@ -11,3 +11,5 @@ class AgentState(TypedDict):
     plan: List[str]
     status: str
     final_answer: str
+    route: str
+    planner_raw_output: str

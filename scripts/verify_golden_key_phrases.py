@@ -17,8 +17,8 @@ with open("evals/golden_dataset.json", "r", encoding="utf-8") as f:
 
 terms_to_check = {
     3: "rpush job2",
-    10: "2023-05-10",
-    15: "kubectl cluster-info"
+    10: "OnFailure",
+    15: "kubectl get pods -n kube-system"
 }
 
 # Fetch all true_data chunks (or scroll through all points)

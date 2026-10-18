@@ -9,15 +9,15 @@ Offline Cross-Encoder Status: BAAI/bge-reranker-base loaded successfully offline
 --------------------------------------------------------------------------------
 Dataset / Variant                | Src Hit@5  | Sec Hit@5  | Key Hit@5  | Key Hit@15  | Src MRR   | Warm Median Lat (ms)
 ------------------------------------------------------------------------------------------------------------------------
-Golden 15: no_reranker           | 1.0000     | 0.9333     | 0.8000     | 0.8000      | 0.9467    | 0.00      
-Golden 15: tinybert              | 1.0000     | 0.7333     | 0.8000     | 0.8000      | 0.9667    | 285.06    
-Golden 15: minilm_l12            | 1.0000     | 0.8000     | 0.8000     | 0.8000      | 1.0000    | 5180.18   
-Golden 15: bge_reranker_base     | 1.0000     | 0.9333     | 0.8000     | 0.8000      | 1.0000    | 17400.53  
+Golden 15: no_reranker           | 1.0000     | 0.9333     | 1.0000     | 1.0000      | 0.9556    | 0.00      
+Golden 15: tinybert              | 1.0000     | 0.7333     | 1.0000     | 1.0000      | 0.9667    | 635.53    
+Golden 15: minilm_l12            | 1.0000     | 0.8000     | 1.0000     | 1.0000      | 1.0000    | 8726.08   
+Golden 15: bge_reranker_base     | 1.0000     | 0.9333     | 1.0000     | 1.0000      | 1.0000    | 26006.68  
 ------------------------------------------------------------------------------------------------------------------------
 Hard 22: no_reranker             | 0.9545     | 0.9545     | 0.9545     | 1.0000      | 0.9318    | 0.00      
-Hard 22: tinybert                | 1.0000     | 0.8636     | 0.9091     | 1.0000      | 0.9318    | 285.06    
-Hard 22: minilm_l12              | 1.0000     | 0.9091     | 0.9091     | 1.0000      | 0.9015    | 5180.18   
-Hard 22: bge_reranker_base       | 1.0000     | 1.0000     | 1.0000     | 1.0000      | 0.9470    | 17400.53  
+Hard 22: tinybert                | 1.0000     | 0.8636     | 0.9091     | 1.0000      | 0.9318    | 635.53    
+Hard 22: minilm_l12              | 1.0000     | 0.9091     | 0.9091     | 1.0000      | 0.9015    | 8726.08   
+Hard 22: bge_reranker_base       | 1.0000     | 1.0000     | 1.0000     | 1.0000      | 0.9470    | 26006.68  
 
 --------------------------------------------------------------------------------
 2. QUERIES WHERE VARIANTS DIFFER IN KEY-PHRASE HIT@5
@@ -34,14 +34,14 @@ Dataset: HARD | Query ID: 4
   Key Term: 'completionMode: NonIndexed'
     - no_reranker       : Key Hit@5 = True  (Chunk Rank: Rank 1)
     - tinybert          : Key Hit@5 = False (Chunk Rank: Rank 7)
-    - minilm_l12        : Key Hit@5 = True  (Chunk Rank: Rank 4)
+    - minilm_l12        : Key Hit@5 = True  (Chunk Rank: Rank 5)
     - bge_reranker_base : Key Hit@5 = True  (Chunk Rank: Rank 3)
 Dataset: HARD | Query ID: 5
   Question: 'What concurrencyPolicy setting prevents concurrent runs of a scheduled CronJob?'
   Key Term: 'concurrencyPolicy: Forbid'
     - no_reranker       : Key Hit@5 = True  (Chunk Rank: Rank 2)
     - tinybert          : Key Hit@5 = True  (Chunk Rank: Rank 1)
-    - minilm_l12        : Key Hit@5 = False (Chunk Rank: Rank 7)
+    - minilm_l12        : Key Hit@5 = False (Chunk Rank: Rank 8)
     - bge_reranker_base : Key Hit@5 = True  (Chunk Rank: Rank 1)
 Dataset: HARD | Query ID: 14
   Question: 'What release manifest URL installs the Vertical Pod Autoscaler components?'
@@ -124,8 +124,8 @@ Hard Query Q4: 'In Kubernetes Jobs, what is the default behavior when completion
          Preview: A job can have several statuses: Active: The job is still running Completed: The job has completed successfully Failed:
        Rank 4: [cronjobs.docx -> 2. Cross-Region Job Replication] (Score: 0.0000)
          Preview: # Multi-region CronJob with failover apiVersion: argoproj.io/v1alpha1 kind: Application metadata: name: critical-jobs na
-       Rank 5: [cronjobs.docx -> What Are Jobs?] (Score: 0.0000)
-         Preview: A Kubernetes Job is a resource designed to run finite workloads that execute a task to completion. Unlike Pods created v
+       Rank 5: [monitor_job.docx -> Analyzing Kubernetes Job Logs] (Score: 0.0000)
+         Preview: Being able to view and analyze the logs from your Kubernetes jobs is essential for debugging and understanding job behav
   >> Variant: tinybert (Key Hit@5: False, Key Chunk Rank: Rank 7)
      Top-5 Chunks:
        Rank 1: [monitor_job.docx -> Understanding Kubernetes Jobs] (Score: 0.9854)
@@ -138,18 +138,18 @@ Hard Query Q4: 'In Kubernetes Jobs, what is the default behavior when completion
          Preview: Being able to view and analyze the logs from your Kubernetes jobs is essential for debugging and understanding job behav
        Rank 5: [monitor_job.docx -> Understanding Job Status] (Score: 0.1389)
          Preview: A job can have several statuses: Active: The job is still running Completed: The job has completed successfully Failed:
-  >> Variant: minilm_l12 (Key Hit@5: True, Key Chunk Rank: Rank 4)
+  >> Variant: minilm_l12 (Key Hit@5: True, Key Chunk Rank: Rank 5)
      Top-5 Chunks:
-       Rank 1: [monitor_job.docx -> Understanding Kubernetes Jobs] (Score: 0.7312)
+       Rank 1: [monitor_job.docx -> Understanding Kubernetes Jobs] (Score: 0.6694)
          Preview: A Kubernetes Job is a controller that creates one or more pods and ensures they successfully terminate. Jobs are useful
-       Rank 2: [cronjobs.docx -> What Are Jobs?] (Score: 0.4164)
+       Rank 2: [cronjobs.docx -> What Are Jobs?] (Score: 0.5419)
          Preview: A Kubernetes Job is a resource designed to run finite workloads that execute a task to completion. Unlike Pods created v
-       Rank 3: [monitor_job.docx -> Introduction] (Score: 0.1548)
+       Rank 3: [monitor_job.docx -> Introduction] (Score: 0.1779)
          Preview: Kubernetes is a powerful container orchestration platform that helps manage containerized applications across multiple h
-       Rank 4: [cronjobs.docx -> NonIndexed (Default)] (Score: 0.0766)
-         Preview: All Pods are identical: spec: completionMode: NonIndexed completions: 3 parallelism: 2
-       Rank 5: [monitor_job.docx -> Viewing Logs of Completed Jobs] (Score: 0.0664)
+       Rank 4: [monitor_job.docx -> Viewing Logs of Completed Jobs] (Score: 0.0684)
          Preview: One of the advantages of Kubernetes jobs is that you can view the logs even after the job has completed. This is very us
+       Rank 5: [cronjobs.docx -> NonIndexed (Default)] (Score: 0.0641)
+         Preview: All Pods are identical: spec: completionMode: NonIndexed completions: 3 parallelism: 2
   >> Variant: bge_reranker_base (Key Hit@5: True, Key Chunk Rank: Rank 3)
      Top-5 Chunks:
        Rank 1: [cronjobs.docx -> Indexed Mode] (Score: 0.3092)
@@ -178,44 +178,44 @@ Hard Query Q5: 'What concurrencyPolicy setting prevents concurrent runs of a sch
          Preview: The schedule field uses the standard cron format: # ┌───────────── minute (0 - 59) # │ ┌───────────── hour (0 - 23) # │
        Rank 4: [monitor_job.docx -> Creating a CronJob for Scheduled Execution] (Score: 0.0000)
          Preview: For tasks that need to run on a schedule, Kubernetes provides CronJobs. Let's create a simple CronJob: cd ~/project nano
-       Rank 5: [cronjobs.docx -> 2. CronJob Not Creating Jobs] (Score: 0.0000)
-         Preview: Symptoms: CronJob exists but no Jobs are created CronJob Troubleshooting Flowchart Diagnostic Steps: # Check CronJob sta
+       Rank 5: [A Primer on Memory Consistency and Cache Coherence - 2nd Edition.pdf -> Page 92] (Score: 0.0000)
+         Preview: Table 5.8 depicts the case in which Core C2 acquires the same lock as acquired by Core C1. In this case, Core C1’s criti
   >> Variant: tinybert (Key Hit@5: True, Key Chunk Rank: Rank 1)
      Top-5 Chunks:
-       Rank 1: [cronjobs.docx -> 3. Machine Learning Model Training] (Score: 0.4967)
+       Rank 1: [cronjobs.docx -> 3. Machine Learning Model Training] (Score: 0.4951)
          Preview: Scenario: Periodic model retraining with new data apiVersion: batch/v1 kind: CronJob metadata: name: ml-model-training s
-       Rank 2: [cronjobs.docx -> What Are CronJobs?] (Score: 0.0295)
+       Rank 2: [cronjobs.docx -> What Are CronJobs?] (Score: 0.0303)
          Preview: A CronJob is a thin wrapper around Jobs that enables scheduling. It creates Job objects automatically based on a defined
-       Rank 3: [monitor_job.docx -> Creating a CronJob for Scheduled Execution] (Score: 0.0110)
+       Rank 3: [monitor_job.docx -> Creating a CronJob for Scheduled Execution] (Score: 0.0111)
          Preview: For tasks that need to run on a schedule, Kubernetes provides CronJobs. Let's create a simple CronJob: cd ~/project nano
-       Rank 4: [cronjobs.docx -> 2. Job Testing Framework] (Score: 0.0049)
+       Rank 4: [cronjobs.docx -> 2. Schedule Optimization for Cost Savings] (Score: 0.0100)
+         Preview: # Run during off-peak hours for cost savings apiVersion: batch/v1 kind: CronJob metadata: name: cost-effective-processin
+       Rank 5: [cronjobs.docx -> 2. Job Testing Framework] (Score: 0.0048)
          Preview: result = subprocess.run(status_cmd, shell=True, capture_output=True, text=True) self.assertEqual(result.stdout.strip(),
-       Rank 5: [cronjobs.docx -> 2. CronJob Not Creating Jobs] (Score: 0.0039)
-         Preview: Symptoms: CronJob exists but no Jobs are created CronJob Troubleshooting Flowchart Diagnostic Steps: # Check CronJob sta
-  >> Variant: minilm_l12 (Key Hit@5: False, Key Chunk Rank: Rank 7)
+  >> Variant: minilm_l12 (Key Hit@5: False, Key Chunk Rank: Rank 8)
      Top-5 Chunks:
-       Rank 1: [A Trip Through The Graphics Pipeline - All (2011).docx -> Thread Groups] (Score: 0.1033)
+       Rank 1: [A Trip Through The Graphics Pipeline - All (2011).docx -> Thread Groups] (Score: 0.0868)
          Preview: However, this is not yet enough for actual shared-memory communication. The problem is simple: The above invariant guara
-       Rank 2: [monitor_job.docx -> Creating a CronJob for Scheduled Execution] (Score: 0.0582)
+       Rank 2: [monitor_job.docx -> Creating a CronJob for Scheduled Execution] (Score: 0.0583)
          Preview: For tasks that need to run on a schedule, Kubernetes provides CronJobs. Let's create a simple CronJob: cd ~/project nano
-       Rank 3: [cronjobs.docx -> What Are CronJobs?] (Score: 0.0414)
+       Rank 3: [cronjobs.docx -> What Are CronJobs?] (Score: 0.0507)
          Preview: A CronJob is a thin wrapper around Jobs that enables scheduling. It creates Job objects automatically based on a defined
-       Rank 4: [cronjobs.docx -> 2. CronJob Not Creating Jobs] (Score: 0.0153)
+       Rank 4: [cronjobs.docx -> 2. Schedule Optimization for Cost Savings] (Score: 0.0180)
+         Preview: # Run during off-peak hours for cost savings apiVersion: batch/v1 kind: CronJob metadata: name: cost-effective-processin
+       Rank 5: [cronjobs.docx -> 2. CronJob Not Creating Jobs] (Score: 0.0153)
          Preview: Symptoms: CronJob exists but no Jobs are created CronJob Troubleshooting Flowchart Diagnostic Steps: # Check CronJob sta
-       Rank 5: [cronjobs.docx -> Introduction] (Score: 0.0117)
-         Preview: As a platform engineer, you’ve likely encountered scenarios where you need to run one-time tasks, batch jobs, or schedul
   >> Variant: bge_reranker_base (Key Hit@5: True, Key Chunk Rank: Rank 1)
      Top-5 Chunks:
-       Rank 1: [cronjobs.docx -> 3. Machine Learning Model Training] (Score: 0.8239)
+       Rank 1: [cronjobs.docx -> 3. Machine Learning Model Training] (Score: 0.7651)
          Preview: Scenario: Periodic model retraining with new data apiVersion: batch/v1 kind: CronJob metadata: name: ml-model-training s
        Rank 2: [monitor_job.docx -> Creating a CronJob for Scheduled Execution] (Score: 0.0657)
          Preview: For tasks that need to run on a schedule, Kubernetes provides CronJobs. Let's create a simple CronJob: cd ~/project nano
-       Rank 3: [cronjobs.docx -> 2. Job Testing Framework] (Score: 0.0383)
+       Rank 3: [cronjobs.docx -> 2. Schedule Optimization for Cost Savings] (Score: 0.0543)
+         Preview: # Run during off-peak hours for cost savings apiVersion: batch/v1 kind: CronJob metadata: name: cost-effective-processin
+       Rank 4: [cronjobs.docx -> 2. Job Testing Framework] (Score: 0.0383)
          Preview: result = subprocess.run(status_cmd, shell=True, capture_output=True, text=True) self.assertEqual(result.stdout.strip(),
-       Rank 4: [cronjobs.docx -> Schedule Configuration] (Score: 0.0348)
+       Rank 5: [cronjobs.docx -> Schedule Configuration] (Score: 0.0348)
          Preview: The schedule field uses the standard cron format: # ┌───────────── minute (0 - 59) # │ ┌───────────── hour (0 - 23) # │
-       Rank 5: [cronjobs.docx -> Introduction] (Score: 0.0232)
-         Preview: As a platform engineer, you’ve likely encountered scenarios where you need to run one-time tasks, batch jobs, or schedul
 
 Hard Query Q14: 'What release manifest URL installs the Vertical Pod Autoscaler components?'
   Expected Source:  cronjobs.docx
@@ -230,33 +230,33 @@ Hard Query Q14: 'What release manifest URL installs the Vertical Pod Autoscaler 
          Preview: Before creating VPA objects first we need to install VPA in our cluster using the below steps:  Clone the VPA Source Cod
        Rank 3: [pods_autoscale.html -> What is VPA?] (Score: 0.0000)
          Preview: Vertical Pod Autoscaling (VPA) adjusts the CPU and memory resource requests and limits for your pods. Instead of adding
-       Rank 4: [pods_autoscale.html -> ⇢ HPA & VPA in Kubernetes with a Practical Example] (Score: 0.0000)
-         Preview: HPA & VPA in Kubernetes by Anvesh Muppeda  In the world of container orchestration, Kubernetes has emerged as the de fac
-       Rank 5: [architecture.pptx -> kubelet] (Score: 0.0000)
+       Rank 4: [architecture.pptx -> kubelet] (Score: 0.0000)
          Preview: kubelet Acts as the node agent responsible for managing pod lifecycle on its host.  Kubelet understands YAML container m
+       Rank 5: [pods_autoscale.html -> ⇢ HPA & VPA in Kubernetes with a Practical Example] (Score: 0.0000)
+         Preview: HPA & VPA in Kubernetes by Anvesh Muppeda  In the world of container orchestration, Kubernetes has emerged as the de fac
   >> Variant: tinybert (Key Hit@5: True, Key Chunk Rank: Rank 2)
      Top-5 Chunks:
-       Rank 1: [pods_autoscale.html -> Metric Server Setup] (Score: 0.9992)
+       Rank 1: [pods_autoscale.html -> Metric Server Setup] (Score: 0.9993)
          Preview: Before testing Horizontal Pod Autoscaler (HPA) and Vertical Pod Autoscaler (VPA), it’s essential to have the Metrics Ser
-       Rank 2: [cronjobs.docx -> 1. Resource Right-Sizing] (Score: 0.9929)
+       Rank 2: [cronjobs.docx -> 1. Resource Right-Sizing] (Score: 0.9927)
          Preview: Performance Optimization Charts Use Vertical Pod Autoscaler recommendations: # Install VPA if not present kubectl apply
-       Rank 3: [pods_autoscale.html -> What is VPA?] (Score: 0.6184)
+       Rank 3: [pods_autoscale.html -> What is VPA?] (Score: 0.6116)
          Preview: Vertical Pod Autoscaling (VPA) adjusts the CPU and memory resource requests and limits for your pods. Instead of adding
-       Rank 4: [pods_autoscale.html -> Exclude scaling for a specific container] (Score: 0.3055)
+       Rank 4: [pods_autoscale.html -> Exclude scaling for a specific container] (Score: 0.3049)
          Preview: To exclude scaling for a specific container within a pod managed by the VerticalPodAutoscaler (VPA), you can set the mod
-       Rank 5: [pods_autoscale.html -> What is HPA?] (Score: 0.1100)
-         Preview: Horizontal Pod Autoscaling (HPA) automatically scales the number of pods in a replication controller, deployment, or rep
+       Rank 5: [pods_autoscale.html -> Step 3: Create a VPA] (Score: 0.0988)
+         Preview: Create a file named vpa.yaml with the following content:  ``` apiVersion: "autoscaling.k8s.io/v1" kind: VerticalPodAutos
   >> Variant: minilm_l12 (Key Hit@5: True, Key Chunk Rank: Rank 2)
      Top-5 Chunks:
-       Rank 1: [pods_autoscale.html -> Metric Server Setup] (Score: 0.9968)
+       Rank 1: [pods_autoscale.html -> Metric Server Setup] (Score: 0.9970)
          Preview: Before testing Horizontal Pod Autoscaler (HPA) and Vertical Pod Autoscaler (VPA), it’s essential to have the Metrics Ser
-       Rank 2: [cronjobs.docx -> 1. Resource Right-Sizing] (Score: 0.9596)
+       Rank 2: [cronjobs.docx -> 1. Resource Right-Sizing] (Score: 0.9521)
          Preview: Performance Optimization Charts Use Vertical Pod Autoscaler recommendations: # Install VPA if not present kubectl apply
-       Rank 3: [pods_autoscale.html -> Step 1: Install VPA] (Score: 0.9084)
+       Rank 3: [pods_autoscale.html -> Step 1: Install VPA] (Score: 0.9134)
          Preview: Before creating VPA objects first we need to install VPA in our cluster using the below steps:  Clone the VPA Source Cod
-       Rank 4: [pods_autoscale.html -> What is VPA?] (Score: 0.5188)
+       Rank 4: [pods_autoscale.html -> What is VPA?] (Score: 0.4762)
          Preview: Vertical Pod Autoscaling (VPA) adjusts the CPU and memory resource requests and limits for your pods. Instead of adding
-       Rank 5: [pods_autoscale.html -> Step 3: Create a VPA] (Score: 0.1842)
+       Rank 5: [pods_autoscale.html -> Step 3: Create a VPA] (Score: 0.1680)
          Preview: We increased the CPU metrics in the above demo and then manually applied the changes to scale the pod. We can do this au
   >> Variant: bge_reranker_base (Key Hit@5: True, Key Chunk Rank: Rank 3)
      Top-5 Chunks:
@@ -274,6 +274,6 @@ Hard Query Q14: 'What release manifest URL installs the Vertical Pod Autoscaler 
 --------------------------------------------------------------------------------
 4. COMPARATIVE CONCLUSION & VERDICT
 --------------------------------------------------------------------------------
-- Best variant on Golden 15 Key-Phrase Hit@5: no_reranker (0.8000)
+- Best variant on Golden 15 Key-Phrase Hit@5: no_reranker (1.0000)
 - Best variant on Hard 22 Key-Phrase Hit@5:   bge_reranker_base (1.0000)
 - Does bge_reranker_base beat 'no reranker' on Hard 22 key-phrase hit@5? YES (1.0000 vs 0.9545).

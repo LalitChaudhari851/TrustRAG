@@ -24,6 +24,8 @@ class Settings:
     GUARDRAIL_MODEL = os.getenv("GUARDRAIL_MODEL", "llama-3.1-8b-instant")
     GUARD_MODE = os.getenv("GUARD_MODE", "nemo").lower()  # nemo | single_call
     GROQ_FALLBACK_API_KEY = os.getenv("GROQ_FALLBACK_API_KEY")
+    QUERY_REWRITE = os.getenv("QUERY_REWRITE", "followup_only").lower()  # followup_only | always | off
+    RETRIEVAL_MODE = os.getenv("RETRIEVAL_MODE", "tinybert").lower()  # tinybert | rrf | fusion
 
 
     # --- LLM GATEWAY (PORTKEY) ---

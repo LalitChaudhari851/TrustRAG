@@ -1,332 +1,167 @@
 {
-  "1": {
-    "actual_response": "I apologize, but our reasoning service is currently experiencing very high demand (rate limit reached). Please wait a few moments and try again.",
-    "actual_contexts": [
-      "[Source: parallel_work_queue.txt | Section: General]\n1. Start a storage service to hold the work queue. (We will use Redis).\n2. Create a queue, and fill it with messages.\n3. Start a Job that works on tasks from the queue.",
-      "[Source: parallel_work_queue.txt | Section: General]\nStart a temporary interactive pod for running the Redis CLI:\n\n    kubectl run -i --tty temp --image redis --command \"/bin/sh\"\n\nOnce the prompt appears, connect to Redis and fill the queue (named \"job2\"):\n\n    redis-cli -h redis",
-      "[Source: parallel_work_queue.txt | Section: General]\nIn this example, you will run a Kubernetes Job that runs multiple parallel\ntasks as worker processes, each running as a separate Pod.\n\nIn this example, as each pod is created, it picks up one unit of work\nfrom a task queue, processes it, and repeats until the end of the queue is reached.",
-      "[Source: parallel_work_queue.txt | Section: General]\nFor this example, you will start a single instance of Redis.\n\nRun the following commands:\n\n    kubectl apply -f https://k8s.io/examples/application/job/redis/redis-pod.yaml\n    kubectl apply -f https://k8s.io/examples/application/job/redis/redis-service.yaml",
-      "[Source: parallel_work_queue.txt | Section: General]\nq = rediswq.RedisWQ(name=\"job2\", host=host)\n    print(\"Worker with sessionID: \" +  q.sessionID())\n    print(\"Initial queue state: empty=\" + str(q.empty()))\n    while not q.empty():\n      item = q.lease(lease_secs=10, block=True, timeout=2) \n      if item is not None:\n        itemstr = item.decode(\"utf-8\")\n        print(\"Working on \" + itemstr)\n        time.sleep(10) # Put your actual work here instead of sleep.\n        q.complete(item)\n      else:\n        print(\"Waiting for work\")\n    print(\"Queue empty, exiting\")\n\n\nBuild the image (requires Docker):\n\n    docker build -t job-wq-2 .\n\nPush the image to your registry (replace <username> with your Hub username):\n\n    docker tag job-wq-2 <username>/job-wq-2\n    docker push <username>/job-wq-2"
-    ],
-    "actual_tools_called": [
-      "retrieve_documents"
-    ],
-    "latency_s": 25.98,
-    "is_infra_error": false,
-    "is_refusal": false
-  },
-  "2": {
-    "actual_response": "I apologize, but our reasoning service is currently experiencing very high demand (rate limit reached). Please wait a few moments and try again.",
-    "actual_contexts": [
-      "[Source: parallel_work_queue.txt | Section: General]\nIn this example, you will run a Kubernetes Job that runs multiple parallel\ntasks as worker processes, each running as a separate Pod.\n\nIn this example, as each pod is created, it picks up one unit of work\nfrom a task queue, processes it, and repeats until the end of the queue is reached.",
-      "[Source: monitor_job.docx | Section: General]\nKubernetes allows you to use JSONPath to extract specific fields from the output of kubectl commands. This is useful for focusing on particular aspects of your jobs:\nkubectl get job labeled-job -o jsonpath='{.status.succeeded}'\nThis command will output the number of succeeded pods for the labeled-job.\nTo get the creation time of a job:\nkubectl get job labeled-job -o jsonpath='{.metadata.creationTimestamp}'",
-      "[Source: parallel_work_queue.txt | Section: General]\nHere is the manifest for the Job (job.yaml). \nNote: Replace \"gcr.io/myproject\" with your image registry path.\n\n    apiVersion: batch/v1\n    kind: Job\n    metadata:\n      name: job-wq-2\n    spec:\n      parallelism: 2\n      template:\n        metadata:\n          name: job-wq-2\n        spec:\n          containers:\n          - name: c\n            image: gcr.io/myproject/job-wq-2\n          restartPolicy: OnFailure\n\nNote on Parallelism:\nIn this example, each pod works on several items from the queue and then exits. \nWorkers signal the queue is empty by exiting with success.",
-      "[Source: monitor_job.docx | Section: General]\nKubernetes generates events for various state changes in your jobs. These events can provide valuable information about the lifecycle of your jobs.\nLet's view the events related to our jobs:\nkubectl get events --sort-by=.metadata.creationTimestamp\nThis command shows all events in your namespace, sorted by time. You can filter for events related to a specific job:\nkubectl get events --field-selector involvedObject.name=labeled-job\nThese events can help you understand when and why jobs were created, started, or encountered issues.",
-      "[Source: monitor_job.docx | Section: General]\nA Kubernetes Job is a controller that creates one or more pods and ensures they successfully terminate. Jobs are useful for batch processes, one-time tasks, or any task that should run to completion rather than indefinitely."
-    ],
-    "actual_tools_called": [
-      "retrieve_documents"
-    ],
-    "latency_s": 1.49,
-    "is_infra_error": false,
-    "is_refusal": false
-  },
-  "3": {
-    "actual_response": "I apologize, but our reasoning service is currently experiencing very high demand (rate limit reached). Please wait a few moments and try again.",
-    "actual_contexts": [],
-    "actual_tools_called": [
-      "direct_answer"
-    ],
-    "latency_s": 1.55,
-    "is_infra_error": false,
-    "is_refusal": false
-  },
-  "4": {
-    "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
-    "actual_contexts": [],
-    "actual_tools_called": [
-      "unknown"
-    ],
-    "latency_s": 1.08,
-    "is_infra_error": true,
-    "is_refusal": false
-  },
-  "5": {
-    "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
-    "actual_contexts": [],
-    "actual_tools_called": [
-      "unknown"
-    ],
-    "latency_s": 0.15,
-    "is_infra_error": true,
-    "is_refusal": false
-  },
-  "6": {
-    "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
-    "actual_contexts": [],
-    "actual_tools_called": [
-      "unknown"
-    ],
-    "latency_s": 0.85,
-    "is_infra_error": true,
-    "is_refusal": false
-  },
-  "7": {
-    "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
-    "actual_contexts": [],
-    "actual_tools_called": [
-      "unknown"
-    ],
-    "latency_s": 0.21,
-    "is_infra_error": true,
-    "is_refusal": false
-  },
-  "8": {
-    "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
-    "actual_contexts": [],
-    "actual_tools_called": [
-      "unknown"
-    ],
-    "latency_s": 0.79,
-    "is_infra_error": true,
-    "is_refusal": false
-  },
-  "9": {
-    "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
-    "actual_contexts": [],
-    "actual_tools_called": [
-      "unknown"
-    ],
-    "latency_s": 0.72,
-    "is_infra_error": true,
-    "is_refusal": false
-  },
-  "10": {
-    "actual_response": "I apologize, but our reasoning service is currently experiencing very high demand (rate limit reached). Please wait a few moments and try again.",
-    "actual_contexts": [
-      "[Source: monitor_job.docx | Section: General]\nOne of the advantages of Kubernetes jobs is that you can view the logs even after the job has completed. This is very useful for debugging and auditing purposes.\nLet's create a job that will fail, so we can see how to debug it:\ncd ~/project\nnano failed-job.yaml\nCopy and paste the following YAML content:\napiVersion: batch/v1\nkind: Job\nmetadata:\nname: failed-job\nspec:\ntemplate:\nspec:\ncontainers:\n- name: failed\nimage: busybox:1.28\ncommand: [\"sh\", \"-c\", 'echo \"Attempting task...\" && exit 1']\nrestartPolicy: Never\nbackoffLimit: 2\nThis job will always exit with status code 1, which indicates failure. Save the file and exit nano, then create the job:\nkubectl apply -f failed-job.yaml\nWait a few moments for the job to attempt and fail a few times (up to the backoff limit). Then check its status:\nkubectl get jobs failed-job\nYou should see that it shows 0/1 completions and has reached the completion deadline.\nNow let's examine what went wrong by checking the logs of the failed pods:\nkubectl get pods -l job-name=failed-job\nYou'll see several pods, all in the Error state. Choose one and view its logs:\nkubectl logs <failed-pod-name>\nYou should see:\nAttempting task...",
-      "[Source: monitor_job.docx | Section: General]\nA Kubernetes Job is a controller that creates one or more pods and ensures they successfully terminate. Jobs are useful for batch processes, one-time tasks, or any task that should run to completion rather than indefinitely.",
-      "[Source: cronjobs.docx | Section: General]\nA Kubernetes Job is a resource designed to run finite workloads that execute a task to completion. Unlike Pods created via Deployments, which run indefinitely, a Job ensures that its associated Pods complete their task and then exit successfully.",
-      "[Source: cronjobs.docx | Section: General]\nJobs have strict requirements for Pod restart policies:\nOnFailure: Kubelet restarts the container within the same Pod if it crashes.\nNever: Entire Pod is marked as failed, Job controller creates a new Pod.\nAlways: Not allowed (would prevent Pod from ever completing).",
-      "[Source: cronjobs.docx | Section: General]\n# tests/job-test.yaml\napiVersion: v1\nkind: Pod\nmetadata:\nname: job-integration-test\nannotations:\n\"helm.sh/hook\": test\n\"helm.sh/hook-weight\": \"1\"\n\"helm.sh/hook-delete-policy\": before-hook-creation,hook-succeeded\nspec:\nrestartPolicy: Never\ncontainers:\n- name: test-runner\nimage: alpine/k8s:1.24.0\ncommand:\n- sh\n- -c\n- |\n# Wait for job to complete\nkubectl wait --for=condition=complete job/{{ include \"chart.fullname\" . }}-data-processor --timeout=300s\n# Verify job output\nJOB_POD=$(kubectl get pods -l job-name={{ include \"chart.fullname\" . }}-data-processor -o jsonpath='{.items[0].metadata.name}')\nkubectl logs $JOB_POD | grep \"Processing completed successfully\"\nif [ $? -eq 0 ]; then\necho \"\u2705 Job test passed\"\nexit 0\nelse\necho \"\u274c Job test failed\"\nexit 1\nfi\nTesting Pipeline Workflow"
-    ],
-    "actual_tools_called": [
-      "retrieve_documents"
-    ],
-    "latency_s": 2.28,
-    "is_infra_error": false,
-    "is_refusal": false
-  },
-  "11": {
-    "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
-    "actual_contexts": [],
-    "actual_tools_called": [
-      "unknown"
-    ],
-    "latency_s": 0.16,
-    "is_infra_error": true,
-    "is_refusal": false
-  },
-  "12": {
-    "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
-    "actual_contexts": [],
-    "actual_tools_called": [
-      "unknown"
-    ],
-    "latency_s": 0.15,
-    "is_infra_error": true,
-    "is_refusal": false
-  },
-  "13": {
-    "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
-    "actual_contexts": [],
-    "actual_tools_called": [
-      "unknown"
-    ],
-    "latency_s": 2.38,
-    "is_infra_error": true,
-    "is_refusal": false
-  },
-  "14": {
-    "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
-    "actual_contexts": [],
-    "actual_tools_called": [
-      "unknown"
-    ],
-    "latency_s": 0.39,
-    "is_infra_error": true,
-    "is_refusal": false
-  },
-  "15": {
-    "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
-    "actual_contexts": [],
-    "actual_tools_called": [
-      "unknown"
-    ],
-    "latency_s": 1.64,
-    "is_infra_error": true,
-    "is_refusal": false
-  },
-  "1": {
-    "actual_response": "I apologize, but our reasoning service is currently experiencing very high demand (rate limit reached). Please wait a few moments and try again.",
-    "actual_contexts": [
-      "[Source: parallel_work_queue.txt | Section: General]\n1. Start a storage service to hold the work queue. (We will use Redis).\n2. Create a queue, and fill it with messages.\n3. Start a Job that works on tasks from the queue.",
-      "[Source: parallel_work_queue.txt | Section: General]\nStart a temporary interactive pod for running the Redis CLI:\n\n    kubectl run -i --tty temp --image redis --command \"/bin/sh\"\n\nOnce the prompt appears, connect to Redis and fill the queue (named \"job2\"):\n\n    redis-cli -h redis",
-      "[Source: parallel_work_queue.txt | Section: General]\nIn this example, you will run a Kubernetes Job that runs multiple parallel\ntasks as worker processes, each running as a separate Pod.\n\nIn this example, as each pod is created, it picks up one unit of work\nfrom a task queue, processes it, and repeats until the end of the queue is reached.",
-      "[Source: parallel_work_queue.txt | Section: General]\nFor this example, you will start a single instance of Redis.\n\nRun the following commands:\n\n    kubectl apply -f https://k8s.io/examples/application/job/redis/redis-pod.yaml\n    kubectl apply -f https://k8s.io/examples/application/job/redis/redis-service.yaml",
-      "[Source: parallel_work_queue.txt | Section: General]\nq = rediswq.RedisWQ(name=\"job2\", host=host)\n    print(\"Worker with sessionID: \" +  q.sessionID())\n    print(\"Initial queue state: empty=\" + str(q.empty()))\n    while not q.empty():\n      item = q.lease(lease_secs=10, block=True, timeout=2) \n      if item is not None:\n        itemstr = item.decode(\"utf-8\")\n        print(\"Working on \" + itemstr)\n        time.sleep(10) # Put your actual work here instead of sleep.\n        q.complete(item)\n      else:\n        print(\"Waiting for work\")\n    print(\"Queue empty, exiting\")\n\n\nBuild the image (requires Docker):\n\n    docker build -t job-wq-2 .\n\nPush the image to your registry (replace <username> with your Hub username):\n\n    docker tag job-wq-2 <username>/job-wq-2\n    docker push <username>/job-wq-2"
-    ],
-    "actual_tools_called": [
-      "retrieve_documents"
-    ],
-    "latency_s": 3.9,
-    "is_infra_error": false,
-    "is_refusal": false
-  },
-  "2": {
-    "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
-    "actual_contexts": [],
-    "actual_tools_called": [
-      "unknown"
-    ],
-    "latency_s": 4.35,
-    "is_infra_error": true,
-    "is_refusal": false
-  },
-  "3": {
-    "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
-    "actual_contexts": [],
-    "actual_tools_called": [
-      "unknown"
-    ],
-    "latency_s": 0.82,
-    "is_infra_error": true,
-    "is_refusal": false
-  },
-  "4": {
-    "actual_response": "I apologize, but our reasoning service is currently experiencing very high demand (rate limit reached). Please wait a few moments and try again.",
-    "actual_contexts": [
-      "[Source: pods_autoscale.html | Section: General]\nHPA & VPA in Kubernetes by Anvesh Muppeda\n\nIn the world of container orchestration, Kubernetes has emerged as the de facto standard. One of its powerful features is autoscaling, which helps maintain application performance and optimize resource usage. In this post, we\u2019ll dive into two main types of autoscaling in Kubernetes: Horizontal Pod Autoscaling (HPA) and Vertical Pod Autoscaling (VPA).",
-      "[Source: pods_autoscale.html | Section: General]\nKubernetes autoscaling, through HPA and VPA, provides robust mechanisms to manage application scalability and resource optimization. By understanding and implementing these autoscaling strategies, you can ensure that your applications are resilient, performant, and cost-effective.",
-      "[Source: pods_autoscale.html | Section: General]\nAutoscaling in Kubernetes ensures that your application can handle varying loads by automatically adjusting the number of running pods or the resources allocated to them. This dynamic adjustment is crucial for maintaining application performance, optimizing resource usage, and reducing operational costs.\n\nHPA & VPA Animation",
-      "[Source: pods_autoscale.html | Section: General]\nBefore testing Horizontal Pod Autoscaler (HPA) and Vertical Pod Autoscaler (VPA), it\u2019s essential to have the Metrics Server installed in your Kubernetes cluster. The Metrics Server collects resource usage metrics from the cluster\u2019s nodes and pods, which are necessary for autoscaling decisions.\n\nYou can install the Metrics Server using either a YAML manifest or the official Helm chart. To install the latest release of the Metrics Server from the YAML manifest, follow these steps:\n\n- Download the Components Manifest: Use kubectl apply to download and apply the Components manifest directly from the latest release of the Metrics Server:\n\n```\n$ kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml\n```\n\nThis command fetches the YAML manifest for the latest release of the Metrics Server from its GitHub repository and applies it to your Kubernetes cluster.\n\n2. Verify Installation: After applying the manifest, verify that the Metrics Server pods are running successfully. You can check the pods in the kube-system namespace:\n\n```\nkubectl get pods -n kube-system | grep metrics-server\n```",
-      "[Source: pods_autoscale.html | Section: General]\nTo set up HPA, you need to define an HPA object in your Kubernetes cluster.\n\nLet\u2019s deploy an example using HPA."
-    ],
-    "actual_tools_called": [
-      "retrieve_documents"
-    ],
-    "latency_s": 32.1,
-    "is_infra_error": false,
-    "is_refusal": false
-  },
-  "5": {
-    "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
-    "actual_contexts": [],
-    "actual_tools_called": [
-      "unknown"
-    ],
-    "latency_s": 2.72,
-    "is_infra_error": true,
-    "is_refusal": false
-  },
-  "6": {
-    "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
-    "actual_contexts": [],
-    "actual_tools_called": [
-      "unknown"
-    ],
-    "latency_s": 0.93,
-    "is_infra_error": true,
-    "is_refusal": false
-  },
-  "7": {
-    "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
-    "actual_contexts": [],
-    "actual_tools_called": [
-      "unknown"
-    ],
-    "latency_s": 0.86,
-    "is_infra_error": true,
-    "is_refusal": false
-  },
-  "8": {
-    "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
-    "actual_contexts": [],
-    "actual_tools_called": [
-      "unknown"
-    ],
-    "latency_s": 0.39,
-    "is_infra_error": true,
-    "is_refusal": false
-  },
-  "9": {
-    "actual_response": "I apologize, but our reasoning service is currently experiencing very high demand (rate limit reached). Please wait a few moments and try again.",
-    "actual_contexts": [],
-    "actual_tools_called": [
-      "direct_answer"
-    ],
-    "latency_s": 0.91,
-    "is_infra_error": false,
-    "is_refusal": false
-  },
-  "10": {
-    "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
-    "actual_contexts": [],
-    "actual_tools_called": [
-      "unknown"
-    ],
-    "latency_s": 1.11,
-    "is_infra_error": true,
-    "is_refusal": false
-  },
-  "11": {
-    "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
-    "actual_contexts": [],
-    "actual_tools_called": [
-      "unknown"
-    ],
-    "latency_s": 0.39,
-    "is_infra_error": true,
-    "is_refusal": false
-  },
-  "12": {
-    "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
-    "actual_contexts": [],
-    "actual_tools_called": [
-      "unknown"
-    ],
-    "latency_s": 0.36,
-    "is_infra_error": true,
-    "is_refusal": false
-  },
-  "13": {
-    "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
-    "actual_contexts": [],
-    "actual_tools_called": [
-      "unknown"
-    ],
-    "latency_s": 1.02,
-    "is_infra_error": true,
-    "is_refusal": false
-  },
-  "14": {
-    "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
-    "actual_contexts": [],
-    "actual_tools_called": [
-      "unknown"
-    ],
-    "latency_s": 0.93,
-    "is_infra_error": true,
-    "is_refusal": false
-  },
-  "15": {
-    "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
-    "actual_contexts": [],
-    "actual_tools_called": [
-      "unknown"
-    ],
-    "latency_s": 1.09,
-    "is_infra_error": true,
-    "is_refusal": false
+  "status": "invalid: judge quota failures",
+  "cache": {
+    "1": {
+      "actual_response": "I apologize, but our reasoning service is currently experiencing very high demand (rate limit reached). Please wait a few moments and try again.",
+      "actual_contexts": [
+        "[Source: parallel_work_queue.txt | Section: General]\n1. Start a storage service to hold the work queue. (We will use Redis).\n2. Create a queue, and fill it with messages.\n3. Start a Job that works on tasks from the queue.",
+        "[Source: parallel_work_queue.txt | Section: General]\nStart a temporary interactive pod for running the Redis CLI:\n\n    kubectl run -i --tty temp --image redis --command \"/bin/sh\"\n\nOnce the prompt appears, connect to Redis and fill the queue (named \"job2\"):\n\n    redis-cli -h redis",
+        "[Source: parallel_work_queue.txt | Section: General]\nIn this example, you will run a Kubernetes Job that runs multiple parallel\ntasks as worker processes, each running as a separate Pod.\n\nIn this example, as each pod is created, it picks up one unit of work\nfrom a task queue, processes it, and repeats until the end of the queue is reached.",
+        "[Source: parallel_work_queue.txt | Section: General]\nFor this example, you will start a single instance of Redis.\n\nRun the following commands:\n\n    kubectl apply -f https://k8s.io/examples/application/job/redis/redis-pod.yaml\n    kubectl apply -f https://k8s.io/examples/application/job/redis/redis-service.yaml",
+        "[Source: parallel_work_queue.txt | Section: General]\nq = rediswq.RedisWQ(name=\"job2\", host=host)\n    print(\"Worker with sessionID: \" +  q.sessionID())\n    print(\"Initial queue state: empty=\" + str(q.empty()))\n    while not q.empty():\n      item = q.lease(lease_secs=10, block=True, timeout=2) \n      if item is not None:\n        itemstr = item.decode(\"utf-8\")\n        print(\"Working on \" + itemstr)\n        time.sleep(10) # Put your actual work here instead of sleep.\n        q.complete(item)\n      else:\n        print(\"Waiting for work\")\n    print(\"Queue empty, exiting\")\n\n\nBuild the image (requires Docker):\n\n    docker build -t job-wq-2 .\n\nPush the image to your registry (replace <username> with your Hub username):\n\n    docker tag job-wq-2 <username>/job-wq-2\n    docker push <username>/job-wq-2"
+      ],
+      "actual_tools_called": [
+        "retrieve_documents"
+      ],
+      "latency_s": 3.9,
+      "is_infra_error": false,
+      "is_refusal": false
+    },
+    "2": {
+      "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
+      "actual_contexts": [],
+      "actual_tools_called": [
+        "unknown"
+      ],
+      "latency_s": 4.35,
+      "is_infra_error": true,
+      "is_refusal": false
+    },
+    "3": {
+      "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
+      "actual_contexts": [],
+      "actual_tools_called": [
+        "unknown"
+      ],
+      "latency_s": 0.82,
+      "is_infra_error": true,
+      "is_refusal": false
+    },
+    "4": {
+      "actual_response": "I apologize, but our reasoning service is currently experiencing very high demand (rate limit reached). Please wait a few moments and try again.",
+      "actual_contexts": [
+        "[Source: pods_autoscale.html | Section: General]\nHPA & VPA in Kubernetes by Anvesh Muppeda\n\nIn the world of container orchestration, Kubernetes has emerged as the de facto standard. One of its powerful features is autoscaling, which helps maintain application performance and optimize resource usage. In this post, we\u2019ll dive into two main types of autoscaling in Kubernetes: Horizontal Pod Autoscaling (HPA) and Vertical Pod Autoscaling (VPA).",
+        "[Source: pods_autoscale.html | Section: General]\nKubernetes autoscaling, through HPA and VPA, provides robust mechanisms to manage application scalability and resource optimization. By understanding and implementing these autoscaling strategies, you can ensure that your applications are resilient, performant, and cost-effective.",
+        "[Source: pods_autoscale.html | Section: General]\nAutoscaling in Kubernetes ensures that your application can handle varying loads by automatically adjusting the number of running pods or the resources allocated to them. This dynamic adjustment is crucial for maintaining application performance, optimizing resource usage, and reducing operational costs.\n\nHPA & VPA Animation",
+        "[Source: pods_autoscale.html | Section: General]\nBefore testing Horizontal Pod Autoscaler (HPA) and Vertical Pod Autoscaler (VPA), it\u2019s essential to have the Metrics Server installed in your Kubernetes cluster. The Metrics Server collects resource usage metrics from the cluster\u2019s nodes and pods, which are necessary for autoscaling decisions.\n\nYou can install the Metrics Server using either a YAML manifest or the official Helm chart. To install the latest release of the Metrics Server from the YAML manifest, follow these steps:\n\n- Download the Components Manifest: Use kubectl apply to download and apply the Components manifest directly from the latest release of the Metrics Server:\n\n```\n$ kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml\n```\n\nThis command fetches the YAML manifest for the latest release of the Metrics Server from its GitHub repository and applies it to your Kubernetes cluster.\n\n2. Verify Installation: After applying the manifest, verify that the Metrics Server pods are running successfully. You can check the pods in the kube-system namespace:\n\n```\nkubectl get pods -n kube-system | grep metrics-server\n```",
+        "[Source: pods_autoscale.html | Section: General]\nTo set up HPA, you need to define an HPA object in your Kubernetes cluster.\n\nLet\u2019s deploy an example using HPA."
+      ],
+      "actual_tools_called": [
+        "retrieve_documents"
+      ],
+      "latency_s": 32.1,
+      "is_infra_error": false,
+      "is_refusal": false
+    },
+    "5": {
+      "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
+      "actual_contexts": [],
+      "actual_tools_called": [
+        "unknown"
+      ],
+      "latency_s": 2.72,
+      "is_infra_error": true,
+      "is_refusal": false
+    },
+    "6": {
+      "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
+      "actual_contexts": [],
+      "actual_tools_called": [
+        "unknown"
+      ],
+      "latency_s": 0.93,
+      "is_infra_error": true,
+      "is_refusal": false
+    },
+    "7": {
+      "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
+      "actual_contexts": [],
+      "actual_tools_called": [
+        "unknown"
+      ],
+      "latency_s": 0.86,
+      "is_infra_error": true,
+      "is_refusal": false
+    },
+    "8": {
+      "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
+      "actual_contexts": [],
+      "actual_tools_called": [
+        "unknown"
+      ],
+      "latency_s": 0.39,
+      "is_infra_error": true,
+      "is_refusal": false
+    },
+    "9": {
+      "actual_response": "I apologize, but our reasoning service is currently experiencing very high demand (rate limit reached). Please wait a few moments and try again.",
+      "actual_contexts": [],
+      "actual_tools_called": [
+        "direct_answer"
+      ],
+      "latency_s": 0.91,
+      "is_infra_error": false,
+      "is_refusal": false
+    },
+    "10": {
+      "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
+      "actual_contexts": [],
+      "actual_tools_called": [
+        "unknown"
+      ],
+      "latency_s": 1.11,
+      "is_infra_error": true,
+      "is_refusal": false
+    },
+    "11": {
+      "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
+      "actual_contexts": [],
+      "actual_tools_called": [
+        "unknown"
+      ],
+      "latency_s": 0.39,
+      "is_infra_error": true,
+      "is_refusal": false
+    },
+    "12": {
+      "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
+      "actual_contexts": [],
+      "actual_tools_called": [
+        "unknown"
+      ],
+      "latency_s": 0.36,
+      "is_infra_error": true,
+      "is_refusal": false
+    },
+    "13": {
+      "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
+      "actual_contexts": [],
+      "actual_tools_called": [
+        "unknown"
+      ],
+      "latency_s": 1.02,
+      "is_infra_error": true,
+      "is_refusal": false
+    },
+    "14": {
+      "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
+      "actual_contexts": [],
+      "actual_tools_called": [
+        "unknown"
+      ],
+      "latency_s": 0.93,
+      "is_infra_error": true,
+      "is_refusal": false
+    },
+    "15": {
+      "actual_response": "Safety check temporarily unavailable, please retry in a moment.",
+      "actual_contexts": [],
+      "actual_tools_called": [
+        "unknown"
+      ],
+      "latency_s": 1.09,
+      "is_infra_error": true,
+      "is_refusal": false
+    }
   }
 }

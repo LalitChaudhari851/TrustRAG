@@ -51,7 +51,13 @@
       "actual_contexts": [],
       "actual_tools_called": [],
       "expected_source": "parallel_work_queue.txt",
-      "expected_section": "STEP 2: FILLING THE QUEUE WITH TASKS"
+      "expected_section": "STEP 2: FILLING THE QUEUE WITH TASKS",
+      "key_phrase": "rpush job2",
+      "label_history": {
+        "legacy_key_phrase": "rpush job2",
+        "intermediate_key_phrase": "redis-cli -h redis",
+        "reason": "Text loader fixed so indented comment '# Inside the redis prompt:' is no longer treated as a header; 'rpush job2' and 'lrange job2' are now preserved inside Chunk 4 matching section 'STEP 2: FILLING THE QUEUE WITH TASKS'."
+      }
     },
     {
       "id": 4,
@@ -69,7 +75,12 @@
       "actual_contexts": [],
       "actual_tools_called": [],
       "expected_source": "pods_autoscale.html",
-      "expected_section": "HPA vs. VPA: Which One to Use?"
+      "expected_section": "HPA vs. VPA: Which One to Use?",
+      "key_phrase": "adjusting the number of running pods",
+      "label_history": {
+        "legacy_key_phrase": "HPA",
+        "reason": "Replaced generic acronym 'HPA' with answer-bearing functional definition 'adjusting the number of running pods' verified in chunk."
+      }
     },
     {
       "id": 5,
@@ -138,7 +149,12 @@
       "actual_contexts": [],
       "actual_tools_called": [],
       "expected_source": "job_management.html",
-      "expected_section": "Compare tools"
+      "expected_section": "Compare tools",
+      "key_phrase": "language is not currently available",
+      "label_history": {
+        "legacy_key_phrase": "REST API",
+        "reason": "Replaced generic term 'REST API' with answer-bearing decision condition 'language is not currently available' verified in chunk."
+      }
     },
     {
       "id": 9,
@@ -155,7 +171,12 @@
       "actual_contexts": [],
       "actual_tools_called": [],
       "expected_source": "job_management.html",
-      "expected_section": "Compare tools"
+      "expected_section": "Compare tools",
+      "key_phrase": "Databricks CLI, the Databricks SDKs, and the REST API",
+      "label_history": {
+        "legacy_key_phrase": "CLI",
+        "reason": "Replaced generic tool abbreviation 'CLI' with complete 3-tool enumeration 'Databricks CLI, the Databricks SDKs, and the REST API' verified in chunk."
+      }
     },
     {
       "id": 10,
@@ -172,7 +193,12 @@
       "actual_contexts": [],
       "actual_tools_called": [],
       "expected_source": "cronjobs.docx",
-      "expected_section": "1. Restart Policy Requirements"
+      "expected_section": "1. Restart Policy Requirements",
+      "key_phrase": "OnFailure",
+      "label_history": {
+        "legacy_key_phrase": "2023-05-10",
+        "reason": "Corrected copy-paste timestamp artifact '2023-05-10' to verified section keyword 'OnFailure'."
+      }
     },
     {
       "id": 11,
@@ -240,7 +266,12 @@
       "actual_contexts": [],
       "actual_tools_called": [],
       "expected_source": "monitor_job.docx",
-      "expected_section": "Checking Job Status with kubectl"
+      "expected_section": "Checking Job Status with kubectl",
+      "key_phrase": "COMPLETIONS   DURATION   AGE",
+      "label_history": {
+        "legacy_key_phrase": "kubectl get jobs",
+        "reason": "Replaced generic command invocation 'kubectl get jobs' with answer-bearing status table column header 'COMPLETIONS   DURATION   AGE' verified in chunk."
+      }
     },
     {
       "id": 15,
@@ -257,7 +288,12 @@
       "actual_contexts": [],
       "actual_tools_called": [],
       "expected_source": "monitor_job.docx",
-      "expected_section": "Verifying Kubernetes Installation"
+      "expected_section": "Verifying Kubernetes Installation",
+      "key_phrase": "kubectl get pods -n kube-system",
+      "label_history": {
+        "legacy_key_phrase": "kubectl cluster-info",
+        "reason": "Corrected 'kubectl cluster-info' to verbatim command 'kubectl get pods -n kube-system' appearing in target chunk."
+      }
     }
   ],
   "guardrails_samples": [

@@ -128,8 +128,8 @@ hard_latency = benchmark_rerank_stage(hard_pools)
 GOLDEN_KEY_TERMS = {
     1: "redis-pod.yaml", 2: "parallelism: 2", 3: "rpush job2", 4: "HPA",
     5: "components.yaml", 6: "kubectl top nodes", 7: "databricks jobs get",
-    8: "REST API", 9: "CLI", 10: "2023-05-10", 11: "completions",
-    12: "batch/v1", 13: "minikube start", 14: "kubectl get jobs", 15: "kubectl cluster-info"
+    8: "REST API", 9: "CLI", 10: "OnFailure", 11: "completions",
+    12: "batch/v1", 13: "minikube start", 14: "kubectl get jobs", 15: "kubectl get pods -n kube-system"
 }
 
 def evaluate_fusion(dataset_name: str, questions: List[Dict[str, Any]], pools: List[Dict[str, Any]], is_golden: bool):

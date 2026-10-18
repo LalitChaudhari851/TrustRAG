@@ -1,6 +1,7 @@
 # Phase 2 vs Baseline Comparison Report
-
-## 1. Executive Summary & Verification Disclosures
+> [!WARNING]
+> **STATUS: INVALID - JUDGE QUOTA FAILURES**
+> This evaluation report is marked invalid due to free-tier Groq daily limit exhaustion (200,000 Tokens Per Day) during offline LLM judge evaluation (>80% failure rate). RESULTS.md does not cite this file.
 - **Judge Model Disclosures:** The baseline specification referenced `llama-3.1-8b-instant`. However, this model returned HTTP 404 (de-listed from the Groq organization catalog). The live judge model utilized is `qwen/qwen3.8-27b` (via Portkey/Groq) at `temperature=0.0`. Embeddings used for RAGAS evaluation are local `sentence-transformers/all-mpnet-base-v2` on CPU.
 - **Quota & Failure Rate Constraints:** Free-tier Groq daily limit (200,000 Tokens Per Day) experienced exhaustion during live RAGAS testing. In accordance with benchmark rules, **only metrics with <10% failures are reported as conclusive**.
 - **Guard-Outage Fallthrough Disclosure:** The guardrail rate-limit fallthrough (`is_rail_infra -> fall through to agent`) exists **strictly within the offline evaluation script (`scripts/run_ragas_after_phase2.py`)** to avoid test termination. In production application code (`app/main.py`), guardrail activation or outage **immediately terminates the request without fallthrough**.

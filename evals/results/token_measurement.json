@@ -1,14 +1,14 @@
 {
   "script": "scripts/measure_guard_modes_tokens.py",
-  "timestamp": "2026-10-17 18:36:50",
+  "timestamp": "2026-10-18 20:21:35",
   "turns": [
     {
       "turn": 1,
       "query": "What is Horizontal Pod Autoscaling in Kubernetes?",
       "single_call_guard": {
-        "prompt_tokens": 274,
-        "completion_tokens": 13,
-        "total_tokens": 287,
+        "prompt_tokens": 328,
+        "completion_tokens": 59,
+        "total_tokens": 387,
         "decision": "allow"
       },
       "nemo_guard": {
@@ -35,237 +35,33 @@
         ]
       },
       "planner": {
-        "prompt_tokens": 103,
-        "completion_tokens": 9,
-        "total_tokens": 112,
-        "output": "Kubernetes Horizontal Pod Autoscaling HPA"
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0,
+        "output": "What is Horizontal Pod Autoscaling in Kubernetes?"
       },
       "responder": {
-        "prompt_tokens": 481,
-        "completion_tokens": 103,
-        "total_tokens": 584,
+        "prompt_tokens": 506,
+        "completion_tokens": 74,
+        "total_tokens": 580,
         "answer_preview": "Based on the provided documentation, **Horizontal Pod Autoscaling (HPA)** in Kub"
       },
       "turn_totals": {
-        "single_call_mode_total": 983,
-        "nemo_mode_total": 2614,
-        "token_savings_single_call": 1631,
-        "savings_pct": 62.39479724560061
-      }
-    },
-    {
-      "turn": 2,
-      "query": "How do you configure an NGINX Ingress controller with TLS termination in Kubernetes?",
-      "single_call_guard": {
-        "prompt_tokens": 282,
-        "completion_tokens": 20,
-        "total_tokens": 302,
-        "decision": "allow"
-      },
-      "nemo_guard": {
-        "prompt_tokens": 1809,
-        "completion_tokens": 192,
-        "total_tokens": 2001,
-        "calls_count": 3,
-        "calls_breakdown": [
-          {
-            "prompt_tokens": 701,
-            "completion_tokens": 64,
-            "total_tokens": 765
-          },
-          {
-            "prompt_tokens": 309,
-            "completion_tokens": 64,
-            "total_tokens": 373
-          },
-          {
-            "prompt_tokens": 799,
-            "completion_tokens": 64,
-            "total_tokens": 863
-          }
-        ]
-      },
-      "planner": {
-        "prompt_tokens": 111,
-        "completion_tokens": 11,
-        "total_tokens": 122,
-        "output": "NGINX Ingress controller TLS termination configuration Kubernetes"
-      },
-      "responder": {
-        "prompt_tokens": 287,
-        "completion_tokens": 159,
-        "total_tokens": 446,
-        "answer_preview": "Based on the provided documentation context, it is **not possible** to answer ho"
-      },
-      "turn_totals": {
-        "single_call_mode_total": 870,
-        "nemo_mode_total": 2569,
-        "token_savings_single_call": 1699,
-        "savings_pct": 66.13468275593615
-      }
-    },
-    {
-      "turn": 3,
-      "query": "What Databricks CLI command retrieves the details of a specific job?",
-      "single_call_guard": {
-        "prompt_tokens": 279,
-        "completion_tokens": 20,
-        "total_tokens": 299,
-        "decision": "allow"
-      },
-      "nemo_guard": {
-        "prompt_tokens": 1819,
-        "completion_tokens": 75,
-        "total_tokens": 1894,
-        "calls_count": 3,
-        "calls_breakdown": [
-          {
-            "prompt_tokens": 708,
-            "completion_tokens": 23,
-            "total_tokens": 731
-          },
-          {
-            "prompt_tokens": 312,
-            "completion_tokens": 29,
-            "total_tokens": 341
-          },
-          {
-            "prompt_tokens": 799,
-            "completion_tokens": 23,
-            "total_tokens": 822
-          }
-        ]
-      },
-      "planner": {
-        "prompt_tokens": 108,
-        "completion_tokens": 9,
-        "total_tokens": 117,
-        "output": "Databricks CLI command get job details"
-      },
-      "responder": {
-        "prompt_tokens": 766,
-        "completion_tokens": 73,
-        "total_tokens": 839,
-        "answer_preview": "Based on the provided documentation, the command to retrieve the details of a sp"
-      },
-      "turn_totals": {
-        "single_call_mode_total": 1255,
-        "nemo_mode_total": 2850,
-        "token_savings_single_call": 1595,
-        "savings_pct": 55.96491228070175
-      }
-    },
-    {
-      "turn": 4,
-      "query": "How do CronJobs handle pod restarts in Kubernetes?",
-      "single_call_guard": {
-        "prompt_tokens": 276,
-        "completion_tokens": 20,
-        "total_tokens": 296,
-        "decision": "allow"
-      },
-      "nemo_guard": {
-        "prompt_tokens": 1780,
-        "completion_tokens": 157,
-        "total_tokens": 1937,
-        "calls_count": 3,
-        "calls_breakdown": [
-          {
-            "prompt_tokens": 708,
-            "completion_tokens": 64,
-            "total_tokens": 772
-          },
-          {
-            "prompt_tokens": 294,
-            "completion_tokens": 29,
-            "total_tokens": 323
-          },
-          {
-            "prompt_tokens": 778,
-            "completion_tokens": 64,
-            "total_tokens": 842
-          }
-        ]
-      },
-      "planner": {
-        "prompt_tokens": 105,
-        "completion_tokens": 9,
-        "total_tokens": 114,
-        "output": "Kubernetes CronJob pod restart policy behavior"
-      },
-      "responder": {
-        "prompt_tokens": 667,
-        "completion_tokens": 173,
-        "total_tokens": 840,
-        "answer_preview": "Based on the provided documentation, CronJobs (and Jobs in general) have strict "
-      },
-      "turn_totals": {
-        "single_call_mode_total": 1250,
-        "nemo_mode_total": 2891,
-        "token_savings_single_call": 1641,
-        "savings_pct": 56.76236596333448
-      }
-    },
-    {
-      "turn": 5,
-      "query": "What are the completions and parallelism fields in a Kubernetes Job spec?",
-      "single_call_guard": {
-        "prompt_tokens": 280,
-        "completion_tokens": 13,
-        "total_tokens": 293,
-        "decision": "allow"
-      },
-      "nemo_guard": {
-        "prompt_tokens": 1797,
-        "completion_tokens": 192,
-        "total_tokens": 1989,
-        "calls_count": 3,
-        "calls_breakdown": [
-          {
-            "prompt_tokens": 695,
-            "completion_tokens": 64,
-            "total_tokens": 759
-          },
-          {
-            "prompt_tokens": 307,
-            "completion_tokens": 64,
-            "total_tokens": 371
-          },
-          {
-            "prompt_tokens": 795,
-            "completion_tokens": 64,
-            "total_tokens": 859
-          }
-        ]
-      },
-      "planner": {
-        "prompt_tokens": 109,
-        "completion_tokens": 10,
-        "total_tokens": 119,
-        "output": "Kubernetes Job spec completions parallelism fields"
-      },
-      "responder": {
-        "prompt_tokens": 370,
-        "completion_tokens": 144,
-        "total_tokens": 514,
-        "answer_preview": "Based on the provided documentation, the **`spec.completions`** and **`spec.para"
-      },
-      "turn_totals": {
-        "single_call_mode_total": 926,
-        "nemo_mode_total": 2622,
-        "token_savings_single_call": 1696,
-        "savings_pct": 64.6834477498093
+        "single_call_mode_total": 967,
+        "nemo_mode_total": 2498,
+        "token_savings_single_call": 1531,
+        "savings_pct": 61.289031224979986
       }
     }
   ],
   "summary": {
-    "avg_sc_guard": 295.4,
-    "avg_nemo_guard": 1947.8,
-    "avg_planner": 116.8,
-    "avg_responder": 644.6,
-    "avg_sc_turn": 1056.8,
-    "avg_nemo_turn": 2709.2,
-    "turns_per_day_single_call": 189.25056775170327,
-    "turns_per_day_nemo": 73.82253063635022
+    "avg_sc_guard": 387.0,
+    "avg_nemo_guard": 1918.0,
+    "avg_planner": 0.0,
+    "avg_responder": 580.0,
+    "avg_sc_turn": 967.0,
+    "avg_nemo_turn": 2498.0,
+    "turns_per_day_single_call": 206.82523267838675,
+    "turns_per_day_nemo": 80.0640512409928
   }
 }

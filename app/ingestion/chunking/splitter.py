@@ -86,20 +86,27 @@ def enforce_token_limits(
                         if u and not is_low_alpha_chunk(u):
                             refined.append(u)
 
-    # 2. Merge or drop chunks under min_tokens (15)
+    # 2. Merge chunks under min_tokens (15) into previous or next chunk
+    if not refined:
+        return []
+
     merged: List[str] = []
     for piece in refined:
         n_tok = count_tokens(piece)
         if n_tok < min_tokens:
             if merged:
-                # Try to merge with preceding chunk if within max_tokens
                 candidate = f"{merged[-1]}\n\n{piece}"
                 if count_tokens(candidate) <= max_tokens:
                     merged[-1] = candidate
                     continue
-            # Drop if cannot merge and under 15 tokens
-            continue
         merged.append(piece)
+
+    # If first piece is under min_tokens and followed by another piece, merge forward
+    if len(merged) > 1 and count_tokens(merged[0]) < min_tokens:
+        candidate = f"{merged[0]}\n\n{merged[1]}"
+        if count_tokens(candidate) <= max_tokens:
+            merged[1] = candidate
+            merged.pop(0)
 
     return merged
 
@@ -116,7 +123,7 @@ def split_units(
     ensuring page, slide, and header metadata remain strictly accurate on every resulting chunk.
     Enforces token guard:
       - Max tokens: 384 (all-mpnet-base-v2 context limit)
-      - Min tokens: 15 (merges into preceding chunk or drops low-information fragments)
+      - Min tokens: 15 (merges into previous/next chunk of the same section or adjacent chunk; NEVER drops)
       - Drops low-alpha chunks (< 40%)
     """
     with logfire.span("✂️ Splitting Document Units", unit_count=len(units)):
@@ -125,8 +132,7 @@ def split_units(
             chunk_overlap=chunk_overlap,
             separators=["\n\n", "\n", " ", ""]
         )
-        chunks: List[Dict[str, Any]] = []
-        chunk_index = 0
+        raw_chunks: List[Dict[str, Any]] = []
 
         for unit in units:
             unit_text = unit.get("text", "").strip()
@@ -142,7 +148,6 @@ def split_units(
 
             for sub_text in bounded_sub_texts:
                 chunk_dict: Dict[str, Any] = {
-                    "chunk_index": chunk_index,
                     "text": sub_text.strip()
                 }
                 # Consistent key scheme: 'section' is always present; 'page' and 'slide' are optional
@@ -162,8 +167,37 @@ def split_units(
                 if "slide" in unit:
                     chunk_dict["slide"] = unit["slide"]
 
-                chunks.append(chunk_dict)
-                chunk_index += 1
+                raw_chunks.append(chunk_dict)
 
-        logfire.info(f"✅ Generated {len(chunks)} bounded chunks from {len(units)} units")
-        return chunks
+        # Document-level merge for any remaining short chunks (< 15 tokens)
+        final_chunks: List[Dict[str, Any]] = []
+        for c in raw_chunks:
+            c_tok = count_tokens(c["text"])
+            if c_tok < min_tokens:
+                # 1. Prefer merging into previous chunk of same section
+                if final_chunks and final_chunks[-1].get("section") == c.get("section"):
+                    cand = f"{final_chunks[-1]['text']}\n\n{c['text']}"
+                    if count_tokens(cand) <= max_tokens:
+                        final_chunks[-1]["text"] = cand
+                        continue
+                # 2. Or merge into previous chunk of any section if within max_tokens
+                if final_chunks:
+                    cand = f"{final_chunks[-1]['text']}\n\n{c['text']}"
+                    if count_tokens(cand) <= max_tokens:
+                        final_chunks[-1]["text"] = cand
+                        continue
+            final_chunks.append(c)
+
+        # Forward pass if the first chunk is still under min_tokens
+        if len(final_chunks) > 1 and count_tokens(final_chunks[0]["text"]) < min_tokens:
+            cand = f"{final_chunks[0]['text']}\n\n{final_chunks[1]['text']}"
+            if count_tokens(cand) <= max_tokens:
+                final_chunks[1]["text"] = cand
+                final_chunks.pop(0)
+
+        # Assign final contiguous chunk_index
+        for idx, c in enumerate(final_chunks):
+            c["chunk_index"] = idx
+
+        logfire.info(f"✅ Generated {len(final_chunks)} bounded chunks from {len(units)} units")
+        return final_chunks

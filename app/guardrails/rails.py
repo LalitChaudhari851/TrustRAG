@@ -26,6 +26,10 @@ def initialize_rails() -> None:
     """
     global _rails
 
+    if getattr(settings, "GUARD_MODE", "nemo").lower() == "single_call":
+        logfire.info("🛡️ single_call Guardrails mode active — NeMo startup bypassed.")
+        return
+
     active_guard_model = settings.GUARDRAIL_MODEL
 
     try:

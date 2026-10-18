@@ -27,18 +27,18 @@ GOLDEN_KEY_TERMS = {
     1: "redis-pod.yaml",
     2: "parallelism: 2",
     3: "rpush job2",
-    4: "HPA",
+    4: "adjusting the number of running pods",
     5: "components.yaml",
     6: "kubectl top nodes",
     7: "databricks jobs get",
-    8: "REST API",
-    9: "CLI",
-    10: "2023-05-10",
+    8: "language is not currently available",
+    9: "Databricks CLI, the Databricks SDKs, and the REST API",
+    10: "OnFailure",
     11: "completions",
     12: "batch/v1",
     13: "minikube start",
-    14: "kubectl get jobs",
-    15: "kubectl cluster-info"
+    14: "COMPLETIONS   DURATION   AGE",
+    15: "kubectl get pods -n kube-system"
 }
 
 

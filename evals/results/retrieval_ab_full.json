@@ -1,6 +1,6 @@
 {
   "script": "scripts/run_retrieval_ab.py",
-  "timestamp": "2026-10-17 13:22:24",
+  "timestamp": "2026-10-18 13:37:38",
   "target_collection": "enterprise_rag_v2",
   "warm_latency_passes": 3,
   "golden_controlled_true_only": {
@@ -17,8 +17,8 @@
         "section_hit_5_after_rerank": "n/a",
         "source_mrr_after_rerank": 0.9056,
         "section_mrr_after_rerank": "n/a",
-        "key_phrase_hit_5": 0.8,
-        "key_phrase_hit_15": 0.8667
+        "key_phrase_hit_5": 0.9333,
+        "key_phrase_hit_15": 1.0
       },
       "threshold_stats": {
         "refusals_count": 0,
@@ -27,10 +27,10 @@
         "median_chunks_passed": 5
       },
       "latency": {
-        "embed_median_ms": 83.2,
-        "qdrant_median_ms": 292.4,
-        "rerank_median_ms": 41.6,
-        "total_median_ms": 429.3
+        "embed_median_ms": 1220.2,
+        "qdrant_median_ms": 277.6,
+        "rerank_median_ms": 258.3,
+        "total_median_ms": 1800.3
       },
       "queries": [
         {
@@ -131,7 +131,7 @@
           "question": "What is the difference between HPA and VPA in Kubernetes?",
           "expected_source": "pods_autoscale.html",
           "expected_section": "HPA vs. VPA: Which One to Use?",
-          "key_term": "HPA",
+          "key_term": "adjusting the number of running pods",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": "n/a",
@@ -255,7 +255,7 @@
           "question": "When should you use the Databricks REST API instead of the CLI or SDK?",
           "expected_source": "job_management.html",
           "expected_section": "Compare tools",
-          "key_term": "REST API",
+          "key_term": "language is not currently available",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": "n/a",
@@ -286,7 +286,7 @@
           "question": "What are the three main developer tools for managing Databricks jobs programmatically?",
           "expected_source": "job_management.html",
           "expected_section": "Compare tools",
-          "key_term": "CLI",
+          "key_term": "Databricks CLI, the Databricks SDKs, and the REST API",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": "n/a",
@@ -317,12 +317,12 @@
           "question": "What are the valid restart policy values for a Kubernetes Job pod?",
           "expected_source": "cronjobs.docx",
           "expected_section": "1. Restart Policy Requirements",
-          "key_term": "2023-05-10",
+          "key_term": "OnFailure",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": "n/a",
-          "key_phrase_hit_5": false,
-          "key_phrase_hit_15": false,
+          "key_phrase_hit_5": true,
+          "key_phrase_hit_15": true,
           "source_rr": 1.0,
           "section_rr": "n/a",
           "is_refused": false,
@@ -441,7 +441,7 @@
           "question": "What kubectl command checks the status of a running Kubernetes Job?",
           "expected_source": "monitor_job.docx",
           "expected_section": "Checking Job Status with kubectl",
-          "key_term": "kubectl get jobs",
+          "key_term": "COMPLETIONS   DURATION   AGE",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": "n/a",
@@ -472,12 +472,12 @@
           "question": "How do you verify that the core Kubernetes components are running after starting Minikube?",
           "expected_source": "monitor_job.docx",
           "expected_section": "Verifying Kubernetes Installation",
-          "key_term": "kubectl cluster-info",
+          "key_term": "kubectl get pods -n kube-system",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": "n/a",
-          "key_phrase_hit_5": false,
-          "key_phrase_hit_15": false,
+          "key_phrase_hit_5": true,
+          "key_phrase_hit_15": true,
           "source_rr": 1.0,
           "section_rr": "n/a",
           "is_refused": false,
@@ -512,9 +512,9 @@
         "source_hit_5_after_rerank": 1.0,
         "section_hit_5_after_rerank": 0.8,
         "source_mrr_after_rerank": 0.9667,
-        "section_mrr_after_rerank": 0.6333,
-        "key_phrase_hit_5": 0.8,
-        "key_phrase_hit_15": 0.8
+        "section_mrr_after_rerank": 0.63,
+        "key_phrase_hit_5": 0.9333,
+        "key_phrase_hit_15": 0.9333
       },
       "threshold_stats": {
         "refusals_count": 0,
@@ -523,10 +523,10 @@
         "median_chunks_passed": 5
       },
       "latency": {
-        "embed_median_ms": 78.3,
-        "qdrant_median_ms": 291.2,
-        "rerank_median_ms": 18.8,
-        "total_median_ms": 439.5
+        "embed_median_ms": 1520.9,
+        "qdrant_median_ms": 289.0,
+        "rerank_median_ms": 231.0,
+        "total_median_ms": 2017.9
       },
       "queries": [
         {
@@ -541,7 +541,7 @@
           "key_phrase_hit_5": true,
           "key_phrase_hit_15": true,
           "source_rr": 1.0,
-          "section_rr": 0.25,
+          "section_rr": 0.2,
           "is_refused": false,
           "chunks_passed": 5,
           "top_5_sources": [
@@ -549,14 +549,14 @@
             "parallel_work_queue.txt",
             "parallel_work_queue.txt",
             "parallel_work_queue.txt",
-            "monitor_job.docx"
+            "parallel_work_queue.txt"
           ],
           "top_5_sections": [
             "OVERVIEW OF STEPS",
             "STEP 2: FILLING THE QUEUE WITH TASKS",
+            "STEP 3: CREATE A CONTAINER IMAGE",
             "FINE PARALLEL PROCESSING USING A WORK QUEUE",
-            "STEP 1: STARTING REDIS",
-            "Understanding Kubernetes Jobs"
+            "STEP 1: STARTING REDIS"
           ],
           "top_score": 0.9991999864578247
         },
@@ -589,7 +589,7 @@
             "Getting Detailed Job Information",
             "What Are Jobs?"
           ],
-          "top_score": 0.9972000122070312
+          "top_score": 0.9969000220298767
         },
         {
           "id": 3,
@@ -600,8 +600,8 @@
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": true,
-          "key_phrase_hit_5": false,
-          "key_phrase_hit_15": false,
+          "key_phrase_hit_5": true,
+          "key_phrase_hit_15": true,
           "source_rr": 1.0,
           "section_rr": 0.5,
           "is_refused": false,
@@ -610,29 +610,29 @@
             "parallel_work_queue.txt",
             "parallel_work_queue.txt",
             "parallel_work_queue.txt",
-            "parallel_work_queue.txt",
+            "job_management.html",
             "job_management.html"
           ],
           "top_5_sections": [
             "OVERVIEW OF STEPS",
             "STEP 2: FILLING THE QUEUE WITH TASKS",
-            "host = os.getenv(\"REDIS_SERVICE_HOST\")",
             "STEP 3: CREATE A CONTAINER IMAGE",
-            "Example: Create a job using the CLI"
+            "Compare tools",
+            "Run a job using the CLI"
           ],
-          "top_score": 0.9994999766349792
+          "top_score": 0.9994000196456909
         },
         {
           "id": 4,
           "question": "What is the difference between HPA and VPA in Kubernetes?",
           "expected_source": "pods_autoscale.html",
           "expected_section": "HPA vs. VPA: Which One to Use?",
-          "key_term": "HPA",
+          "key_term": "adjusting the number of running pods",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": true,
-          "key_phrase_hit_5": true,
-          "key_phrase_hit_15": true,
+          "key_phrase_hit_5": false,
+          "key_phrase_hit_15": false,
           "source_rr": 1.0,
           "section_rr": 0.25,
           "is_refused": false,
@@ -703,15 +703,15 @@
             "pods_autoscale.html",
             "pods_autoscale.html",
             "monitor_job.docx",
-            "monitor_job.docx",
-            "architecture.pptx"
+            "architecture.pptx",
+            "monitor_job.docx"
           ],
           "top_5_sections": [
             "Metric Server Setup",
             "Metric Server Setup",
             "Getting Detailed Job Information",
-            "Using JSONPath for Custom Output",
-            "Additional Services"
+            "Additional Services",
+            "Using JSONPath for Custom Output"
           ],
           "top_score": 0.9993000030517578
         },
@@ -741,8 +741,8 @@
             "Get started with the Databricks CLI",
             "Example: Create a job using the CLI",
             "Get started with the Databricks REST API",
-            "Run a job using the CLI",
-            "Compare tools"
+            "Compare tools",
+            "Run a job using the CLI"
           ],
           "top_score": 0.9990000128746033
         },
@@ -751,7 +751,7 @@
           "question": "When should you use the Databricks REST API instead of the CLI or SDK?",
           "expected_source": "job_management.html",
           "expected_section": "Compare tools",
-          "key_term": "REST API",
+          "key_term": "language is not currently available",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": true,
@@ -782,7 +782,7 @@
           "question": "What are the three main developer tools for managing Databricks jobs programmatically?",
           "expected_source": "job_management.html",
           "expected_section": "Compare tools",
-          "key_term": "CLI",
+          "key_term": "Databricks CLI, the Databricks SDKs, and the REST API",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": true,
@@ -813,12 +813,12 @@
           "question": "What are the valid restart policy values for a Kubernetes Job pod?",
           "expected_source": "cronjobs.docx",
           "expected_section": "1. Restart Policy Requirements",
-          "key_term": "2023-05-10",
+          "key_term": "OnFailure",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": true,
-          "key_phrase_hit_5": false,
-          "key_phrase_hit_15": false,
+          "key_phrase_hit_5": true,
+          "key_phrase_hit_15": true,
           "source_rr": 1.0,
           "section_rr": 1.0,
           "is_refused": false,
@@ -863,12 +863,12 @@
           ],
           "top_5_sections": [
             "Jobs",
-            "3. Parallel Processing Patterns",
             "NonIndexed (Default)",
+            "3. Parallel Processing Patterns",
             "Indexed Mode",
             "What Are Jobs?"
           ],
-          "top_score": 0.9983999729156494
+          "top_score": 0.9977999925613403
         },
         {
           "id": 12,
@@ -937,7 +937,7 @@
           "question": "What kubectl command checks the status of a running Kubernetes Job?",
           "expected_source": "monitor_job.docx",
           "expected_section": "Checking Job Status with kubectl",
-          "key_term": "kubectl get jobs",
+          "key_term": "COMPLETIONS   DURATION   AGE",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": true,
@@ -968,12 +968,12 @@
           "question": "How do you verify that the core Kubernetes components are running after starting Minikube?",
           "expected_source": "monitor_job.docx",
           "expected_section": "Verifying Kubernetes Installation",
-          "key_term": "kubectl cluster-info",
+          "key_term": "kubectl get pods -n kube-system",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": true,
-          "key_phrase_hit_5": false,
-          "key_phrase_hit_15": false,
+          "key_phrase_hit_5": true,
+          "key_phrase_hit_15": true,
           "source_rr": 1.0,
           "section_rr": 1.0,
           "is_refused": false,
@@ -1008,9 +1008,9 @@
         "source_hit_5_after_rerank": 1.0,
         "section_hit_5_after_rerank": 0.7333,
         "source_mrr_after_rerank": 0.9667,
-        "section_mrr_after_rerank": 0.6167,
-        "key_phrase_hit_5": 0.8,
-        "key_phrase_hit_15": 0.8
+        "section_mrr_after_rerank": 0.6133,
+        "key_phrase_hit_5": 1.0,
+        "key_phrase_hit_15": 1.0
       },
       "threshold_stats": {
         "refusals_count": 0,
@@ -1019,10 +1019,10 @@
         "median_chunks_passed": 5
       },
       "latency": {
-        "embed_median_ms": 1840.0,
-        "qdrant_median_ms": 305.0,
-        "rerank_median_ms": 366.6,
-        "total_median_ms": 2645.3
+        "embed_median_ms": 167.0,
+        "qdrant_median_ms": 293.5,
+        "rerank_median_ms": 24.9,
+        "total_median_ms": 472.4
       },
       "queries": [
         {
@@ -1037,7 +1037,7 @@
           "key_phrase_hit_5": true,
           "key_phrase_hit_15": true,
           "source_rr": 1.0,
-          "section_rr": 0.25,
+          "section_rr": 0.2,
           "is_refused": false,
           "chunks_passed": 5,
           "top_5_sources": [
@@ -1050,9 +1050,9 @@
           "top_5_sections": [
             "OVERVIEW OF STEPS",
             "STEP 2: FILLING THE QUEUE WITH TASKS",
+            "STEP 3: CREATE A CONTAINER IMAGE",
             "FINE PARALLEL PROCESSING USING A WORK QUEUE",
-            "STEP 1: STARTING REDIS",
-            "BEFORE YOU BEGIN"
+            "STEP 1: STARTING REDIS"
           ],
           "top_score": 0.9991999864578247
         },
@@ -1075,17 +1075,17 @@
             "parallel_work_queue.txt",
             "parallel_work_queue.txt",
             "monitor_job.docx",
-            "cronjobs.docx",
-            "monitor_job.docx"
+            "monitor_job.docx",
+            "cronjobs.docx"
           ],
           "top_5_sections": [
             "STEP 4: DEFINING A JOB",
             "FINE PARALLEL PROCESSING USING A WORK QUEUE",
             "Understanding Kubernetes Jobs",
-            "What Are Jobs?",
-            "Using JSONPath for Custom Output"
+            "Using JSONPath for Custom Output",
+            "What Are Jobs?"
           ],
-          "top_score": 0.9969000220298767
+          "top_score": 0.9970999956130981
         },
         {
           "id": 3,
@@ -1096,8 +1096,8 @@
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": true,
-          "key_phrase_hit_5": false,
-          "key_phrase_hit_15": false,
+          "key_phrase_hit_5": true,
+          "key_phrase_hit_15": true,
           "source_rr": 1.0,
           "section_rr": 0.5,
           "is_refused": false,
@@ -1107,14 +1107,14 @@
             "parallel_work_queue.txt",
             "parallel_work_queue.txt",
             "job_management.html",
-            "parallel_work_queue.txt"
+            "job_management.html"
           ],
           "top_5_sections": [
             "OVERVIEW OF STEPS",
             "STEP 2: FILLING THE QUEUE WITH TASKS",
-            "host = os.getenv(\"REDIS_SERVICE_HOST\")",
+            "STEP 3: CREATE A CONTAINER IMAGE",
             "Compare tools",
-            "STEP 3: CREATE A CONTAINER IMAGE"
+            "Run a job using the CLI"
           ],
           "top_score": 0.9994999766349792
         },
@@ -1123,7 +1123,7 @@
           "question": "What is the difference between HPA and VPA in Kubernetes?",
           "expected_source": "pods_autoscale.html",
           "expected_section": "HPA vs. VPA: Which One to Use?",
-          "key_term": "HPA",
+          "key_term": "adjusting the number of running pods",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": false,
@@ -1169,14 +1169,14 @@
             "pods_autoscale.html",
             "pods_autoscale.html",
             "pods_autoscale.html",
-            "architecture.pptx"
+            "cronjobs.docx"
           ],
           "top_5_sections": [
             "Metric Server Setup",
             "Metric Server Setup",
             "What is HPA?",
             "Step 3: Create a VPA",
-            "Additional Services"
+            "1. Resource Right-Sizing"
           ],
           "top_score": 0.9998999834060669
         },
@@ -1200,14 +1200,14 @@
             "pods_autoscale.html",
             "pods_autoscale.html",
             "monitor_job.docx",
-            "cronjobs.docx"
+            "monitor_job.docx"
           ],
           "top_5_sections": [
             "Metric Server Setup",
             "Metric Server Setup",
             "Step 3: Create a VPA",
             "Getting Detailed Job Information",
-            "1. Job Stuck in Pending State"
+            "Using JSONPath for Custom Output"
           ],
           "top_score": 0.9993000030517578
         },
@@ -1247,7 +1247,7 @@
           "question": "When should you use the Databricks REST API instead of the CLI or SDK?",
           "expected_source": "job_management.html",
           "expected_section": "Compare tools",
-          "key_term": "REST API",
+          "key_term": "language is not currently available",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": true,
@@ -1278,7 +1278,7 @@
           "question": "What are the three main developer tools for managing Databricks jobs programmatically?",
           "expected_source": "job_management.html",
           "expected_section": "Compare tools",
-          "key_term": "CLI",
+          "key_term": "Databricks CLI, the Databricks SDKs, and the REST API",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": true,
@@ -1309,12 +1309,12 @@
           "question": "What are the valid restart policy values for a Kubernetes Job pod?",
           "expected_source": "cronjobs.docx",
           "expected_section": "1. Restart Policy Requirements",
-          "key_term": "2023-05-10",
+          "key_term": "OnFailure",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": true,
-          "key_phrase_hit_5": false,
-          "key_phrase_hit_15": false,
+          "key_phrase_hit_5": true,
+          "key_phrase_hit_15": true,
           "source_rr": 1.0,
           "section_rr": 1.0,
           "is_refused": false,
@@ -1333,7 +1333,7 @@
             "Understanding Job Status",
             "Viewing Logs of Completed Jobs"
           ],
-          "top_score": 0.9959999918937683
+          "top_score": 0.9955999851226807
         },
         {
           "id": 11,
@@ -1364,7 +1364,7 @@
             "NonIndexed (Default)",
             "What Are Jobs?"
           ],
-          "top_score": 0.9983000159263611
+          "top_score": 0.9976000189781189
         },
         {
           "id": 12,
@@ -1384,18 +1384,18 @@
           "top_5_sources": [
             "cronjobs.docx",
             "monitor_job.docx",
-            "monitor_job.docx",
+            "architecture.pptx",
             "monitor_job.docx",
             "monitor_job.docx"
           ],
           "top_5_sections": [
             "What Are Jobs?",
             "Using Labels for Job Organization",
-            "Understanding Kubernetes Jobs",
+            "kube-apiserver",
             "Checking Job Status with kubectl",
-            "Introduction"
+            "Understanding Kubernetes Jobs"
           ],
-          "top_score": 0.9955000281333923
+          "top_score": 0.9948999881744385
         },
         {
           "id": 13,
@@ -1433,7 +1433,7 @@
           "question": "What kubectl command checks the status of a running Kubernetes Job?",
           "expected_source": "monitor_job.docx",
           "expected_section": "Checking Job Status with kubectl",
-          "key_term": "kubectl get jobs",
+          "key_term": "COMPLETIONS   DURATION   AGE",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": true,
@@ -1464,12 +1464,12 @@
           "question": "How do you verify that the core Kubernetes components are running after starting Minikube?",
           "expected_source": "monitor_job.docx",
           "expected_section": "Verifying Kubernetes Installation",
-          "key_term": "kubectl cluster-info",
+          "key_term": "kubectl get pods -n kube-system",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": true,
-          "key_phrase_hit_5": false,
-          "key_phrase_hit_15": false,
+          "key_phrase_hit_5": true,
+          "key_phrase_hit_15": true,
           "source_rr": 1.0,
           "section_rr": 1.0,
           "is_refused": false,
@@ -1479,14 +1479,14 @@
             "monitor_job.docx",
             "architecture.pptx",
             "monitor_job.docx",
-            "architecture.pptx"
+            "monitor_job.docx"
           ],
           "top_5_sections": [
             "Verifying Kubernetes Installation",
             "Starting Minikube",
             "Kubernetes Concepts - Core",
             "Summary",
-            "Agenda"
+            "Setting Up Your Kubernetes Environment"
           ],
           "top_score": 0.9994999766349792
         }
@@ -1506,9 +1506,9 @@
         "source_hit_5_after_rerank": 1.0,
         "section_hit_5_after_rerank": 0.8,
         "source_mrr_after_rerank": 0.9667,
-        "section_mrr_after_rerank": 0.6333,
-        "key_phrase_hit_5": 0.8,
-        "key_phrase_hit_15": 0.8
+        "section_mrr_after_rerank": 0.63,
+        "key_phrase_hit_5": 0.9333,
+        "key_phrase_hit_15": 0.9333
       },
       "threshold_stats": {
         "refusals_count": 0,
@@ -1517,10 +1517,10 @@
         "median_chunks_passed": 5
       },
       "latency": {
-        "embed_median_ms": 1808.7,
-        "qdrant_median_ms": 318.1,
-        "rerank_median_ms": 357.6,
-        "total_median_ms": 2575.4
+        "embed_median_ms": 1388.5,
+        "qdrant_median_ms": 253.8,
+        "rerank_median_ms": 218.1,
+        "total_median_ms": 1890.0
       },
       "queries": [
         {
@@ -1535,7 +1535,7 @@
           "key_phrase_hit_5": true,
           "key_phrase_hit_15": true,
           "source_rr": 1.0,
-          "section_rr": 0.25,
+          "section_rr": 0.2,
           "is_refused": false,
           "chunks_passed": 5,
           "top_5_sources": [
@@ -1543,14 +1543,14 @@
             "parallel_work_queue.txt",
             "parallel_work_queue.txt",
             "parallel_work_queue.txt",
-            "monitor_job.docx"
+            "parallel_work_queue.txt"
           ],
           "top_5_sections": [
             "OVERVIEW OF STEPS",
             "STEP 2: FILLING THE QUEUE WITH TASKS",
+            "STEP 3: CREATE A CONTAINER IMAGE",
             "FINE PARALLEL PROCESSING USING A WORK QUEUE",
-            "STEP 1: STARTING REDIS",
-            "Understanding Kubernetes Jobs"
+            "STEP 1: STARTING REDIS"
           ],
           "top_score": 0.9991999864578247
         },
@@ -1583,7 +1583,7 @@
             "Getting Detailed Job Information",
             "What Are Jobs?"
           ],
-          "top_score": 0.9972000122070312
+          "top_score": 0.9969000220298767
         },
         {
           "id": 3,
@@ -1594,8 +1594,8 @@
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": true,
-          "key_phrase_hit_5": false,
-          "key_phrase_hit_15": false,
+          "key_phrase_hit_5": true,
+          "key_phrase_hit_15": true,
           "source_rr": 1.0,
           "section_rr": 0.5,
           "is_refused": false,
@@ -1604,29 +1604,29 @@
             "parallel_work_queue.txt",
             "parallel_work_queue.txt",
             "parallel_work_queue.txt",
-            "parallel_work_queue.txt",
+            "job_management.html",
             "job_management.html"
           ],
           "top_5_sections": [
             "OVERVIEW OF STEPS",
             "STEP 2: FILLING THE QUEUE WITH TASKS",
-            "host = os.getenv(\"REDIS_SERVICE_HOST\")",
             "STEP 3: CREATE A CONTAINER IMAGE",
-            "Example: Create a job using the CLI"
+            "Compare tools",
+            "Run a job using the CLI"
           ],
-          "top_score": 0.9994999766349792
+          "top_score": 0.9994000196456909
         },
         {
           "id": 4,
           "question": "What is the difference between HPA and VPA in Kubernetes?",
           "expected_source": "pods_autoscale.html",
           "expected_section": "HPA vs. VPA: Which One to Use?",
-          "key_term": "HPA",
+          "key_term": "adjusting the number of running pods",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": true,
-          "key_phrase_hit_5": true,
-          "key_phrase_hit_15": true,
+          "key_phrase_hit_5": false,
+          "key_phrase_hit_15": false,
           "source_rr": 1.0,
           "section_rr": 0.25,
           "is_refused": false,
@@ -1697,15 +1697,15 @@
             "pods_autoscale.html",
             "pods_autoscale.html",
             "monitor_job.docx",
-            "monitor_job.docx",
-            "architecture.pptx"
+            "architecture.pptx",
+            "monitor_job.docx"
           ],
           "top_5_sections": [
             "Metric Server Setup",
             "Metric Server Setup",
             "Getting Detailed Job Information",
-            "Using JSONPath for Custom Output",
-            "Additional Services"
+            "Additional Services",
+            "Using JSONPath for Custom Output"
           ],
           "top_score": 0.9993000030517578
         },
@@ -1735,8 +1735,8 @@
             "Get started with the Databricks CLI",
             "Example: Create a job using the CLI",
             "Get started with the Databricks REST API",
-            "Run a job using the CLI",
-            "Compare tools"
+            "Compare tools",
+            "Run a job using the CLI"
           ],
           "top_score": 0.9990000128746033
         },
@@ -1745,7 +1745,7 @@
           "question": "When should you use the Databricks REST API instead of the CLI or SDK?",
           "expected_source": "job_management.html",
           "expected_section": "Compare tools",
-          "key_term": "REST API",
+          "key_term": "language is not currently available",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": true,
@@ -1776,7 +1776,7 @@
           "question": "What are the three main developer tools for managing Databricks jobs programmatically?",
           "expected_source": "job_management.html",
           "expected_section": "Compare tools",
-          "key_term": "CLI",
+          "key_term": "Databricks CLI, the Databricks SDKs, and the REST API",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": true,
@@ -1807,12 +1807,12 @@
           "question": "What are the valid restart policy values for a Kubernetes Job pod?",
           "expected_source": "cronjobs.docx",
           "expected_section": "1. Restart Policy Requirements",
-          "key_term": "2023-05-10",
+          "key_term": "OnFailure",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": true,
-          "key_phrase_hit_5": false,
-          "key_phrase_hit_15": false,
+          "key_phrase_hit_5": true,
+          "key_phrase_hit_15": true,
           "source_rr": 1.0,
           "section_rr": 1.0,
           "is_refused": false,
@@ -1857,12 +1857,12 @@
           ],
           "top_5_sections": [
             "Jobs",
-            "3. Parallel Processing Patterns",
             "NonIndexed (Default)",
+            "3. Parallel Processing Patterns",
             "Indexed Mode",
             "What Are Jobs?"
           ],
-          "top_score": 0.9983999729156494
+          "top_score": 0.9977999925613403
         },
         {
           "id": 12,
@@ -1931,7 +1931,7 @@
           "question": "What kubectl command checks the status of a running Kubernetes Job?",
           "expected_source": "monitor_job.docx",
           "expected_section": "Checking Job Status with kubectl",
-          "key_term": "kubectl get jobs",
+          "key_term": "COMPLETIONS   DURATION   AGE",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": true,
@@ -1962,12 +1962,12 @@
           "question": "How do you verify that the core Kubernetes components are running after starting Minikube?",
           "expected_source": "monitor_job.docx",
           "expected_section": "Verifying Kubernetes Installation",
-          "key_term": "kubectl cluster-info",
+          "key_term": "kubectl get pods -n kube-system",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": true,
-          "key_phrase_hit_5": false,
-          "key_phrase_hit_15": false,
+          "key_phrase_hit_5": true,
+          "key_phrase_hit_15": true,
           "source_rr": 1.0,
           "section_rr": 1.0,
           "is_refused": false,
@@ -2002,9 +2002,9 @@
         "source_hit_5_after_rerank": 1.0,
         "section_hit_5_after_rerank": 0.7333,
         "source_mrr_after_rerank": 0.9667,
-        "section_mrr_after_rerank": 0.6167,
-        "key_phrase_hit_5": 0.8,
-        "key_phrase_hit_15": 0.8
+        "section_mrr_after_rerank": 0.6133,
+        "key_phrase_hit_5": 1.0,
+        "key_phrase_hit_15": 1.0
       },
       "threshold_stats": {
         "refusals_count": 0,
@@ -2013,10 +2013,10 @@
         "median_chunks_passed": 5
       },
       "latency": {
-        "embed_median_ms": 1439.8,
-        "qdrant_median_ms": 282.2,
-        "rerank_median_ms": 195.0,
-        "total_median_ms": 2012.8
+        "embed_median_ms": 1388.8,
+        "qdrant_median_ms": 241.7,
+        "rerank_median_ms": 206.0,
+        "total_median_ms": 1850.8
       },
       "queries": [
         {
@@ -2031,7 +2031,7 @@
           "key_phrase_hit_5": true,
           "key_phrase_hit_15": true,
           "source_rr": 1.0,
-          "section_rr": 0.25,
+          "section_rr": 0.2,
           "is_refused": false,
           "chunks_passed": 5,
           "top_5_sources": [
@@ -2045,8 +2045,8 @@
             "OVERVIEW OF STEPS",
             "STEP 2: FILLING THE QUEUE WITH TASKS",
             "FINE PARALLEL PROCESSING USING A WORK QUEUE",
-            "STEP 1: STARTING REDIS",
-            "BEFORE YOU BEGIN"
+            "STEP 3: CREATE A CONTAINER IMAGE",
+            "STEP 1: STARTING REDIS"
           ],
           "top_score": 0.9991999864578247
         },
@@ -2069,17 +2069,17 @@
             "parallel_work_queue.txt",
             "parallel_work_queue.txt",
             "monitor_job.docx",
-            "cronjobs.docx",
-            "monitor_job.docx"
+            "monitor_job.docx",
+            "cronjobs.docx"
           ],
           "top_5_sections": [
             "STEP 4: DEFINING A JOB",
             "FINE PARALLEL PROCESSING USING A WORK QUEUE",
             "Understanding Kubernetes Jobs",
-            "What Are Jobs?",
-            "Using JSONPath for Custom Output"
+            "Using JSONPath for Custom Output",
+            "What Are Jobs?"
           ],
-          "top_score": 0.9969000220298767
+          "top_score": 0.9970999956130981
         },
         {
           "id": 3,
@@ -2090,8 +2090,8 @@
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": true,
-          "key_phrase_hit_5": false,
-          "key_phrase_hit_15": false,
+          "key_phrase_hit_5": true,
+          "key_phrase_hit_15": true,
           "source_rr": 1.0,
           "section_rr": 0.5,
           "is_refused": false,
@@ -2100,24 +2100,24 @@
             "parallel_work_queue.txt",
             "parallel_work_queue.txt",
             "parallel_work_queue.txt",
-            "parallel_work_queue.txt",
+            "job_management.html",
             "job_management.html"
           ],
           "top_5_sections": [
             "OVERVIEW OF STEPS",
             "STEP 2: FILLING THE QUEUE WITH TASKS",
-            "host = os.getenv(\"REDIS_SERVICE_HOST\")",
             "STEP 3: CREATE A CONTAINER IMAGE",
-            "Compare tools"
+            "Compare tools",
+            "Example: Create a job using the CLI"
           ],
-          "top_score": 0.9994999766349792
+          "top_score": 0.9994000196456909
         },
         {
           "id": 4,
           "question": "What is the difference between HPA and VPA in Kubernetes?",
           "expected_source": "pods_autoscale.html",
           "expected_section": "HPA vs. VPA: Which One to Use?",
-          "key_term": "HPA",
+          "key_term": "adjusting the number of running pods",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": false,
@@ -2162,15 +2162,15 @@
             "pods_autoscale.html",
             "pods_autoscale.html",
             "pods_autoscale.html",
-            "pods_autoscale.html",
-            "architecture.pptx"
+            "cronjobs.docx",
+            "pods_autoscale.html"
           ],
           "top_5_sections": [
             "Metric Server Setup",
             "Metric Server Setup",
             "What is HPA?",
-            "Step 3: Create a VPA",
-            "Additional Services"
+            "1. Resource Right-Sizing",
+            "Step 3: Create a VPA"
           ],
           "top_score": 0.9998999834060669
         },
@@ -2192,16 +2192,16 @@
           "top_5_sources": [
             "pods_autoscale.html",
             "pods_autoscale.html",
-            "pods_autoscale.html",
+            "monitor_job.docx",
             "monitor_job.docx",
             "monitor_job.docx"
           ],
           "top_5_sections": [
             "Metric Server Setup",
             "Metric Server Setup",
-            "Step 3: Create a VPA",
+            "Getting Detailed Job Information",
             "Using JSONPath for Custom Output",
-            "Getting Detailed Job Information"
+            "Verifying Kubernetes Installation"
           ],
           "top_score": 0.9993000030517578
         },
@@ -2241,7 +2241,7 @@
           "question": "When should you use the Databricks REST API instead of the CLI or SDK?",
           "expected_source": "job_management.html",
           "expected_section": "Compare tools",
-          "key_term": "REST API",
+          "key_term": "language is not currently available",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": true,
@@ -2272,7 +2272,7 @@
           "question": "What are the three main developer tools for managing Databricks jobs programmatically?",
           "expected_source": "job_management.html",
           "expected_section": "Compare tools",
-          "key_term": "CLI",
+          "key_term": "Databricks CLI, the Databricks SDKs, and the REST API",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": true,
@@ -2303,12 +2303,12 @@
           "question": "What are the valid restart policy values for a Kubernetes Job pod?",
           "expected_source": "cronjobs.docx",
           "expected_section": "1. Restart Policy Requirements",
-          "key_term": "2023-05-10",
+          "key_term": "OnFailure",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": true,
-          "key_phrase_hit_5": false,
-          "key_phrase_hit_15": false,
+          "key_phrase_hit_5": true,
+          "key_phrase_hit_15": true,
           "source_rr": 1.0,
           "section_rr": 1.0,
           "is_refused": false,
@@ -2327,7 +2327,7 @@
             "Understanding Job Status",
             "Viewing Logs of Completed Jobs"
           ],
-          "top_score": 0.9959999918937683
+          "top_score": 0.9955999851226807
         },
         {
           "id": 11,
@@ -2358,7 +2358,7 @@
             "NonIndexed (Default)",
             "What Are Jobs?"
           ],
-          "top_score": 0.9983000159263611
+          "top_score": 0.9976000189781189
         },
         {
           "id": 12,
@@ -2378,18 +2378,18 @@
           "top_5_sources": [
             "cronjobs.docx",
             "monitor_job.docx",
-            "monitor_job.docx",
+            "architecture.pptx",
             "monitor_job.docx",
             "monitor_job.docx"
           ],
           "top_5_sections": [
             "What Are Jobs?",
             "Using Labels for Job Organization",
-            "Understanding Kubernetes Jobs",
+            "kube-apiserver",
             "Checking Job Status with kubectl",
-            "Introduction"
+            "Understanding Kubernetes Jobs"
           ],
-          "top_score": 0.9955000281333923
+          "top_score": 0.9948999881744385
         },
         {
           "id": 13,
@@ -2427,7 +2427,7 @@
           "question": "What kubectl command checks the status of a running Kubernetes Job?",
           "expected_source": "monitor_job.docx",
           "expected_section": "Checking Job Status with kubectl",
-          "key_term": "kubectl get jobs",
+          "key_term": "COMPLETIONS   DURATION   AGE",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": true,
@@ -2458,12 +2458,12 @@
           "question": "How do you verify that the core Kubernetes components are running after starting Minikube?",
           "expected_source": "monitor_job.docx",
           "expected_section": "Verifying Kubernetes Installation",
-          "key_term": "kubectl cluster-info",
+          "key_term": "kubectl get pods -n kube-system",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": true,
-          "key_phrase_hit_5": false,
-          "key_phrase_hit_15": false,
+          "key_phrase_hit_5": true,
+          "key_phrase_hit_15": true,
           "source_rr": 1.0,
           "section_rr": 1.0,
           "is_refused": false,
@@ -2473,14 +2473,14 @@
             "monitor_job.docx",
             "architecture.pptx",
             "monitor_job.docx",
-            "architecture.pptx"
+            "monitor_job.docx"
           ],
           "top_5_sections": [
             "Verifying Kubernetes Installation",
             "Starting Minikube",
             "Kubernetes Concepts - Core",
             "Summary",
-            "Agenda"
+            "Setting Up Your Kubernetes Environment"
           ],
           "top_score": 0.9994999766349792
         }
@@ -2498,9 +2498,9 @@
         "source_hit_5_after_rerank": 1.0,
         "section_hit_5_after_rerank": 0.7333,
         "source_mrr_after_rerank": 0.9667,
-        "section_mrr_after_rerank": 0.6167,
-        "key_phrase_hit_5": 0.8,
-        "key_phrase_hit_15": 0.8
+        "section_mrr_after_rerank": 0.6133,
+        "key_phrase_hit_5": 1.0,
+        "key_phrase_hit_15": 1.0
       },
       "threshold_stats": {
         "refusals_count": 0,
@@ -2509,10 +2509,10 @@
         "median_chunks_passed": 5
       },
       "latency": {
-        "embed_median_ms": 1408.3,
-        "qdrant_median_ms": 273.9,
-        "rerank_median_ms": 212.9,
-        "total_median_ms": 1905.1
+        "embed_median_ms": 1381.8,
+        "qdrant_median_ms": 242.7,
+        "rerank_median_ms": 220.2,
+        "total_median_ms": 1816.6
       },
       "queries": [
         {
@@ -2527,7 +2527,7 @@
           "key_phrase_hit_5": true,
           "key_phrase_hit_15": true,
           "source_rr": 1.0,
-          "section_rr": 0.25,
+          "section_rr": 0.2,
           "is_refused": false,
           "chunks_passed": 5,
           "top_5_sources": [
@@ -2541,8 +2541,8 @@
             "OVERVIEW OF STEPS",
             "STEP 2: FILLING THE QUEUE WITH TASKS",
             "FINE PARALLEL PROCESSING USING A WORK QUEUE",
-            "STEP 1: STARTING REDIS",
-            "BEFORE YOU BEGIN"
+            "STEP 3: CREATE A CONTAINER IMAGE",
+            "STEP 1: STARTING REDIS"
           ],
           "top_score": 0.9991999864578247
         },
@@ -2569,7 +2569,7 @@
             "STEP 4: DEFINING A JOB",
             "FINE PARALLEL PROCESSING USING A WORK QUEUE"
           ],
-          "top_score": 0.9969000220298767
+          "top_score": 0.9970999956130981
         },
         {
           "id": 3,
@@ -2580,8 +2580,8 @@
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": true,
-          "key_phrase_hit_5": false,
-          "key_phrase_hit_15": false,
+          "key_phrase_hit_5": true,
+          "key_phrase_hit_15": true,
           "source_rr": 1.0,
           "section_rr": 0.5,
           "is_refused": false,
@@ -2594,14 +2594,14 @@
             "OVERVIEW OF STEPS",
             "STEP 2: FILLING THE QUEUE WITH TASKS"
           ],
-          "top_score": 0.9994999766349792
+          "top_score": 0.9994000196456909
         },
         {
           "id": 4,
           "question": "What is the difference between HPA and VPA in Kubernetes?",
           "expected_source": "pods_autoscale.html",
           "expected_section": "HPA vs. VPA: Which One to Use?",
-          "key_term": "HPA",
+          "key_term": "adjusting the number of running pods",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": false,
@@ -2646,15 +2646,15 @@
             "pods_autoscale.html",
             "pods_autoscale.html",
             "pods_autoscale.html",
-            "pods_autoscale.html",
-            "architecture.pptx"
+            "cronjobs.docx",
+            "pods_autoscale.html"
           ],
           "top_5_sections": [
             "Metric Server Setup",
             "Metric Server Setup",
             "What is HPA?",
-            "Step 3: Create a VPA",
-            "Additional Services"
+            "1. Resource Right-Sizing",
+            "Step 3: Create a VPA"
           ],
           "top_score": 0.9998999834060669
         },
@@ -2719,7 +2719,7 @@
           "question": "When should you use the Databricks REST API instead of the CLI or SDK?",
           "expected_source": "job_management.html",
           "expected_section": "Compare tools",
-          "key_term": "REST API",
+          "key_term": "language is not currently available",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": true,
@@ -2750,7 +2750,7 @@
           "question": "What are the three main developer tools for managing Databricks jobs programmatically?",
           "expected_source": "job_management.html",
           "expected_section": "Compare tools",
-          "key_term": "CLI",
+          "key_term": "Databricks CLI, the Databricks SDKs, and the REST API",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": true,
@@ -2775,12 +2775,12 @@
           "question": "What are the valid restart policy values for a Kubernetes Job pod?",
           "expected_source": "cronjobs.docx",
           "expected_section": "1. Restart Policy Requirements",
-          "key_term": "2023-05-10",
+          "key_term": "OnFailure",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": true,
-          "key_phrase_hit_5": false,
-          "key_phrase_hit_15": false,
+          "key_phrase_hit_5": true,
+          "key_phrase_hit_15": true,
           "source_rr": 1.0,
           "section_rr": 1.0,
           "is_refused": false,
@@ -2799,7 +2799,7 @@
             "Understanding Job Status",
             "Viewing Logs of Completed Jobs"
           ],
-          "top_score": 0.9959999918937683
+          "top_score": 0.9955999851226807
         },
         {
           "id": 11,
@@ -2825,12 +2825,12 @@
           ],
           "top_5_sections": [
             "Jobs",
-            "4. Jobs Taking Too Long",
             "3. Parallel Processing Patterns",
+            "4. Jobs Taking Too Long",
             "NonIndexed (Default)",
             "What Are Jobs?"
           ],
-          "top_score": 0.9983000159263611
+          "top_score": 0.9976000189781189
         },
         {
           "id": 12,
@@ -2850,18 +2850,18 @@
           "top_5_sources": [
             "cronjobs.docx",
             "monitor_job.docx",
-            "monitor_job.docx",
+            "architecture.pptx",
             "monitor_job.docx",
             "monitor_job.docx"
           ],
           "top_5_sections": [
             "What Are Jobs?",
             "Using Labels for Job Organization",
-            "Understanding Kubernetes Jobs",
+            "kube-apiserver",
             "Checking Job Status with kubectl",
-            "Introduction"
+            "Understanding Kubernetes Jobs"
           ],
-          "top_score": 0.9955000281333923
+          "top_score": 0.9948999881744385
         },
         {
           "id": 13,
@@ -2899,7 +2899,7 @@
           "question": "What kubectl command checks the status of a running Kubernetes Job?",
           "expected_source": "monitor_job.docx",
           "expected_section": "Checking Job Status with kubectl",
-          "key_term": "kubectl get jobs",
+          "key_term": "COMPLETIONS   DURATION   AGE",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": true,
@@ -2930,12 +2930,12 @@
           "question": "How do you verify that the core Kubernetes components are running after starting Minikube?",
           "expected_source": "monitor_job.docx",
           "expected_section": "Verifying Kubernetes Installation",
-          "key_term": "kubectl cluster-info",
+          "key_term": "kubectl get pods -n kube-system",
           "recall_15_before": true,
           "source_hit_5": true,
           "section_hit_5": true,
-          "key_phrase_hit_5": false,
-          "key_phrase_hit_15": false,
+          "key_phrase_hit_5": true,
+          "key_phrase_hit_15": true,
           "source_rr": 1.0,
           "section_rr": 1.0,
           "is_refused": false,
@@ -2977,10 +2977,10 @@
         "median_chunks_passed": 5.0
       },
       "latency": {
-        "embed_median_ms": 1341.7,
-        "qdrant_median_ms": 252.1,
-        "rerank_median_ms": 160.4,
-        "total_median_ms": 1763.4
+        "embed_median_ms": 1432.2,
+        "qdrant_median_ms": 238.7,
+        "rerank_median_ms": 244.1,
+        "total_median_ms": 1944.8
       },
       "queries": [
         {
@@ -3043,7 +3043,7 @@
             "Creating Your First Job",
             "Page 127"
           ],
-          "top_score": 0.9158999919891357
+          "top_score": 0.91839998960495
         },
         {
           "id": 3,
@@ -3105,7 +3105,7 @@
             "Understanding Job Status",
             "Viewing Logs of Completed Jobs"
           ],
-          "top_score": 0.9843999743461609
+          "top_score": 0.9840999841690063
         },
         {
           "id": 5,
@@ -3477,7 +3477,7 @@
             "ConfigMaps and Secrets",
             "Creating a CronJob for Scheduled Execution"
           ],
-          "top_score": 1.0
+          "top_score": 0.9998999834060669
         },
         {
           "id": 17,
@@ -3529,17 +3529,17 @@
             "parallel_work_queue.txt",
             "parallel_work_queue.txt",
             "parallel_work_queue.txt",
-            "parallel_work_queue.txt",
-            "cronjobs.docx"
+            "cronjobs.docx",
+            "parallel_work_queue.txt"
           ],
           "top_5_sections": [
             "STEP 3: CREATE A CONTAINER IMAGE",
-            "host = os.getenv(\"REDIS_SERVICE_HOST\")",
             "STEP 2: FILLING THE QUEUE WITH TASKS",
             "OVERVIEW OF STEPS",
-            "3. Serverless Job Execution"
+            "3. Serverless Job Execution",
+            "STEP 1: STARTING REDIS"
           ],
-          "top_score": 0.888700008392334
+          "top_score": 0.9945999979972839
         },
         {
           "id": 19,
@@ -3560,15 +3560,15 @@
             "architecture.pptx",
             "pods_autoscale.html",
             "cronjobs.docx",
-            "architecture.pptx",
-            "pods_autoscale.html"
+            "pods_autoscale.html",
+            "architecture.pptx"
           ],
           "top_5_sections": [
             "kube-scheduler",
             "Introduction to Kubernetes Autoscaling",
             "What Are Jobs?",
-            "Concepts\t- Workloads",
-            "Conclusion"
+            "Conclusion",
+            "Concepts\t- Workloads"
           ],
           "top_score": 0.9997000098228455
         },
@@ -3628,11 +3628,11 @@
           "top_5_sections": [
             "Networking - Fundamental Rules",
             "Networking - Fundamentals Applied",
-            "Concepts\t- Workloads",
             "kube-proxy",
+            "Concepts\t- Workloads",
             "Networking - CNI"
           ],
-          "top_score": 0.9983999729156494
+          "top_score": 0.9983000159263611
         },
         {
           "id": 22,
@@ -3690,10 +3690,10 @@
         "median_chunks_passed": 5.0
       },
       "latency": {
-        "embed_median_ms": 1303.9,
-        "qdrant_median_ms": 246.2,
-        "rerank_median_ms": 196.4,
-        "total_median_ms": 1782.7
+        "embed_median_ms": 1278.2,
+        "qdrant_median_ms": 239.8,
+        "rerank_median_ms": 197.4,
+        "total_median_ms": 1760.8
       },
       "queries": [
         {
@@ -3756,7 +3756,7 @@
             "3. Multi-Architecture Cost Optimization",
             "BEFORE YOU BEGIN"
           ],
-          "top_score": 0.9366000294685364
+          "top_score": 0.933899998664856
         },
         {
           "id": 3,
@@ -3818,7 +3818,7 @@
             "Analyzing Kubernetes Job Logs",
             "Understanding Job Status"
           ],
-          "top_score": 0.9854000210762024
+          "top_score": 0.9843999743461609
         },
         {
           "id": 5,
@@ -3846,10 +3846,10 @@
             "3. Machine Learning Model Training",
             "What Are CronJobs?",
             "Creating a CronJob for Scheduled Execution",
-            "2. Schedule Optimization for Cost Savings",
-            "2. Job Testing Framework"
+            "2. Job Testing Framework",
+            "2. CronJob Not Creating Jobs"
           ],
-          "top_score": 0.5471000075340271
+          "top_score": 0.5127999782562256
         },
         {
           "id": 6,
@@ -3880,7 +3880,7 @@
             "1. Resource-Based Cost Analysis",
             "3. Serverless Job Execution"
           ],
-          "top_score": 0.998199999332428
+          "top_score": 0.9976999759674072
         },
         {
           "id": 7,
@@ -3911,7 +3911,7 @@
             "Container Runtime",
             "Verifying Kubernetes Installation"
           ],
-          "top_score": 0.9976999759674072
+          "top_score": 0.9980000257492065
         },
         {
           "id": 8,
@@ -4126,9 +4126,9 @@
             "1. Resource Right-Sizing",
             "What is VPA?",
             "Exclude scaling for a specific container",
-            "What is HPA?"
+            "Step 3: Create a VPA"
           ],
-          "top_score": 0.9991999864578247
+          "top_score": 0.9993000030517578
         },
         {
           "id": 15,
@@ -4190,7 +4190,7 @@
             "Get started with the Databricks CLI",
             "Compare tools"
           ],
-          "top_score": 1.0
+          "top_score": 0.9998999834060669
         },
         {
           "id": 17,
@@ -4221,7 +4221,7 @@
             "Concepts\t- Workloads (cont.)",
             "Parallelism"
           ],
-          "top_score": 0.9987000226974487
+          "top_score": 0.9986000061035156
         },
         {
           "id": 18,
@@ -4242,17 +4242,17 @@
             "parallel_work_queue.txt",
             "parallel_work_queue.txt",
             "parallel_work_queue.txt",
-            "parallel_work_queue.txt",
-            "cronjobs.docx"
+            "cronjobs.docx",
+            "parallel_work_queue.txt"
           ],
           "top_5_sections": [
             "STEP 3: CREATE A CONTAINER IMAGE",
-            "host = os.getenv(\"REDIS_SERVICE_HOST\")",
             "STEP 2: FILLING THE QUEUE WITH TASKS",
             "OVERVIEW OF STEPS",
-            "3. Serverless Job Execution"
+            "3. Serverless Job Execution",
+            "STEP 1: STARTING REDIS"
           ],
-          "top_score": 0.8930000066757202
+          "top_score": 0.9940000176429749
         },
         {
           "id": 19,
@@ -4271,16 +4271,16 @@
           "chunks_passed": 5,
           "top_5_sources": [
             "architecture.pptx",
-            "cronjobs.docx",
-            "cronjobs.docx",
             "pods_autoscale.html",
+            "cronjobs.docx",
+            "cronjobs.docx",
             "architecture.pptx"
           ],
           "top_5_sections": [
             "kube-scheduler",
+            "Introduction to Kubernetes Autoscaling",
             "What Are Jobs?",
             "Introduction",
-            "Conclusion",
             "Concepts\t- Workloads"
           ],
           "top_score": 0.9998000264167786
@@ -4305,14 +4305,14 @@
             "architecture.pptx",
             "architecture.pptx",
             "architecture.pptx",
-            "architecture.pptx"
+            "monitor_job.docx"
           ],
           "top_5_sections": [
             "Kubelet - PodSync",
             "Scheduler",
             "kubelet",
             "kube-apiserver",
-            "kube-controller-manager"
+            "Getting Pod Names for Our Jobs"
           ],
           "top_score": 0.9994000196456909
         },
@@ -4345,7 +4345,7 @@
             "Concepts\t- Workloads",
             "Networking - CNI"
           ],
-          "top_score": 0.9983999729156494
+          "top_score": 0.9986000061035156
         },
         {
           "id": 22,
@@ -4399,14 +4399,14 @@
       "threshold_stats": {
         "refusals_count": 0,
         "refusal_rate": 0.0,
-        "mean_chunks_passed": 3.05,
+        "mean_chunks_passed": 3,
         "median_chunks_passed": 3.0
       },
       "latency": {
-        "embed_median_ms": 93.2,
-        "qdrant_median_ms": 245.5,
-        "rerank_median_ms": 21.6,
-        "total_median_ms": 385.8
+        "embed_median_ms": 1319.3,
+        "qdrant_median_ms": 237.6,
+        "rerank_median_ms": 203.1,
+        "total_median_ms": 1819.5
       },
       "queries": [
         {
@@ -4455,7 +4455,7 @@
           "top_5_sections": [
             "2. Schedule Optimization for Cost Savings"
           ],
-          "top_score": 0.9366000294685364
+          "top_score": 0.933899998664856
         },
         {
           "id": 3,
@@ -4534,7 +4534,7 @@
           "top_5_sections": [
             "3. Machine Learning Model Training"
           ],
-          "top_score": 0.5471000075340271
+          "top_score": 0.4950999915599823
         },
         {
           "id": 6,
@@ -4561,7 +4561,7 @@
             "1. Audit Logging",
             "4. Jobs Taking Too Long"
           ],
-          "top_score": 0.998199999332428
+          "top_score": 0.9980999827384949
         },
         {
           "id": 7,
@@ -4584,7 +4584,7 @@
           "top_5_sections": [
             "Starting Minikube"
           ],
-          "top_score": 0.9976999759674072
+          "top_score": 0.9980000257492065
         },
         {
           "id": 8,
@@ -4789,7 +4789,7 @@
             "Metric Server Setup",
             "1. Resource Right-Sizing"
           ],
-          "top_score": 0.9991999864578247
+          "top_score": 0.9993000030517578
         },
         {
           "id": 15,
@@ -4835,7 +4835,7 @@
           "top_5_sections": [
             "STEP 2: FILLING THE QUEUE WITH TASKS"
           ],
-          "top_score": 1.0
+          "top_score": 0.9998999834060669
         },
         {
           "id": 17,
@@ -4860,7 +4860,7 @@
             "STEP 4: DEFINING A JOB",
             "3. Parallel Processing Patterns"
           ],
-          "top_score": 0.9987000226974487
+          "top_score": 0.9986000061035156
         },
         {
           "id": 18,
@@ -4876,16 +4876,14 @@
           "source_rr": 1.0,
           "section_rr": 1.0,
           "is_refused": false,
-          "chunks_passed": 2,
+          "chunks_passed": 1,
           "top_5_sources": [
-            "parallel_work_queue.txt",
             "parallel_work_queue.txt"
           ],
           "top_5_sections": [
-            "STEP 3: CREATE A CONTAINER IMAGE",
-            "host = os.getenv(\"REDIS_SERVICE_HOST\")"
+            "STEP 3: CREATE A CONTAINER IMAGE"
           ],
-          "top_score": 0.917900025844574
+          "top_score": 0.9940000176429749
         },
         {
           "id": 19,
@@ -4904,16 +4902,16 @@
           "chunks_passed": 5,
           "top_5_sources": [
             "architecture.pptx",
-            "cronjobs.docx",
-            "cronjobs.docx",
             "pods_autoscale.html",
+            "cronjobs.docx",
+            "cronjobs.docx",
             "architecture.pptx"
           ],
           "top_5_sections": [
             "kube-scheduler",
+            "Introduction to Kubernetes Autoscaling",
             "What Are Jobs?",
             "Introduction",
-            "Conclusion",
             "Concepts\t- Workloads"
           ],
           "top_score": 0.9998000264167786
@@ -4972,7 +4970,7 @@
             "Concepts\t- Workloads",
             "Networking - CNI"
           ],
-          "top_score": 0.9983999729156494
+          "top_score": 0.9986000061035156
         },
         {
           "id": 22,
@@ -5009,7 +5007,7 @@
     }
   },
   "differences": {
-    "golden_count": 11,
+    "golden_count": 12,
     "golden_diffs": [
       {
         "id": 1,
@@ -5026,15 +5024,15 @@
           ],
           [
             "parallel_work_queue.txt",
+            "STEP 3: CREATE A CONTAINER IMAGE"
+          ],
+          [
+            "parallel_work_queue.txt",
             "FINE PARALLEL PROCESSING USING A WORK QUEUE"
           ],
           [
             "parallel_work_queue.txt",
             "STEP 1: STARTING REDIS"
-          ],
-          [
-            "monitor_job.docx",
-            "Understanding Kubernetes Jobs"
           ]
         ],
         "hybrid_top_5": [
@@ -5052,11 +5050,11 @@
           ],
           [
             "parallel_work_queue.txt",
-            "STEP 1: STARTING REDIS"
+            "STEP 3: CREATE A CONTAINER IMAGE"
           ],
           [
             "parallel_work_queue.txt",
-            "BEFORE YOU BEGIN"
+            "STEP 1: STARTING REDIS"
           ]
         ],
         "dense_source_hit": true,
@@ -5106,12 +5104,12 @@
             "Understanding Kubernetes Jobs"
           ],
           [
-            "cronjobs.docx",
-            "What Are Jobs?"
-          ],
-          [
             "monitor_job.docx",
             "Using JSONPath for Custom Output"
+          ],
+          [
+            "cronjobs.docx",
+            "What Are Jobs?"
           ]
         ],
         "dense_source_hit": true,
@@ -5136,15 +5134,15 @@
           ],
           [
             "parallel_work_queue.txt",
-            "host = os.getenv(\"REDIS_SERVICE_HOST\")"
-          ],
-          [
-            "parallel_work_queue.txt",
             "STEP 3: CREATE A CONTAINER IMAGE"
           ],
           [
             "job_management.html",
-            "Example: Create a job using the CLI"
+            "Compare tools"
+          ],
+          [
+            "job_management.html",
+            "Run a job using the CLI"
           ]
         ],
         "hybrid_top_5": [
@@ -5158,23 +5156,23 @@
           ],
           [
             "parallel_work_queue.txt",
-            "host = os.getenv(\"REDIS_SERVICE_HOST\")"
-          ],
-          [
-            "parallel_work_queue.txt",
             "STEP 3: CREATE A CONTAINER IMAGE"
           ],
           [
             "job_management.html",
             "Compare tools"
+          ],
+          [
+            "job_management.html",
+            "Example: Create a job using the CLI"
           ]
         ],
         "dense_source_hit": true,
         "hybrid_source_hit": true,
         "dense_source_rr": 1.0,
         "hybrid_source_rr": 1.0,
-        "dense_key_hit_5": false,
-        "hybrid_key_hit_5": false
+        "dense_key_hit_5": true,
+        "hybrid_key_hit_5": true
       },
       {
         "id": 4,
@@ -5228,7 +5226,7 @@
         "hybrid_source_hit": true,
         "dense_source_rr": 1.0,
         "hybrid_source_rr": 1.0,
-        "dense_key_hit_5": true,
+        "dense_key_hit_5": false,
         "hybrid_key_hit_5": true
       },
       {
@@ -5271,12 +5269,12 @@
             "What is HPA?"
           ],
           [
-            "pods_autoscale.html",
-            "Step 3: Create a VPA"
+            "cronjobs.docx",
+            "1. Resource Right-Sizing"
           ],
           [
-            "architecture.pptx",
-            "Additional Services"
+            "pods_autoscale.html",
+            "Step 3: Create a VPA"
           ]
         ],
         "dense_source_hit": true,
@@ -5304,12 +5302,12 @@
             "Getting Detailed Job Information"
           ],
           [
-            "monitor_job.docx",
-            "Using JSONPath for Custom Output"
-          ],
-          [
             "architecture.pptx",
             "Additional Services"
+          ],
+          [
+            "monitor_job.docx",
+            "Using JSONPath for Custom Output"
           ]
         ],
         "hybrid_top_5": [
@@ -5322,8 +5320,8 @@
             "Metric Server Setup"
           ],
           [
-            "pods_autoscale.html",
-            "Step 3: Create a VPA"
+            "monitor_job.docx",
+            "Getting Detailed Job Information"
           ],
           [
             "monitor_job.docx",
@@ -5331,7 +5329,62 @@
           ],
           [
             "monitor_job.docx",
-            "Getting Detailed Job Information"
+            "Verifying Kubernetes Installation"
+          ]
+        ],
+        "dense_source_hit": true,
+        "hybrid_source_hit": true,
+        "dense_source_rr": 1.0,
+        "hybrid_source_rr": 1.0,
+        "dense_key_hit_5": true,
+        "hybrid_key_hit_5": true
+      },
+      {
+        "id": 7,
+        "question": "What Databricks CLI command retrieves the details of a specific job?",
+        "expected_source": "job_management.html",
+        "dense_top_5": [
+          [
+            "job_management.html",
+            "Get started with the Databricks CLI"
+          ],
+          [
+            "job_management.html",
+            "Example: Create a job using the CLI"
+          ],
+          [
+            "job_management.html",
+            "Get started with the Databricks REST API"
+          ],
+          [
+            "job_management.html",
+            "Compare tools"
+          ],
+          [
+            "job_management.html",
+            "Run a job using the CLI"
+          ]
+        ],
+        "hybrid_top_5": [
+          [
+            "job_management.html",
+            "Get started with the Databricks CLI"
+          ],
+          [
+            "job_management.html",
+            "Example: Create a job using the CLI"
+          ],
+          [
+            "job_management.html",
+            "Get started with the Databricks REST API"
+          ],
+          [
+            "job_management.html",
+            "Run a job using the CLI"
+          ],
+          [
+            "job_management.html",
+            "Compare tools"
           ]
         ],
         "dense_source_hit": true,
@@ -5352,11 +5405,11 @@
           ],
           [
             "cronjobs.docx",
-            "3. Parallel Processing Patterns"
+            "NonIndexed (Default)"
           ],
           [
             "cronjobs.docx",
-            "NonIndexed (Default)"
+            "3. Parallel Processing Patterns"
           ],
           [
             "cronjobs.docx",
@@ -5432,8 +5485,8 @@
             "Using Labels for Job Organization"
           ],
           [
-            "monitor_job.docx",
-            "Understanding Kubernetes Jobs"
+            "architecture.pptx",
+            "kube-apiserver"
           ],
           [
             "monitor_job.docx",
@@ -5441,7 +5494,7 @@
           ],
           [
             "monitor_job.docx",
-            "Introduction"
+            "Understanding Kubernetes Jobs"
           ]
         ],
         "dense_source_hit": true,
@@ -5605,19 +5658,19 @@
             "Summary"
           ],
           [
-            "architecture.pptx",
-            "Agenda"
+            "monitor_job.docx",
+            "Setting Up Your Kubernetes Environment"
           ]
         ],
         "dense_source_hit": true,
         "hybrid_source_hit": true,
         "dense_source_rr": 1.0,
         "hybrid_source_rr": 1.0,
-        "dense_key_hit_5": false,
-        "hybrid_key_hit_5": false
+        "dense_key_hit_5": true,
+        "hybrid_key_hit_5": true
       }
     ],
-    "hard_count": 14,
+    "hard_count": 13,
     "hard_diffs": [
       {
         "id": 1,
@@ -5825,11 +5878,11 @@
           ],
           [
             "cronjobs.docx",
-            "2. Schedule Optimization for Cost Savings"
+            "2. Job Testing Framework"
           ],
           [
             "cronjobs.docx",
-            "2. Job Testing Framework"
+            "2. CronJob Not Creating Jobs"
           ]
         ],
         "dense_source_hit": true,
@@ -6049,7 +6102,7 @@
           ],
           [
             "pods_autoscale.html",
-            "What is HPA?"
+            "Step 3: Create a VPA"
           ]
         ],
         "dense_source_hit": false,
@@ -6187,12 +6240,12 @@
             "What Are Jobs?"
           ],
           [
-            "architecture.pptx",
-            "Concepts\t- Workloads"
-          ],
-          [
             "pods_autoscale.html",
             "Conclusion"
+          ],
+          [
+            "architecture.pptx",
+            "Concepts\t- Workloads"
           ]
         ],
         "hybrid_top_5": [
@@ -6201,16 +6254,16 @@
             "kube-scheduler"
           ],
           [
+            "pods_autoscale.html",
+            "Introduction to Kubernetes Autoscaling"
+          ],
+          [
             "cronjobs.docx",
             "What Are Jobs?"
           ],
           [
             "cronjobs.docx",
             "Introduction"
-          ],
-          [
-            "pods_autoscale.html",
-            "Conclusion"
           ],
           [
             "architecture.pptx",
@@ -6268,63 +6321,8 @@
             "kube-apiserver"
           ],
           [
-            "architecture.pptx",
-            "kube-controller-manager"
-          ]
-        ],
-        "dense_source_hit": true,
-        "hybrid_source_hit": true,
-        "dense_source_rr": 1.0,
-        "hybrid_source_rr": 1.0,
-        "dense_key_hit_5": true,
-        "hybrid_key_hit_5": true
-      },
-      {
-        "id": 21,
-        "question": "What is the fundamental networking rule regarding Pod-to-Pod communication in Kubernetes?",
-        "expected_source": "architecture.pptx",
-        "dense_top_5": [
-          [
-            "architecture.pptx",
-            "Networking - Fundamental Rules"
-          ],
-          [
-            "architecture.pptx",
-            "Networking - Fundamentals Applied"
-          ],
-          [
-            "architecture.pptx",
-            "Concepts\t- Workloads"
-          ],
-          [
-            "architecture.pptx",
-            "kube-proxy"
-          ],
-          [
-            "architecture.pptx",
-            "Networking - CNI"
-          ]
-        ],
-        "hybrid_top_5": [
-          [
-            "architecture.pptx",
-            "Networking - Fundamental Rules"
-          ],
-          [
-            "architecture.pptx",
-            "Networking - Fundamentals Applied"
-          ],
-          [
-            "architecture.pptx",
-            "kube-proxy"
-          ],
-          [
-            "architecture.pptx",
-            "Concepts\t- Workloads"
-          ],
-          [
-            "architecture.pptx",
-            "Networking - CNI"
+            "monitor_job.docx",
+            "Getting Pod Names for Our Jobs"
           ]
         ],
         "dense_source_hit": true,

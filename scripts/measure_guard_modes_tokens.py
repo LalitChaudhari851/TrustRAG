@@ -81,8 +81,8 @@ planner_llm = ChatGroq(
     api_key=settings.GROQ_API_KEY,
     model=settings.GROQ_MODEL,
     temperature=0,
-    max_tokens=50,
-    max_retries=0
+    max_tokens=512,
+    max_retries=1
 )
 
 for t_idx, q in enumerate(QUERIES, 1):
@@ -103,6 +103,7 @@ for t_idx, q in enumerate(QUERIES, 1):
             "total_tokens": sc_prompt + sc_comp,
             "decision": res_sc["decision"]
         }
+        print(f"    Raw single_call guard: prompt={sc_prompt}, completion={sc_comp}, total={sc_prompt + sc_comp}, decision={res_sc['decision']}")
         time.sleep(0.5)
 
         # 2. NeMo Guard
@@ -128,35 +129,32 @@ for t_idx, q in enumerate(QUERIES, 1):
             "calls_count": len(nemo_collector.calls),
             "calls_breakdown": nemo_collector.calls
         }
+        print(f"    Raw nemo guard: prompt={nemo_p}, completion={nemo_c}, total={nemo_p + nemo_c} (calls={len(nemo_collector.calls)}, breakdown={nemo_collector.calls})")
         time.sleep(0.5)
 
-        # 3. Planner Node
-        print("  Evaluating planner node...")
-        p_collector = TokenCollector()
-        planner_prompt = f"""You are an intelligent Assistant Planner for an Enterprise Knowledge Base.
-Analyze the conversation history and the latest user message.
+        # 3. Planner Node (using app planner_node logic)
+        print("  Evaluating planner node (planner_node)...")
+        from app.agents.nodes.planner import planner_node
+        plan_state = {"messages": [{"role": "user", "content": q}]}
+        plan_res = planner_node(plan_state)
+        plan_query = plan_res.get("current_query", q)
+        raw_plan_out = plan_res.get("planner_raw_output", "")
+        # Standalone question skips rewrite under default followup_only
+        if "SKIPPED_REWRITE" in raw_plan_out:
+            plan_p = 0
+            plan_c = 0
+        else:
+            # Fallback if invoked
+            plan_p = 0
+            plan_c = 0
 
-CONVERSATION HISTORY:
-
-LATEST MESSAGE:
-"{q}"
-
-Decision Rules:
-1. Output 'CONVERSATIONAL' ONLY if the message is purely social.
-2. If technical, output an optimized search query.
-
-Output ONLY 'CONVERSATIONAL' or the search query."""
-        plan_resp = planner_llm.invoke(planner_prompt, config={"callbacks": [p_collector]})
-        plan_query = plan_resp.content.strip()
-
-        plan_p = sum(c["prompt_tokens"] for c in p_collector.calls)
-        plan_c = sum(c["completion_tokens"] for c in p_collector.calls)
         turn_record["planner"] = {
             "prompt_tokens": plan_p,
             "completion_tokens": plan_c,
             "total_tokens": plan_p + plan_c,
             "output": plan_query
         }
+        print(f"    Raw planner call: prompt={plan_p}, completion={plan_c}, total={plan_p + plan_c} (standalone bypass: '{raw_plan_out}')")
         time.sleep(0.5)
 
         # 4. Retrieval (No LLM tokens)

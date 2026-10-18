@@ -45,6 +45,7 @@ app = FastAPI(title="Enterprise Agentic RAG API", lifespan=lifespan)
 class QueryRequest(BaseModel):
     q: str
     thread_id: Optional[str] = "default_user"
+    retrieval_mode: Optional[str] = None
     
     
 @app.get("/")
@@ -77,7 +78,8 @@ def query(request: QueryRequest):
         "current_query": q,
         "documents": [],
         "plan": ["Start"],
-        "status": "Initializing Graph..."
+        "status": "Initializing Graph...",
+        "retrieval_mode": request.retrieval_mode
     }
     
     # Configuration for Memory (Thread ID)

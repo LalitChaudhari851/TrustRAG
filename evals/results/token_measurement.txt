@@ -1,60 +1,25 @@
 ================================================================================
 TASK B: REAL TOKEN USAGE MEASUREMENT ACROSS 5 QUERIES (single_call vs nemo)
 ================================================================================
-Completed Turns: 5/5
+Completed Turns: 1/5
+Notice: Stopped early due to quota/error: Quota exhaustion / 429 encountered: Error invoking LLM (model=qwen/qwen3.8-27b, provider=groq): Error code: 429 - {'error': {'message': 'Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kn1vewtyejfbchsmjw6vngt5` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199958, Requested 373. Please try again in 2m22.992s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
 
 Turn 1: 'What is Horizontal Pod Autoscaling in Kubernetes?'
-  (a) single_call guard: Prompt= 274 | Comp= 13 | Total= 287
+  (a) single_call guard: Prompt= 328 | Comp= 59 | Total= 387
   (b) nemo guard:        Prompt=1760 | Comp=158 | Total=1918 (3 LLM calls)
-  (c) planner node:      Prompt= 103 | Comp=  9 | Total= 112
-  (d) responder node:    Prompt= 481 | Comp=103 | Total= 584
-  >> Turn Total (GUARD_MODE=single_call): 983 tokens
-  >> Turn Total (GUARD_MODE=nemo):        2614 tokens
-  >> Savings: -1631 tokens (-62.4%)
-
-Turn 2: 'How do you configure an NGINX Ingress controller with TLS termination in Kubernetes?'
-  (a) single_call guard: Prompt= 282 | Comp= 20 | Total= 302
-  (b) nemo guard:        Prompt=1809 | Comp=192 | Total=2001 (3 LLM calls)
-  (c) planner node:      Prompt= 111 | Comp= 11 | Total= 122
-  (d) responder node:    Prompt= 287 | Comp=159 | Total= 446
-  >> Turn Total (GUARD_MODE=single_call): 870 tokens
-  >> Turn Total (GUARD_MODE=nemo):        2569 tokens
-  >> Savings: -1699 tokens (-66.1%)
-
-Turn 3: 'What Databricks CLI command retrieves the details of a specific job?'
-  (a) single_call guard: Prompt= 279 | Comp= 20 | Total= 299
-  (b) nemo guard:        Prompt=1819 | Comp= 75 | Total=1894 (3 LLM calls)
-  (c) planner node:      Prompt= 108 | Comp=  9 | Total= 117
-  (d) responder node:    Prompt= 766 | Comp= 73 | Total= 839
-  >> Turn Total (GUARD_MODE=single_call): 1255 tokens
-  >> Turn Total (GUARD_MODE=nemo):        2850 tokens
-  >> Savings: -1595 tokens (-56.0%)
-
-Turn 4: 'How do CronJobs handle pod restarts in Kubernetes?'
-  (a) single_call guard: Prompt= 276 | Comp= 20 | Total= 296
-  (b) nemo guard:        Prompt=1780 | Comp=157 | Total=1937 (3 LLM calls)
-  (c) planner node:      Prompt= 105 | Comp=  9 | Total= 114
-  (d) responder node:    Prompt= 667 | Comp=173 | Total= 840
-  >> Turn Total (GUARD_MODE=single_call): 1250 tokens
-  >> Turn Total (GUARD_MODE=nemo):        2891 tokens
-  >> Savings: -1641 tokens (-56.8%)
-
-Turn 5: 'What are the completions and parallelism fields in a Kubernetes Job spec?'
-  (a) single_call guard: Prompt= 280 | Comp= 13 | Total= 293
-  (b) nemo guard:        Prompt=1797 | Comp=192 | Total=1989 (3 LLM calls)
-  (c) planner node:      Prompt= 109 | Comp= 10 | Total= 119
-  (d) responder node:    Prompt= 370 | Comp=144 | Total= 514
-  >> Turn Total (GUARD_MODE=single_call): 926 tokens
-  >> Turn Total (GUARD_MODE=nemo):        2622 tokens
-  >> Savings: -1696 tokens (-64.7%)
+  (c) planner node:      Prompt=   0 | Comp=  0 | Total=   0
+  (d) responder node:    Prompt= 506 | Comp= 74 | Total= 580
+  >> Turn Total (GUARD_MODE=single_call): 967 tokens
+  >> Turn Total (GUARD_MODE=nemo):        2498 tokens
+  >> Savings: -1531 tokens (-61.3%)
 
 --------------------------------------------------------------------------------
 SUMMARY COMPARISON & DAILY CAPACITY (200,000 TOKENS/DAY QUOTA)
 --------------------------------------------------------------------------------
 Metric                               | GUARD_MODE=single_call  | GUARD_MODE=nemo    | Delta
 ----------------------------------------------------------------------------------------
-Avg Guard Tokens / Turn              | 295.4                   | 1947.8             | -1652.4 (-84.8%)
-Avg Planner Tokens / Turn            | 116.8                   | 116.8              | 0.0
-Avg Responder Tokens / Turn          | 644.6                   | 644.6              | 0.0
-Avg Total Tokens / Turn              | 1056.8                  | 2709.2             | -1652.4 (-61.0%)
-Turns / Day (200k TPD Quota)         | 189.3                   | 73.8               | +115.4 (+156.4%)
+Avg Guard Tokens / Turn              | 387.0                   | 1918.0             | -1531.0 (-79.8%)
+Avg Planner Tokens / Turn            | 0.0                     | 0.0                | 0.0
+Avg Responder Tokens / Turn          | 580.0                   | 580.0              | 0.0
+Avg Total Tokens / Turn              | 967.0                   | 2498.0             | -1531.0 (-61.3%)
+Turns / Day (200k TPD Quota)         | 206.8                   | 80.1               | +126.8 (+158.3%)

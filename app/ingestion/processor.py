@@ -128,7 +128,7 @@ def get_file_hash(file_path: str) -> str:
     return hasher.hexdigest()
 
 
-CHUNKING_CONFIG_VERSION = "v3.0-tokenguard-384max-15min"
+CHUNKING_CONFIG_VERSION = "v3.1-tokenguard-merge-384max"
 
 
 def process_file(
