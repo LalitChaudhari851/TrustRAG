@@ -53,6 +53,19 @@ def home():
     return {"message": "Enterprise LangGraph RAG API is live."}
 
 
+@app.get("/config")
+def get_server_config():
+    """Returns the live active runtime configuration for audit and eval verification."""
+    from app.config import settings
+    return {
+        "GROQ_MODEL": settings.GROQ_MODEL,
+        "GUARD_MODE": settings.GUARD_MODE,
+        "GUARDRAIL_MODEL": settings.GUARDRAIL_MODEL,
+        "RETRIEVAL_MODE": settings.RETRIEVAL_MODE,
+        "QUERY_REWRITE": settings.QUERY_REWRITE,
+    }
+
+
 @app.get("/graph")
 def get_graph_image():
     """
@@ -100,6 +113,8 @@ def query(request: QueryRequest):
 
         # Gate 2: LangGraph RAG pipeline
         # Run the graph synchronously to preserve Logfire context variables
+        mode_used = (request.retrieval_mode or getattr(settings, "RETRIEVAL_MODE", "tinybert")).lower()
+        logfire.info(f"Retrieval mode used: {mode_used}")
         final_output = rag_agent.invoke(initial_state, config=config)
         
         return {
@@ -107,7 +122,8 @@ def query(request: QueryRequest):
             "answer": final_output.get("final_answer"),
             "thought_process": final_output.get("plan"),
             "status": final_output.get("status"),
-            "sources": final_output.get("documents", [])
+            "sources": final_output.get("documents", []),
+            "retrieval_mode": mode_used
         }
     except Exception as e:
         logfire.error(f"❌ Backend Execution Failed: {e}")

@@ -60,7 +60,13 @@ def generate_node(state: AgentState):
 
         prompt = f"""
         You are a Senior Technical Architect.
-        Answer the question using the TECHNICAL CONTEXT provided.
+        Answer the user question strictly using ONLY the facts directly stated in the TECHNICAL CONTEXT provided below.
+
+        CRITICAL GROUNDING RULES:
+        1. Answer ONLY from the provided TECHNICAL CONTEXT. Do not speculate, extrapolate, or use outside knowledge.
+        2. If the TECHNICAL CONTEXT does not contain the specific facts needed to answer the question, respond:
+           "I cannot answer this question as the required information is not found in the documentation."
+        3. Do NOT invent flags, parameters, YAML fields, or command syntax not shown in the context.
 
         TECHNICAL CONTEXT:
         {full_context}

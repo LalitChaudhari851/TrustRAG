@@ -1,36 +1,36 @@
 {
   "script": "scripts/measure_guard_modes_tokens.py",
-  "timestamp": "2026-10-18 20:21:35",
+  "timestamp": "2026-10-19 11:42:43",
   "turns": [
     {
       "turn": 1,
       "query": "What is Horizontal Pod Autoscaling in Kubernetes?",
       "single_call_guard": {
-        "prompt_tokens": 328,
-        "completion_tokens": 59,
-        "total_tokens": 387,
+        "prompt_tokens": 428,
+        "completion_tokens": 58,
+        "total_tokens": 486,
         "decision": "allow"
       },
       "nemo_guard": {
-        "prompt_tokens": 1760,
-        "completion_tokens": 158,
-        "total_tokens": 1918,
+        "prompt_tokens": 2069,
+        "completion_tokens": 192,
+        "total_tokens": 2261,
         "calls_count": 3,
         "calls_breakdown": [
           {
-            "prompt_tokens": 692,
+            "prompt_tokens": 769,
             "completion_tokens": 64,
-            "total_tokens": 756
+            "total_tokens": 833
           },
           {
-            "prompt_tokens": 293,
-            "completion_tokens": 30,
-            "total_tokens": 323
+            "prompt_tokens": 422,
+            "completion_tokens": 64,
+            "total_tokens": 486
           },
           {
-            "prompt_tokens": 775,
+            "prompt_tokens": 878,
             "completion_tokens": 64,
-            "total_tokens": 839
+            "total_tokens": 942
           }
         ]
       },
@@ -41,27 +41,231 @@
         "output": "What is Horizontal Pod Autoscaling in Kubernetes?"
       },
       "responder": {
-        "prompt_tokens": 506,
-        "completion_tokens": 74,
-        "total_tokens": 580,
-        "answer_preview": "Based on the provided documentation, **Horizontal Pod Autoscaling (HPA)** in Kub"
+        "prompt_tokens": 557,
+        "completion_tokens": 181,
+        "total_tokens": 738,
+        "answer_preview": "Horizontal Pod Autoscaling (HPA) is a Kubernetes feature that automatically adju"
       },
       "turn_totals": {
-        "single_call_mode_total": 967,
-        "nemo_mode_total": 2498,
-        "token_savings_single_call": 1531,
-        "savings_pct": 61.289031224979986
+        "single_call_mode_total": 1224,
+        "nemo_mode_total": 2999,
+        "token_savings_single_call": 1775,
+        "savings_pct": 59.18639546515505
+      }
+    },
+    {
+      "turn": 2,
+      "query": "How do you configure an NGINX Ingress controller with TLS termination in Kubernetes?",
+      "single_call_guard": {
+        "prompt_tokens": 436,
+        "completion_tokens": 59,
+        "total_tokens": 495,
+        "decision": "allow"
+      },
+      "nemo_guard": {
+        "prompt_tokens": 2040,
+        "completion_tokens": 192,
+        "total_tokens": 2232,
+        "calls_count": 3,
+        "calls_breakdown": [
+          {
+            "prompt_tokens": 778,
+            "completion_tokens": 64,
+            "total_tokens": 842
+          },
+          {
+            "prompt_tokens": 399,
+            "completion_tokens": 64,
+            "total_tokens": 463
+          },
+          {
+            "prompt_tokens": 863,
+            "completion_tokens": 64,
+            "total_tokens": 927
+          }
+        ]
+      },
+      "planner": {
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0,
+        "output": "How do you configure an NGINX Ingress controller with TLS termination in Kubernetes?"
+      },
+      "responder": {
+        "prompt_tokens": 347,
+        "completion_tokens": 250,
+        "total_tokens": 597,
+        "answer_preview": "**Configuring an NGINX\u202fIngress controller to terminate TLS in a Kubernetes clust"
+      },
+      "turn_totals": {
+        "single_call_mode_total": 1092,
+        "nemo_mode_total": 2829,
+        "token_savings_single_call": 1737,
+        "savings_pct": 61.39978791092259
+      }
+    },
+    {
+      "turn": 3,
+      "query": "What Databricks CLI command retrieves the details of a specific job?",
+      "single_call_guard": {
+        "prompt_tokens": 433,
+        "completion_tokens": 71,
+        "total_tokens": 504,
+        "decision": "allow"
+      },
+      "nemo_guard": {
+        "prompt_tokens": 2046,
+        "completion_tokens": 192,
+        "total_tokens": 2238,
+        "calls_count": 3,
+        "calls_breakdown": [
+          {
+            "prompt_tokens": 787,
+            "completion_tokens": 64,
+            "total_tokens": 851
+          },
+          {
+            "prompt_tokens": 399,
+            "completion_tokens": 64,
+            "total_tokens": 463
+          },
+          {
+            "prompt_tokens": 860,
+            "completion_tokens": 64,
+            "total_tokens": 924
+          }
+        ]
+      },
+      "planner": {
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0,
+        "output": "What Databricks CLI command retrieves the details of a specific job?"
+      },
+      "responder": {
+        "prompt_tokens": 718,
+        "completion_tokens": 221,
+        "total_tokens": 939,
+        "answer_preview": "The CLI command to fetch a job\u2019s definition is the **`jobs get`** command.\n\n```b"
+      },
+      "turn_totals": {
+        "single_call_mode_total": 1443,
+        "nemo_mode_total": 3177,
+        "token_savings_single_call": 1734,
+        "savings_pct": 54.57979225684608
+      }
+    },
+    {
+      "turn": 4,
+      "query": "How do CronJobs handle pod restarts in Kubernetes?",
+      "single_call_guard": {
+        "prompt_tokens": 430,
+        "completion_tokens": 70,
+        "total_tokens": 500,
+        "decision": "allow"
+      },
+      "nemo_guard": {
+        "prompt_tokens": 2082,
+        "completion_tokens": 192,
+        "total_tokens": 2274,
+        "calls_count": 3,
+        "calls_breakdown": [
+          {
+            "prompt_tokens": 786,
+            "completion_tokens": 64,
+            "total_tokens": 850
+          },
+          {
+            "prompt_tokens": 419,
+            "completion_tokens": 64,
+            "total_tokens": 483
+          },
+          {
+            "prompt_tokens": 877,
+            "completion_tokens": 64,
+            "total_tokens": 941
+          }
+        ]
+      },
+      "planner": {
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0,
+        "output": "How do CronJobs handle pod restarts in Kubernetes?"
+      },
+      "responder": {
+        "prompt_tokens": 646,
+        "completion_tokens": 250,
+        "total_tokens": 896,
+        "answer_preview": "**Short answer:**  \nCronJobs themselves don\u2019t \u201crestart\u201d pods. They create a **Jo"
+      },
+      "turn_totals": {
+        "single_call_mode_total": 1396,
+        "nemo_mode_total": 3170,
+        "token_savings_single_call": 1774,
+        "savings_pct": 55.9621451104101
+      }
+    },
+    {
+      "turn": 5,
+      "query": "What are the completions and parallelism fields in a Kubernetes Job spec?",
+      "single_call_guard": {
+        "prompt_tokens": 434,
+        "completion_tokens": 41,
+        "total_tokens": 475,
+        "decision": "allow"
+      },
+      "nemo_guard": {
+        "prompt_tokens": 2035,
+        "completion_tokens": 192,
+        "total_tokens": 2227,
+        "calls_count": 3,
+        "calls_breakdown": [
+          {
+            "prompt_tokens": 775,
+            "completion_tokens": 64,
+            "total_tokens": 839
+          },
+          {
+            "prompt_tokens": 399,
+            "completion_tokens": 64,
+            "total_tokens": 463
+          },
+          {
+            "prompt_tokens": 861,
+            "completion_tokens": 64,
+            "total_tokens": 925
+          }
+        ]
+      },
+      "planner": {
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0,
+        "output": "What are the completions and parallelism fields in a Kubernetes Job spec?"
+      },
+      "responder": {
+        "prompt_tokens": 422,
+        "completion_tokens": 247,
+        "total_tokens": 669,
+        "answer_preview": "**`spec.completions`** \u2013\u202fThis field tells the Job how many pod executions must f"
+      },
+      "turn_totals": {
+        "single_call_mode_total": 1144,
+        "nemo_mode_total": 2896,
+        "token_savings_single_call": 1752,
+        "savings_pct": 60.49723756906077
       }
     }
   ],
   "summary": {
-    "avg_sc_guard": 387.0,
-    "avg_nemo_guard": 1918.0,
+    "avg_sc_guard": 492.0,
+    "avg_nemo_guard": 2246.4,
     "avg_planner": 0.0,
-    "avg_responder": 580.0,
-    "avg_sc_turn": 967.0,
-    "avg_nemo_turn": 2498.0,
-    "turns_per_day_single_call": 206.82523267838675,
-    "turns_per_day_nemo": 80.0640512409928
+    "avg_responder": 767.8,
+    "avg_sc_turn": 1259.8,
+    "avg_nemo_turn": 3014.2,
+    "turns_per_day_single_call": 158.75535799333227,
+    "turns_per_day_nemo": 66.35259770420012
   }
 }

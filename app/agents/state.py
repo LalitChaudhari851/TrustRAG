@@ -13,3 +13,4 @@ class AgentState(TypedDict, total=False):
     final_answer: str
     route: str
     planner_raw_output: str
+    retrieval_mode: str

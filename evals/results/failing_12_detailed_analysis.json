@@ -1,0 +1,446 @@
+[
+  {
+    "id": "G01",
+    "question": "How do you start Redis for a Kubernetes work queue?",
+    "key_term": "redis-pod.yaml",
+    "ref30": "Run kubectl apply -f https://k",
+    "query_sent": "How do you start Redis for a Kubernetes work queue?",
+    "pre_trim_candidates_count": 15,
+    "in_pre_trim": true,
+    "post_trim_chunks_count": 5,
+    "in_post_trim": true,
+    "top5": [
+      {
+        "source": "parallel_work_queue.txt",
+        "section": "OVERVIEW OF STEPS",
+        "first_100_chars": "1. Start a storage service to hold the work queue. (We will use Redis). 2. Create a queue, and fill ",
+        "rerank_score": 0.9992
+      },
+      {
+        "source": "parallel_work_queue.txt",
+        "section": "STEP 2: FILLING THE QUEUE WITH TASKS",
+        "first_100_chars": "Start a temporary interactive pod for running the Redis CLI:      kubectl run -i --tty temp --image ",
+        "rerank_score": 0.9934
+      },
+      {
+        "source": "parallel_work_queue.txt",
+        "section": "FINE PARALLEL PROCESSING USING A WORK QUEUE",
+        "first_100_chars": "In this example, you will run a Kubernetes Job that runs multiple parallel tasks as worker processes",
+        "rerank_score": 0.9874
+      },
+      {
+        "source": "parallel_work_queue.txt",
+        "section": "STEP 3: CREATE A CONTAINER IMAGE",
+        "first_100_chars": "You need a Python worker program to read from the queue.  Here is the worker script (worker.py):    ",
+        "rerank_score": 0.9873
+      },
+      {
+        "source": "parallel_work_queue.txt",
+        "section": "STEP 1: STARTING REDIS",
+        "first_100_chars": "For this example, you will start a single instance of Redis.  Run the following commands:      kubec",
+        "rerank_score": 0.9728
+      }
+    ]
+  },
+  {
+    "id": "G02",
+    "question": "What does the parallelism field do in the Kubernetes job-wq-2 manifest?",
+    "key_term": "parallelism: 2",
+    "ref30": "The parallelism field is set t",
+    "query_sent": "What does the parallelism field do in the Kubernetes job-wq-2 manifest?",
+    "pre_trim_candidates_count": 15,
+    "in_pre_trim": true,
+    "post_trim_chunks_count": 2,
+    "in_post_trim": true,
+    "top5": [
+      {
+        "source": "parallel_work_queue.txt",
+        "section": "STEP 4: DEFINING A JOB",
+        "first_100_chars": "Here is the manifest for the Job (job.yaml).  Note: Replace \"gcr.io/myproject\" with your image regis",
+        "rerank_score": 0.9971
+      },
+      {
+        "source": "parallel_work_queue.txt",
+        "section": "FINE PARALLEL PROCESSING USING A WORK QUEUE",
+        "first_100_chars": "In this example, you will run a Kubernetes Job that runs multiple parallel tasks as worker processes",
+        "rerank_score": 0.9453
+      }
+    ]
+  },
+  {
+    "id": "G03",
+    "question": "How do you fill the Redis work queue with tasks using the CLI?",
+    "key_term": "rpush job2",
+    "ref30": "Start a temporary interactive ",
+    "query_sent": "How do you fill the Redis work queue with tasks using the CLI?",
+    "pre_trim_candidates_count": 15,
+    "in_pre_trim": true,
+    "post_trim_chunks_count": 2,
+    "in_post_trim": true,
+    "top5": [
+      {
+        "source": "parallel_work_queue.txt",
+        "section": "OVERVIEW OF STEPS",
+        "first_100_chars": "1. Start a storage service to hold the work queue. (We will use Redis). 2. Create a queue, and fill ",
+        "rerank_score": 0.9994
+      },
+      {
+        "source": "parallel_work_queue.txt",
+        "section": "STEP 2: FILLING THE QUEUE WITH TASKS",
+        "first_100_chars": "Start a temporary interactive pod for running the Redis CLI:      kubectl run -i --tty temp --image ",
+        "rerank_score": 0.9982
+      }
+    ]
+  },
+  {
+    "id": "G05",
+    "question": "How do you install the Metrics Server for Kubernetes pod autoscaling?",
+    "key_term": "components.yaml",
+    "ref30": "Run kubectl apply -f https://g",
+    "query_sent": "How do you install the Metrics Server for Kubernetes pod autoscaling?",
+    "pre_trim_candidates_count": 15,
+    "in_pre_trim": true,
+    "post_trim_chunks_count": 5,
+    "in_post_trim": true,
+    "top5": [
+      {
+        "source": "pods_autoscale.html",
+        "section": "Metric Server Setup",
+        "first_100_chars": "Before testing Horizontal Pod Autoscaler (HPA) and Vertical Pod Autoscaler (VPA), it\u2019s essential to ",
+        "rerank_score": 0.9999
+      },
+      {
+        "source": "pods_autoscale.html",
+        "section": "Metric Server Setup",
+        "first_100_chars": "``` kubectl get pods -n kube-system | grep metrics-server ```  You should see pods related to the Me",
+        "rerank_score": 0.9985
+      },
+      {
+        "source": "pods_autoscale.html",
+        "section": "What is HPA?",
+        "first_100_chars": "Horizontal Pod Autoscaling (HPA) automatically scales the number of pods in a replication controller",
+        "rerank_score": 0.9865
+      },
+      {
+        "source": "cronjobs.docx",
+        "section": "1. Resource Right-Sizing",
+        "first_100_chars": "Performance Optimization Charts Use Vertical Pod Autoscaler recommendations: # Install VPA if not pr",
+        "rerank_score": 0.9849
+      },
+      {
+        "source": "pods_autoscale.html",
+        "section": "Step 3: Create a VPA",
+        "first_100_chars": "We increased the CPU metrics in the above demo and then manually applied the changes to scale the po",
+        "rerank_score": 0.981
+      }
+    ]
+  },
+  {
+    "id": "G06",
+    "question": "Which kubectl commands confirm that the Metrics Server is collecting data?",
+    "key_term": "kubectl top nodes",
+    "ref30": "Run kubectl top nodes and kube",
+    "query_sent": "Which kubectl commands confirm that the Metrics Server is collecting data?",
+    "pre_trim_candidates_count": 15,
+    "in_pre_trim": true,
+    "post_trim_chunks_count": 2,
+    "in_post_trim": true,
+    "top5": [
+      {
+        "source": "pods_autoscale.html",
+        "section": "Metric Server Setup",
+        "first_100_chars": "``` kubectl get pods -n kube-system | grep metrics-server ```  You should see pods related to the Me",
+        "rerank_score": 0.9993
+      },
+      {
+        "source": "pods_autoscale.html",
+        "section": "Metric Server Setup",
+        "first_100_chars": "Before testing Horizontal Pod Autoscaler (HPA) and Vertical Pod Autoscaler (VPA), it\u2019s essential to ",
+        "rerank_score": 0.9797
+      }
+    ]
+  },
+  {
+    "id": "G07",
+    "question": "What Databricks CLI command retrieves the details of a specific job?",
+    "key_term": "databricks jobs get",
+    "ref30": "Use databricks jobs get <job-i",
+    "query_sent": "What Databricks CLI command retrieves the details of a specific job?",
+    "pre_trim_candidates_count": 15,
+    "in_pre_trim": true,
+    "post_trim_chunks_count": 5,
+    "in_post_trim": true,
+    "top5": [
+      {
+        "source": "job_management.html",
+        "section": "Get started with the Databricks CLI",
+        "first_100_chars": "To install and configure authentication for the Databricks CLI, see Install or update the Databricks",
+        "rerank_score": 0.999
+      },
+      {
+        "source": "job_management.html",
+        "section": "Example: Create a job using the CLI",
+        "first_100_chars": "The following example uses the Databricks CLI to create a job. This job contains a single job task t",
+        "rerank_score": 0.9974
+      },
+      {
+        "source": "job_management.html",
+        "section": "Get started with the Databricks REST API",
+        "first_100_chars": "The following example makes a request to the Databricks REST API to retrieve details for a single jo",
+        "rerank_score": 0.9951
+      },
+      {
+        "source": "job_management.html",
+        "section": "Run a job using the CLI",
+        "first_100_chars": "There are three ways to run your job when using the command line.  - Scheduled. If the job definitio",
+        "rerank_score": 0.9938
+      },
+      {
+        "source": "job_management.html",
+        "section": "Compare tools",
+        "first_100_chars": "The following table compares the Databricks CLI, the Databricks SDKs, and the REST API for programma",
+        "rerank_score": 0.9933
+      }
+    ]
+  },
+  {
+    "id": "G11",
+    "question": "What are the completions and parallelism fields in a Kubernetes Job spec?",
+    "key_term": "completions",
+    "ref30": "completions specifies how many",
+    "query_sent": "What are the completions and parallelism fields in a Kubernetes Job spec?",
+    "pre_trim_candidates_count": 15,
+    "in_pre_trim": true,
+    "post_trim_chunks_count": 5,
+    "in_post_trim": true,
+    "top5": [
+      {
+        "source": "architecture.pptx",
+        "section": "Jobs",
+        "first_100_chars": "Jobs Number of pod executions can be controlled  via spec.completions Jobs can be parallelized using",
+        "rerank_score": 0.9976
+      },
+      {
+        "source": "cronjobs.docx",
+        "section": "4. Jobs Taking Too Long",
+        "first_100_chars": "Symptoms: Jobs running longer than expected Solutions: # Set active deadline spec: activeDeadlineSec",
+        "rerank_score": 0.994
+      },
+      {
+        "source": "cronjobs.docx",
+        "section": "3. Parallel Processing Patterns",
+        "first_100_chars": "# Pattern 1: Fixed work distribution apiVersion: batch/v1 kind: Job metadata: name: parallel-process",
+        "rerank_score": 0.9901
+      },
+      {
+        "source": "cronjobs.docx",
+        "section": "NonIndexed (Default)",
+        "first_100_chars": "All Pods are identical: spec: completionMode: NonIndexed completions: 3 parallelism: 2",
+        "rerank_score": 0.9895
+      },
+      {
+        "source": "cronjobs.docx",
+        "section": "What Are Jobs?",
+        "first_100_chars": "A Kubernetes Job is a resource designed to run finite workloads that execute a task to completion. U",
+        "rerank_score": 0.9783
+      }
+    ]
+  },
+  {
+    "id": "G12",
+    "question": "Which Kubernetes API group does a Job resource belong to?",
+    "key_term": "batch/v1",
+    "ref30": "Kubernetes Jobs belong to the ",
+    "query_sent": "Which Kubernetes API group does a Job resource belong to?",
+    "pre_trim_candidates_count": 15,
+    "in_pre_trim": true,
+    "post_trim_chunks_count": 5,
+    "in_post_trim": true,
+    "top5": [
+      {
+        "source": "cronjobs.docx",
+        "section": "What Are Jobs?",
+        "first_100_chars": "A Kubernetes Job is a resource designed to run finite workloads that execute a task to completion. U",
+        "rerank_score": 0.9949
+      },
+      {
+        "source": "monitor_job.docx",
+        "section": "Using Labels for Job Organization",
+        "first_100_chars": "Labels are key-value pairs that can be attached to Kubernetes resources. They are useful for organiz",
+        "rerank_score": 0.9829
+      },
+      {
+        "source": "architecture.pptx",
+        "section": "kube-apiserver",
+        "first_100_chars": "kube-apiserver The apiserver provides a forward facing REST interface into the kubernetes  control p",
+        "rerank_score": 0.9791
+      },
+      {
+        "source": "monitor_job.docx",
+        "section": "Checking Job Status with kubectl",
+        "first_100_chars": "The primary tool for monitoring Kubernetes resources is kubectl. Let's use it to check the status of",
+        "rerank_score": 0.9173
+      },
+      {
+        "source": "monitor_job.docx",
+        "section": "Understanding Kubernetes Jobs",
+        "first_100_chars": "A Kubernetes Job is a controller that creates one or more pods and ensures they successfully termina",
+        "rerank_score": 0.9135
+      }
+    ]
+  },
+  {
+    "id": "G13",
+    "question": "How do you start a local Kubernetes cluster using Minikube?",
+    "key_term": "minikube start",
+    "ref30": "Run minikube start --driver=do",
+    "query_sent": "How do you start a local Kubernetes cluster using Minikube?",
+    "pre_trim_candidates_count": 15,
+    "in_pre_trim": true,
+    "post_trim_chunks_count": 5,
+    "in_post_trim": true,
+    "top5": [
+      {
+        "source": "monitor_job.docx",
+        "section": "Starting Minikube",
+        "first_100_chars": "Now let's start Minikube to create a local Kubernetes cluster: minikube start --driver=docker This c",
+        "rerank_score": 0.9999
+      },
+      {
+        "source": "monitor_job.docx",
+        "section": "Setting Up Your Kubernetes Environment",
+        "first_100_chars": "Before we can monitor Kubernetes jobs, we need to set up a working Kubernetes environment. We'll use",
+        "rerank_score": 0.9986
+      },
+      {
+        "source": "monitor_job.docx",
+        "section": "Verifying Kubernetes Installation",
+        "first_100_chars": "Let's verify that our Kubernetes cluster is running correctly by checking the node status: kubectl g",
+        "rerank_score": 0.9948
+      },
+      {
+        "source": "monitor_job.docx",
+        "section": "Summary",
+        "first_100_chars": "In this tutorial, you have learned how to effectively monitor Kubernetes jobs and analyze their logs",
+        "rerank_score": 0.9766
+      },
+      {
+        "source": "parallel_work_queue.txt",
+        "section": "BEFORE YOU BEGIN",
+        "first_100_chars": "You need to have a Kubernetes cluster, and the kubectl command-line tool must be configured.  You wi",
+        "rerank_score": 0.9265
+      }
+    ]
+  },
+  {
+    "id": "H03",
+    "question": "What happens when a Kubernetes Job specifies completionMode: Indexed?",
+    "key_term": "completionMode: Indexed",
+    "ref30": "",
+    "query_sent": "What happens when a Kubernetes Job specifies completionMode: Indexed?",
+    "pre_trim_candidates_count": 15,
+    "in_pre_trim": true,
+    "post_trim_chunks_count": 4,
+    "in_post_trim": false,
+    "top5": [
+      {
+        "source": "monitor_job.docx",
+        "section": "Understanding Kubernetes Jobs",
+        "first_100_chars": "A Kubernetes Job is a controller that creates one or more pods and ensures they successfully termina",
+        "rerank_score": 0.9953
+      },
+      {
+        "source": "cronjobs.docx",
+        "section": "What Are Jobs?",
+        "first_100_chars": "A Kubernetes Job is a resource designed to run finite workloads that execute a task to completion. U",
+        "rerank_score": 0.9933
+      },
+      {
+        "source": "monitor_job.docx",
+        "section": "Introduction",
+        "first_100_chars": "Kubernetes is a powerful container orchestration platform that helps manage containerized applicatio",
+        "rerank_score": 0.9782
+      },
+      {
+        "source": "monitor_job.docx",
+        "section": "Viewing Logs of Completed Jobs",
+        "first_100_chars": "One of the advantages of Kubernetes jobs is that you can view the logs even after the job has comple",
+        "rerank_score": 0.9527
+      }
+    ]
+  },
+  {
+    "id": "H04",
+    "question": "In Kubernetes Jobs, what is the default behavior when completionMode is NonIndexed?",
+    "key_term": "completionMode: NonIndexed",
+    "ref30": "",
+    "query_sent": "In Kubernetes Jobs, what is the default behavior when completionMode is NonIndexed?",
+    "pre_trim_candidates_count": 15,
+    "in_pre_trim": true,
+    "post_trim_chunks_count": 3,
+    "in_post_trim": false,
+    "top5": [
+      {
+        "source": "monitor_job.docx",
+        "section": "Understanding Kubernetes Jobs",
+        "first_100_chars": "A Kubernetes Job is a controller that creates one or more pods and ensures they successfully termina",
+        "rerank_score": 0.9844
+      },
+      {
+        "source": "cronjobs.docx",
+        "section": "What Are Jobs?",
+        "first_100_chars": "A Kubernetes Job is a resource designed to run finite workloads that execute a task to completion. U",
+        "rerank_score": 0.9792
+      },
+      {
+        "source": "monitor_job.docx",
+        "section": "Introduction",
+        "first_100_chars": "Kubernetes is a powerful container orchestration platform that helps manage containerized applicatio",
+        "rerank_score": 0.876
+      }
+    ]
+  },
+  {
+    "id": "H19",
+    "question": "What policy engine in Kubernetes evaluates workload requirements and places them on matching resources?",
+    "key_term": "kube-scheduler",
+    "ref30": "",
+    "query_sent": "What policy engine in Kubernetes evaluates workload requirements and places them on matching resources?",
+    "pre_trim_candidates_count": 15,
+    "in_pre_trim": true,
+    "post_trim_chunks_count": 5,
+    "in_post_trim": true,
+    "top5": [
+      {
+        "source": "architecture.pptx",
+        "section": "kube-scheduler",
+        "first_100_chars": "kube-scheduler Kube-scheduler is a verbose policy-rich engine that evaluates workload  requirements ",
+        "rerank_score": 0.9998
+      },
+      {
+        "source": "pods_autoscale.html",
+        "section": "Introduction to Kubernetes Autoscaling",
+        "first_100_chars": "Autoscaling in Kubernetes ensures that your application can handle varying loads by automatically ad",
+        "rerank_score": 0.9815
+      },
+      {
+        "source": "cronjobs.docx",
+        "section": "What Are Jobs?",
+        "first_100_chars": "A Kubernetes Job is a resource designed to run finite workloads that execute a task to completion. U",
+        "rerank_score": 0.9697
+      },
+      {
+        "source": "cronjobs.docx",
+        "section": "Introduction",
+        "first_100_chars": "As a platform engineer, you\u2019ve likely encountered scenarios where you need to run one-time tasks, ba",
+        "rerank_score": 0.9486
+      },
+      {
+        "source": "architecture.pptx",
+        "section": "Concepts\t- Workloads",
+        "first_100_chars": "Concepts\t- Workloads Pod - A pod is the smallest unit of work or management resource within Kubernet",
+        "rerank_score": 0.8504
+      }
+    ]
+  }
+]
