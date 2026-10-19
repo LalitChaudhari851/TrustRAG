@@ -101,7 +101,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "To start Redis in the Kubernetes cluster, apply the Redis pod and service manifests:\n\n```bash\nkubectl apply -f https://k8s.io/examples/application/job/redis/redis-pod.yaml\nkubectl apply -f https://k8s.io/examples/application/job/redis/redis-service.yaml\n```"
+        "full_answer": "To start Redis in the Kubernetes cluster, apply the Redis pod and service manifests:\n\n```bash\nkubectl apply -f https://k8s.io/examples/application/job/redis/redis-pod.yaml\nkubectl apply -f https://k8s.io/examples/application/job/redis/redis-service.yaml\n```",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G02",
@@ -120,7 +121,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 2,
-        "full_answer": "The **parallelism** field in the `job-wq-2` manifest specifies how many Pods the Job should run at the same time. In this example it is set to `2`, so two worker Pods are created concurrently. Each of those Pods picks up work from the queue, processes items, and continues until the queue is empty. This allows multiple tasks to be processed in parallel."
+        "full_answer": "The **parallelism** field in the `job-wq-2` manifest specifies how many Pods the Job should run at the same time. In this example it is set to `2`, so two worker Pods are created concurrently. Each of those Pods picks up work from the queue, processes items, and continues until the queue is empty. This allows multiple tasks to be processed in parallel.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G03",
@@ -139,7 +141,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 2,
-        "full_answer": "To fill the Redis work queue with tasks using the CLI:\n\n1. **Start a temporary interactive pod** that contains the Redis client:\n\n   ```bash\n   kubectl run -i --tty temp --image redis --command \"/bin/sh\"\n   ```\n\n2. **Connect to the Redis server** from the pod:\n\n   ```bash\n   redis-cli -h redis\n   ```\n\n3. **Inside the Redis prompt**, push each task onto the queue (named `job2`) with `RPUSH`:\n\n   ```redis\n   rpush job2 \"apple\"\n   rpush job2 \"banana\"\n   rpush job2 \"cherry\"\n   rpush job2 \"date\"\n   rpush job2 \"fig\"\n   rpush job2 \"grape\"\n   rpush job2 \"lemon\"\n   rpush job2 \"melon\"\n   rpush job2 \"orange\"\n   ```\n\n4. **Verify the contents** of the queue (optional):\n\n   ```redis\n   lrange job2 0 -1\n   ```"
+        "full_answer": "To fill the Redis work queue with tasks using the CLI:\n\n1. **Start a temporary interactive pod** that contains the Redis client:\n\n   ```bash\n   kubectl run -i --tty temp --image redis --command \"/bin/sh\"\n   ```\n\n2. **Connect to the Redis server** from the pod:\n\n   ```bash\n   redis-cli -h redis\n   ```\n\n3. **Inside the Redis prompt**, push each task onto the queue (named `job2`) with `RPUSH`:\n\n   ```redis\n   rpush job2 \"apple\"\n   rpush job2 \"banana\"\n   rpush job2 \"cherry\"\n   rpush job2 \"date\"\n   rpush job2 \"fig\"\n   rpush job2 \"grape\"\n   rpush job2 \"lemon\"\n   rpush job2 \"melon\"\n   rpush job2 \"orange\"\n   ```\n\n4. **Verify the contents** of the queue (optional):\n\n   ```redis\n   lrange job2 0 -1\n   ```",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G04",
@@ -158,7 +161,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "Horizontal Pod Autoscaling (HPA) and Vertical Pod Autoscaling (VPA) are the two primary autoscaling mechanisms in Kubernetes.\n\n* **HPA** \u2013 scales the **number of running pods** based on observed metrics.  \n* **VPA** \u2013 scales the **resources allocated to each pod** (CPU, memory, etc.) rather than changing the pod count.  \n\nBoth approaches help keep applications performant and resource\u2011efficient, but they operate on different dimensions: HPA adjusts pod quantity, while VPA adjusts pod resource sizing."
+        "full_answer": "Horizontal Pod Autoscaling (HPA) and Vertical Pod Autoscaling (VPA) are the two primary autoscaling mechanisms in Kubernetes.\n\n* **HPA** \u2013 scales the **number of running pods** based on observed metrics.  \n* **VPA** \u2013 scales the **resources allocated to each pod** (CPU, memory, etc.) rather than changing the pod count.  \n\nBoth approaches help keep applications performant and resource\u2011efficient, but they operate on different dimensions: HPA adjusts pod quantity, while VPA adjusts pod resource sizing.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G05",
@@ -177,7 +181,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "To install the Metrics Server for Kubernetes pod autoscaling, follow the steps outlined in the documentation:\n\n1. **Apply the Metrics Server manifest**  \n   Use `kubectl apply` with the URL of the latest release components manifest:\n\n   ```bash\n   kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml\n   ```\n\n2. **Verify the installation**  \n   Check that the Metrics Server pods are running in the `kube-system` namespace:\n\n   ```bash\n   kubectl get pods -n kube-system | grep metrics-server\n   ```\n\n3. **Confirm that metrics are being collected**  \n   Query the API to see CPU and memory usage for nodes and pods:\n\n   ```bash\n   kubectl top nodes\n   kubectl top pods --all-namespaces\n   ```\n\nIf the pods appear healthy and `kubectl top` returns usage data, the Metrics Server is installed and ready for use with Horizontal Pod Autoscaler (HPA) and Vertical Pod Autoscaler (VPA)."
+        "full_answer": "To install the Metrics Server for Kubernetes pod autoscaling, follow the steps outlined in the documentation:\n\n1. **Apply the Metrics Server manifest**  \n   Use `kubectl apply` with the URL of the latest release components manifest:\n\n   ```bash\n   kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml\n   ```\n\n2. **Verify the installation**  \n   Check that the Metrics Server pods are running in the `kube-system` namespace:\n\n   ```bash\n   kubectl get pods -n kube-system | grep metrics-server\n   ```\n\n3. **Confirm that metrics are being collected**  \n   Query the API to see CPU and memory usage for nodes and pods:\n\n   ```bash\n   kubectl top nodes\n   kubectl top pods --all-namespaces\n   ```\n\nIf the pods appear healthy and `kubectl top` returns usage data, the Metrics Server is installed and ready for use with Horizontal Pod Autoscaler (HPA) and Vertical Pod Autoscaler (VPA).",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G06",
@@ -196,7 +201,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 2,
-        "full_answer": "The documentation states that you can confirm the Metrics Server is collecting data with the following commands:\n\n```bash\nkubectl top nodes\nkubectl top pods --all-namespaces\n```"
+        "full_answer": "The documentation states that you can confirm the Metrics Server is collecting data with the following commands:\n\n```bash\nkubectl top nodes\nkubectl top pods --all-namespaces\n```",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G07",
@@ -215,7 +221,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "The CLI command is:\n\n```\ndatabricks jobs get\n```"
+        "full_answer": "The CLI command is:\n\n```\ndatabricks jobs get\n```",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G08",
@@ -234,7 +241,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "You should use the Databricks REST API when the CLI and the available SDKs do not meet your specific use case. Specifically, the documentation says to use the REST API directly **if none of the above options work for your specific use case**, such as **automating processes where an SDK in your preferred programming language is not currently available**."
+        "full_answer": "You should use the Databricks REST API when the CLI and the available SDKs do not meet your specific use case. Specifically, the documentation says to use the REST API directly **if none of the above options work for your specific use case**, such as **automating processes where an SDK in your preferred programming language is not currently available**.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G09",
@@ -253,7 +261,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 2,
-        "full_answer": "The three main developer tools for programmatically creating and managing Databricks jobs are:\n\n1. **Databricks CLI** \u2013 a command\u2011line interface that wraps the REST API.  \n2. **Databricks SDKs** \u2013 language\u2011specific SDKs (Python, Java, Go, or R) for building custom workflows.  \n3. **Databricks REST API** \u2013 the direct HTTP API for automation when other options aren\u2019t suitable."
+        "full_answer": "The three main developer tools for programmatically creating and managing Databricks jobs are:\n\n1. **Databricks CLI** \u2013 a command\u2011line interface that wraps the REST API.  \n2. **Databricks SDKs** \u2013 language\u2011specific SDKs (Python, Java, Go, or R) for building custom workflows.  \n3. **Databricks REST API** \u2013 the direct HTTP API for automation when other options aren\u2019t suitable.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G10",
@@ -272,7 +281,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "The documentation states that a Job pod can use the following restart policies:\n\n- **OnFailure** \u2013 the kubelet will restart the container inside the same Pod if it crashes.  \n- **Never** \u2013 the Pod is marked as failed and the Job controller creates a new Pod.\n\nThe policy **Always** is explicitly **not allowed** for Job pods."
+        "full_answer": "The documentation states that a Job pod can use the following restart policies:\n\n- **OnFailure** \u2013 the kubelet will restart the container inside the same Pod if it crashes.  \n- **Never** \u2013 the Pod is marked as failed and the Job controller creates a new Pod.\n\nThe policy **Always** is explicitly **not allowed** for Job pods.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G11",
@@ -291,7 +301,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "- **`spec.completions`** \u2013 controls the total number of pod executions required for the Job to be considered complete.  \n- **`spec.parallelism`** \u2013 controls how many of those pods may run at the same time, i.e., the level of parallelism for the Job."
+        "full_answer": "- **`spec.completions`** \u2013 controls the total number of pod executions required for the Job to be considered complete.  \n- **`spec.parallelism`** \u2013 controls how many of those pods may run at the same time, i.e., the level of parallelism for the Job.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G12",
@@ -310,7 +321,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "A Job resource belongs to the **`batch`** API group (as shown by `apiVersion: batch/v1`)."
+        "full_answer": "A Job resource belongs to the **`batch`** API group (as shown by `apiVersion: batch/v1`).",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G13",
@@ -329,7 +341,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "To start a local Kubernetes cluster with Minikube, run the following command:\n\n```bash\nminikube start --driver=docker\n```\n\nThis command will download the necessary components, start the cluster, and after a few minutes you should see a message like:\n\n```\n\ud83c\udfc4  Done! kubectl is now configured to use \"minikube\" cluster and \"default\" namespace by default\n```"
+        "full_answer": "To start a local Kubernetes cluster with Minikube, run the following command:\n\n```bash\nminikube start --driver=docker\n```\n\nThis command will download the necessary components, start the cluster, and after a few minutes you should see a message like:\n\n```\n\ud83c\udfc4  Done! kubectl is now configured to use \"minikube\" cluster and \"default\" namespace by default\n```",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G14",
@@ -348,7 +361,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "The command is:\n\n```bash\nkubectl get jobs\n```"
+        "full_answer": "The command is:\n\n```bash\nkubectl get jobs\n```",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G15",
@@ -367,7 +381,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 2,
-        "full_answer": "After Minikube has started, run the following command to list the pods in the **kube\u2011system** namespace:\n\n```bash\nkubectl get pods -n kube-system\n```\n\nThe output should show several pods in the **Running** state, including core components such as **kube-apiserver**, **kube-controller-manager**, and the other system pods. Seeing these pods confirms that the core Kubernetes components are running."
+        "full_answer": "After Minikube has started, run the following command to list the pods in the **kube\u2011system** namespace:\n\n```bash\nkubectl get pods -n kube-system\n```\n\nThe output should show several pods in the **Running** state, including core components such as **kube-apiserver**, **kube-controller-manager**, and the other system pods. Seeing these pods confirms that the core Kubernetes components are running.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H01",
@@ -386,7 +401,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 2,
-        "full_answer": "The `backoffLimit` in **hello-job.yaml** is set to **4**."
+        "full_answer": "The `backoffLimit` in **hello-job.yaml** is set to **4**.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H02",
@@ -405,7 +421,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 1,
-        "full_answer": "The configured `ttlSecondsAfterFinished` value is **3600** seconds."
+        "full_answer": "The configured `ttlSecondsAfterFinished` value is **3600** seconds.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H03",
@@ -424,7 +441,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": true,
         "sources_count": 4,
-        "full_answer": "I cannot answer this question as the required information is not found in the documentation."
+        "full_answer": "I cannot answer this question as the required information is not found in the documentation.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H04",
@@ -443,7 +461,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": true,
         "sources_count": 3,
-        "full_answer": "I cannot answer this question as the required information is not found in the documentation."
+        "full_answer": "I cannot answer this question as the required information is not found in the documentation.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H05",
@@ -462,7 +481,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 1,
-        "full_answer": "The `concurrencyPolicy` set to **`Forbid`** prevents concurrent runs of a scheduled CronJob."
+        "full_answer": "The `concurrencyPolicy` set to **`Forbid`** prevents concurrent runs of a scheduled CronJob.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H06",
@@ -481,7 +501,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 3,
-        "full_answer": "The anti\u2011pattern specifies **`activeDeadlineSeconds: 86400`** (24\u202fhours) for jobs that lack checkpointing."
+        "full_answer": "The anti\u2011pattern specifies **`activeDeadlineSeconds: 86400`** (24\u202fhours) for jobs that lack checkpointing.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H07",
@@ -500,7 +521,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 1,
-        "full_answer": "The exact command is:\n\n```bash\nminikube start --driver=docker\n```"
+        "full_answer": "The exact command is:\n\n```bash\nminikube start --driver=docker\n```",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H08",
@@ -519,7 +541,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "The command is:\n\n```bash\ndatabricks jobs get <job-id>\n```"
+        "full_answer": "The command is:\n\n```bash\ndatabricks jobs get <job-id>\n```",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H09",
@@ -538,7 +561,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "The CLI command is:\n\n```\ndatabricks jobs create --json @<file-path>\n```\n\nReplace\u202f`<file-path>`\u202fwith the path to the JSON file that defines the job."
+        "full_answer": "The CLI command is:\n\n```\ndatabricks jobs create --json @<file-path>\n```\n\nReplace\u202f`<file-path>`\u202fwith the path to the JSON file that defines the job.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H10",
@@ -557,7 +581,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "The CLI command is:\n\n**`databricks jobs run-now`**."
+        "full_answer": "The CLI command is:\n\n**`databricks jobs run-now`**.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H11",
@@ -576,7 +601,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "The command is:\n\n```bash\nkubectl top po\n```"
+        "full_answer": "The command is:\n\n```bash\nkubectl top po\n```",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H12",
@@ -595,7 +621,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 4,
-        "full_answer": "Run a `kubectl get pods` command filtered for the Metrics Server in the **kube-system** namespace:\n\n```bash\nkubectl get pods -n kube-system | grep metrics-server\n```\n\nIf the Metrics Server is installed correctly, this command will list the Metrics Server pods and show that they are running and ready."
+        "full_answer": "Run a `kubectl get pods` command filtered for the Metrics Server in the **kube-system** namespace:\n\n```bash\nkubectl get pods -n kube-system | grep metrics-server\n```\n\nIf the Metrics Server is installed correctly, this command will list the Metrics Server pods and show that they are running and ready.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H13",
@@ -614,7 +641,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 3,
-        "full_answer": "To exclude scaling for a specific container, add a\u202f`containerPolicies`\u202fentry for that container in the VPA\u2019s\u202f`resourcePolicy`\u202fand set its\u202f`mode`\u202fto\u202f`\"Off\"`.\n\n**Example**\n\n```yaml\napiVersion: autoscaling.k8s.io/v1\nkind: VerticalPodAutoscaler\n\u2026\nresourcePolicy:\n  containerPolicies:\n  - containerName: <container_name>\n    mode: \"Off\"\n```\n\n- `<container_name>` is the name of the container you want to exclude.\n- `mode: \"Off\"` tells the VPA not to apply any autoscaling actions to that container."
+        "full_answer": "To exclude scaling for a specific container, add a\u202f`containerPolicies`\u202fentry for that container in the VPA\u2019s\u202f`resourcePolicy`\u202fand set its\u202f`mode`\u202fto\u202f`\"Off\"`.\n\n**Example**\n\n```yaml\napiVersion: autoscaling.k8s.io/v1\nkind: VerticalPodAutoscaler\n\u2026\nresourcePolicy:\n  containerPolicies:\n  - containerName: <container_name>\n    mode: \"Off\"\n```\n\n- `<container_name>` is the name of the container you want to exclude.\n- `mode: \"Off\"` tells the VPA not to apply any autoscaling actions to that container.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H14",
@@ -633,7 +661,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 2,
-        "full_answer": "https://github.com/kubernetes/autoscaler/releases/download/vpa-0.13.0/vpa-release-0.13.0.yaml"
+        "full_answer": "https://github.com/kubernetes/autoscaler/releases/download/vpa-0.13.0/vpa-release-0.13.0.yaml",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H15",
@@ -652,7 +681,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 1,
-        "full_answer": "OnFailure."
+        "full_answer": "OnFailure.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H16",
@@ -671,7 +701,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 1,
-        "full_answer": "The command is:\n\n```bash\nkubectl run -i --tty temp --image redis --command \"/bin/sh\"\n```"
+        "full_answer": "The command is:\n\n```bash\nkubectl run -i --tty temp --image redis --command \"/bin/sh\"\n```",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H17",
@@ -690,7 +721,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 2,
-        "full_answer": "The manifest for **job\u2011wq\u20112** sets:\n\n```yaml\nspec:\n  parallelism: 2\n```\n\nSo the parallelism value specified is **2**."
+        "full_answer": "The manifest for **job\u2011wq\u20112** sets:\n\n```yaml\nspec:\n  parallelism: 2\n```\n\nSo the parallelism value specified is **2**.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H18",
@@ -709,7 +741,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 1,
-        "full_answer": "The worker script connects to Redis using the hostname **`redis`**."
+        "full_answer": "The worker script connects to Redis using the hostname **`redis`**.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H19",
@@ -728,7 +761,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "The policy engine is **kube\u2011scheduler**. It evaluates workload requirements and attempts to place them on matching resources."
+        "full_answer": "The policy engine is **kube\u2011scheduler**. It evaluates workload requirements and attempts to place them on matching resources.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H20",
@@ -747,7 +781,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 2,
-        "full_answer": "The Kubelet\u202fPodSync daemon filters pods by the **`NodeName`** field in the apiserver."
+        "full_answer": "The Kubelet\u202fPodSync daemon filters pods by the **`NodeName`** field in the apiserver.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H21",
@@ -766,7 +801,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "All Pods can communicate with all other Pods without NAT."
+        "full_answer": "All Pods can communicate with all other Pods without NAT.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H22",
@@ -785,7 +821,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "The `-f` flag is used with `kubectl logs` to follow a job pod\u2019s output in real time."
+        "full_answer": "The `-f` flag is used with `kubectl logs` to follow a job pod\u2019s output in real time.",
+        "model_used": "openai/gpt-oss-120b"
       }
     ],
     "rrf": [
@@ -806,7 +843,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "To start Redis, apply the Redis pod and service manifests:\n\n```bash\nkubectl apply -f https://k8s.io/examples/application/job/redis/redis-pod.yaml\nkubectl apply -f https://k8s.io/examples/application/job/redis/redis-service.yaml\n```"
+        "full_answer": "To start Redis, apply the Redis pod and service manifests:\n\n```bash\nkubectl apply -f https://k8s.io/examples/application/job/redis/redis-pod.yaml\nkubectl apply -f https://k8s.io/examples/application/job/redis/redis-service.yaml\n```",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G02",
@@ -825,7 +863,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "The **parallelism** field specifies how many Pods are run at the same time for the Job. In the `job-wq-2` manifest it is set to\u202f2, so two Pods are created concurrently, each acting as a worker that picks items from the queue, processes them, and repeats until the queue is empty. This enables multiple parallel tasks (workers) to run simultaneously."
+        "full_answer": "The **parallelism** field specifies how many Pods are run at the same time for the Job. In the `job-wq-2` manifest it is set to\u202f2, so two Pods are created concurrently, each acting as a worker that picks items from the queue, processes them, and repeats until the queue is empty. This enables multiple parallel tasks (workers) to run simultaneously.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G03",
@@ -844,7 +883,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "To fill the Redis work queue with tasks using the CLI, follow these steps exactly as described in the documentation:\n\n1. **Start a temporary interactive pod that has the Redis client:**\n\n   ```bash\n   kubectl run -i --tty temp --image redis --command \"/bin/sh\"\n   ```\n\n2. **When the shell prompt appears, connect to the Redis service:**\n\n   ```bash\n   redis-cli -h redis\n   ```\n\n3. **At the `redis>` prompt, push each task onto the queue (named **`job2`**) with `RPUSH`:**\n\n   ```redis\n   rpush job2 \"apple\"\n   rpush job2 \"banana\"\n   rpush job2 \"cherry\"\n   rpush job2 \"date\"\n   rpush job2 \"fig\"\n   rpush job2 \"grape\"\n   rpush job2 \"lemon\"\n   rpush job2 \"melon\"\n   rpush job2 \"orange\"\n   ```\n\n4. **Optionally verify the contents of the queue:**\n\n   ```redis\n   lrange job2 0 -1\n   ```\n\nThese commands add the listed items to the Redis list `job2`, which serves as the work queue."
+        "full_answer": "To fill the Redis work queue with tasks using the CLI, follow these steps exactly as described in the documentation:\n\n1. **Start a temporary interactive pod that has the Redis client:**\n\n   ```bash\n   kubectl run -i --tty temp --image redis --command \"/bin/sh\"\n   ```\n\n2. **When the shell prompt appears, connect to the Redis service:**\n\n   ```bash\n   redis-cli -h redis\n   ```\n\n3. **At the `redis>` prompt, push each task onto the queue (named **`job2`**) with `RPUSH`:**\n\n   ```redis\n   rpush job2 \"apple\"\n   rpush job2 \"banana\"\n   rpush job2 \"cherry\"\n   rpush job2 \"date\"\n   rpush job2 \"fig\"\n   rpush job2 \"grape\"\n   rpush job2 \"lemon\"\n   rpush job2 \"melon\"\n   rpush job2 \"orange\"\n   ```\n\n4. **Optionally verify the contents of the queue:**\n\n   ```redis\n   lrange job2 0 -1\n   ```\n\nThese commands add the listed items to the Redis list `job2`, which serves as the work queue.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G04",
@@ -863,7 +903,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "**Difference between HPA and VPA in Kubernetes**\n\n- **Horizontal Pod Autoscaling (HPA)**\n  - Scales the **number of pods** horizontally.\n  - Ideal for **stateless applications** that can be scaled by adding more pods.\n  - Useful when you need to handle **variable workloads** and ensure **high availability**.\n\n- **Vertical Pod Autoscaling (VPA)**\n  - Adjusts the **resource allocation (CPU, memory) of individual pods** vertically.\n  - Suitable for applications where **horizontal scaling is not feasible** or when you need to **optimize resource usage** for each pod.\n  - Beneficial for **stateful applications** or those with **varying resource needs**."
+        "full_answer": "**Difference between HPA and VPA in Kubernetes**\n\n- **Horizontal Pod Autoscaling (HPA)**\n  - Scales the **number of pods** horizontally.\n  - Ideal for **stateless applications** that can be scaled by adding more pods.\n  - Useful when you need to handle **variable workloads** and ensure **high availability**.\n\n- **Vertical Pod Autoscaling (VPA)**\n  - Adjusts the **resource allocation (CPU, memory) of individual pods** vertically.\n  - Suitable for applications where **horizontal scaling is not feasible** or when you need to **optimize resource usage** for each pod.\n  - Beneficial for **stateful applications** or those with **varying resource needs**.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G05",
@@ -882,7 +923,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "To install the Metrics Server for Kubernetes pod autoscaling, follow the steps outlined in the documentation:\n\n1. **Apply the latest Metrics Server manifest**  \n   ```bash\n   kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml\n   ```\n   This command downloads the `components.yaml` file for the latest release from the Metrics Server GitHub repository and applies it to your cluster.\n\n2. **Verify the Metrics Server pods are running**  \n   ```bash\n   kubectl get pods -n kube-system | grep metrics-server\n   ```\n   You should see one or more `metrics-server` pods in the `kube-system` namespace with a `Running` status.\n\n3. **Confirm that metrics are being collected (optional but recommended)**  \n   ```bash\n   kubectl top nodes\n   kubectl top pods --all-namespaces\n   ```\n   If the Metrics Server is functioning correctly, these commands will display CPU and memory usage for nodes and pods."
+        "full_answer": "To install the Metrics Server for Kubernetes pod autoscaling, follow the steps outlined in the documentation:\n\n1. **Apply the latest Metrics Server manifest**  \n   ```bash\n   kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml\n   ```\n   This command downloads the `components.yaml` file for the latest release from the Metrics Server GitHub repository and applies it to your cluster.\n\n2. **Verify the Metrics Server pods are running**  \n   ```bash\n   kubectl get pods -n kube-system | grep metrics-server\n   ```\n   You should see one or more `metrics-server` pods in the `kube-system` namespace with a `Running` status.\n\n3. **Confirm that metrics are being collected (optional but recommended)**  \n   ```bash\n   kubectl top nodes\n   kubectl top pods --all-namespaces\n   ```\n   If the Metrics Server is functioning correctly, these commands will display CPU and memory usage for nodes and pods.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G06",
@@ -901,7 +943,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "The Metrics Server\u2019s data collection can be verified with the following `kubectl` commands:\n\n```bash\nkubectl top nodes\nkubectl top pods --all-namespaces\n```"
+        "full_answer": "The Metrics Server\u2019s data collection can be verified with the following `kubectl` commands:\n\n```bash\nkubectl top nodes\nkubectl top pods --all-namespaces\n```",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G07",
@@ -920,7 +963,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "The command is:\n\n```bash\ndatabricks jobs get <job-id>\n```"
+        "full_answer": "The command is:\n\n```bash\ndatabricks jobs get <job-id>\n```",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G08",
@@ -939,7 +983,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "You should use the Databricks REST API when the CLI and the SDKs do not meet your specific use case\u2014for example, when you need to automate processes but an SDK for your preferred programming language is not available. In such cases, the REST API can be used directly."
+        "full_answer": "You should use the Databricks REST API when the CLI and the SDKs do not meet your specific use case\u2014for example, when you need to automate processes but an SDK for your preferred programming language is not available. In such cases, the REST API can be used directly.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G09",
@@ -958,7 +1003,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "The three main developer tools for programmatically creating and managing Databricks jobs are:\n\n1. **Databricks CLI** \u2013 a command\u2011line interface that wraps the REST API.  \n2. **Databricks SDKs** \u2013 language\u2011specific SDKs (Python, Java, Go, R) for building custom workflows.  \n3. **Databricks REST API** \u2013 direct REST calls for automation when other options aren\u2019t suitable."
+        "full_answer": "The three main developer tools for programmatically creating and managing Databricks jobs are:\n\n1. **Databricks CLI** \u2013 a command\u2011line interface that wraps the REST API.  \n2. **Databricks SDKs** \u2013 language\u2011specific SDKs (Python, Java, Go, R) for building custom workflows.  \n3. **Databricks REST API** \u2013 direct REST calls for automation when other options aren\u2019t suitable.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G10",
@@ -977,7 +1023,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "The documentation lists two restart\u2011policy values that are allowed for a Job pod:\n\n- **OnFailure** \u2013 the kubelet will restart the container inside the same pod if it crashes.  \n- **Never** \u2013 the pod is marked as failed and the Job controller creates a new pod.\n\nIt also states that **Always** is **not allowed** for Job pods."
+        "full_answer": "The documentation lists two restart\u2011policy values that are allowed for a Job pod:\n\n- **OnFailure** \u2013 the kubelet will restart the container inside the same pod if it crashes.  \n- **Never** \u2013 the pod is marked as failed and the Job controller creates a new pod.\n\nIt also states that **Always** is **not allowed** for Job pods.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G11",
@@ -996,7 +1043,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "- **spec.completions** \u2013 controls the total number of pod executions that must succeed for the Job to be considered complete.  \n- **spec.parallelism** \u2013 controls how many of those pod executions can run at the same time, i.e., the level of parallelism for the Job."
+        "full_answer": "- **spec.completions** \u2013 controls the total number of pod executions that must succeed for the Job to be considered complete.  \n- **spec.parallelism** \u2013 controls how many of those pod executions can run at the same time, i.e., the level of parallelism for the Job.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G12",
@@ -1015,7 +1063,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "The Job resource belongs to the **batch/v1** API group (stable)."
+        "full_answer": "The Job resource belongs to the **batch/v1** API group (stable).",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G13",
@@ -1034,7 +1083,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "To start a local Kubernetes cluster with Minikube, run the following command:\n\n```bash\nminikube start --driver=docker\n```\n\nThis command initiates Minikube, downloads the necessary components, and creates the single\u2011node cluster. After a few minutes, you should see a completion message similar to:\n\n```\n\ud83c\udfc4  Done! kubectl is now configured to use \"minikube\" cluster and \"default\" namespace by default\n```"
+        "full_answer": "To start a local Kubernetes cluster with Minikube, run the following command:\n\n```bash\nminikube start --driver=docker\n```\n\nThis command initiates Minikube, downloads the necessary components, and creates the single\u2011node cluster. After a few minutes, you should see a completion message similar to:\n\n```\n\ud83c\udfc4  Done! kubectl is now configured to use \"minikube\" cluster and \"default\" namespace by default\n```",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G14",
@@ -1053,7 +1103,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "The command is:\n\n```bash\nkubectl get jobs\n```"
+        "full_answer": "The command is:\n\n```bash\nkubectl get jobs\n```",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G15",
@@ -1072,7 +1123,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "After Minikube starts, run the following command to list the system\u2011namespace pods:\n\n```bash\nkubectl get pods -n kube-system\n```\n\nThe output should show several pods, including core components such as **kube-apiserver**, **kube-controller-manager**, and other system pods. Seeing these pods in a Running state confirms that the core Kubernetes components are up and running."
+        "full_answer": "After Minikube starts, run the following command to list the system\u2011namespace pods:\n\n```bash\nkubectl get pods -n kube-system\n```\n\nThe output should show several pods, including core components such as **kube-apiserver**, **kube-controller-manager**, and other system pods. Seeing these pods in a Running state confirms that the core Kubernetes components are up and running.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H01",
@@ -1091,7 +1143,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "The `backoffLimit` in **hello-job.yaml** is set to **4**."
+        "full_answer": "The `backoffLimit` in **hello-job.yaml** is set to **4**.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H02",
@@ -1110,7 +1163,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "The `ttlSecondsAfterFinished` value configured for the cost\u2011effective job processing is **3600**."
+        "full_answer": "The `ttlSecondsAfterFinished` value configured for the cost\u2011effective job processing is **3600**.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H03",
@@ -1129,7 +1183,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "When a Kubernetes Job sets **`completionMode: Indexed`**, each pod that runs for the job receives a unique completion index (available in the `JOB_COMPLETION_INDEX` environment variable). This index can be used inside the pod\u2019s command to work on a specific slice of data\u2014for example, calculating start and end ranges or processing data based on the index. The job still respects the `completions` and `parallelism` settings, but the indexed mode ensures that each successful pod knows its own distinct index."
+        "full_answer": "When a Kubernetes Job sets **`completionMode: Indexed`**, each pod that runs for the job receives a unique completion index (available in the `JOB_COMPLETION_INDEX` environment variable). This index can be used inside the pod\u2019s command to work on a specific slice of data\u2014for example, calculating start and end ranges or processing data based on the index. The job still respects the `completions` and `parallelism` settings, but the indexed mode ensures that each successful pod knows its own distinct index.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H04",
@@ -1148,7 +1203,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "In a Job with `completionMode: NonIndexed`, all Pods are identical\u2014each Pod runs the same work and does **not** receive a unique completion index."
+        "full_answer": "In a Job with `completionMode: NonIndexed`, all Pods are identical\u2014each Pod runs the same work and does **not** receive a unique completion index.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H05",
@@ -1167,7 +1223,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "The `concurrencyPolicy` value **`Forbid`** prevents concurrent runs of a scheduled CronJob."
+        "full_answer": "The `concurrencyPolicy` value **`Forbid`** prevents concurrent runs of a scheduled CronJob.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H06",
@@ -1186,7 +1243,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "The anti\u2011pattern example sets:\n\n**activeDeadlineSeconds: 86400**\u202fseconds (i.e., 24\u202fhours)."
+        "full_answer": "The anti\u2011pattern example sets:\n\n**activeDeadlineSeconds: 86400**\u202fseconds (i.e., 24\u202fhours).",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H07",
@@ -1205,7 +1263,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "minikube start --driver=docker"
+        "full_answer": "minikube start --driver=docker",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H08",
@@ -1224,7 +1283,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "The command is:\n\n```bash\ndatabricks jobs get <job-id>\n```"
+        "full_answer": "The command is:\n\n```bash\ndatabricks jobs get <job-id>\n```",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H09",
@@ -1243,7 +1303,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "The command is:\n\n```\ndatabricks jobs create --json @<file-path>\n```"
+        "full_answer": "The command is:\n\n```\ndatabricks jobs create --json @<file-path>\n```",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H10",
@@ -1262,7 +1323,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "The CLI command is:\n\n```\ndatabricks jobs run-now\n```"
+        "full_answer": "The CLI command is:\n\n```\ndatabricks jobs run-now\n```",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H11",
@@ -1281,7 +1343,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "The command is:\n\n```bash\nkubectl top po\n```"
+        "full_answer": "The command is:\n\n```bash\nkubectl top po\n```",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H12",
@@ -1300,7 +1363,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "Run the following command and look for the Metrics Server pods in the output:\n\n```bash\nkubectl get pods -n kube-system | grep metrics-server\n```\n\nIf the Metrics Server is installed correctly, you will see its pods listed as running and ready in the `kube-system` namespace."
+        "full_answer": "Run the following command and look for the Metrics Server pods in the output:\n\n```bash\nkubectl get pods -n kube-system | grep metrics-server\n```\n\nIf the Metrics Server is installed correctly, you will see its pods listed as running and ready in the `kube-system` namespace.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H13",
@@ -1319,7 +1383,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "To prevent a VPA from scaling a particular container, add a\u202f`containerPolicies`\u202fentry for that container and set its\u202f`mode`\u202fto **\"Off\"**.\n\n**Example**\n\n```yaml\napiVersion: autoscaling.k8s.io/v1\nkind: VerticalPodAutoscaler\n\u2026\nspec:\n  resourcePolicy:\n    containerPolicies:\n    - containerName: <your\u2011container\u2011name>\n      mode: \"Off\"\n```\n\n- Replace\u202f`<your\u2011container\u2011name>`\u202fwith the name of the container you want to exclude.\n- `mode: \"Off\"` tells the VPA not to apply any autoscaling actions to that container."
+        "full_answer": "To prevent a VPA from scaling a particular container, add a\u202f`containerPolicies`\u202fentry for that container and set its\u202f`mode`\u202fto **\"Off\"**.\n\n**Example**\n\n```yaml\napiVersion: autoscaling.k8s.io/v1\nkind: VerticalPodAutoscaler\n\u2026\nspec:\n  resourcePolicy:\n    containerPolicies:\n    - containerName: <your\u2011container\u2011name>\n      mode: \"Off\"\n```\n\n- Replace\u202f`<your\u2011container\u2011name>`\u202fwith the name of the container you want to exclude.\n- `mode: \"Off\"` tells the VPA not to apply any autoscaling actions to that container.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H14",
@@ -1338,7 +1403,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": true,
         "sources_count": 5,
-        "full_answer": "I cannot answer this question as the required information is not found in the documentation."
+        "full_answer": "I cannot answer this question as the required information is not found in the documentation.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H15",
@@ -1357,7 +1423,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "OnFailure."
+        "full_answer": "OnFailure.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H16",
@@ -1376,7 +1443,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "The command is:\n\n```bash\nkubectl run -i --tty temp --image redis --command \"/bin/sh\"\n```"
+        "full_answer": "The command is:\n\n```bash\nkubectl run -i --tty temp --image redis --command \"/bin/sh\"\n```",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H17",
@@ -1395,7 +1463,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "The manifest for **job\u2011wq\u20112** sets:\n\n```yaml\nspec:\n  parallelism: 2\n```\n\nSo the parallelism value is **2**."
+        "full_answer": "The manifest for **job\u2011wq\u20112** sets:\n\n```yaml\nspec:\n  parallelism: 2\n```\n\nSo the parallelism value is **2**.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H18",
@@ -1414,7 +1483,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "The worker script connects to Redis using the hostname **`redis`**."
+        "full_answer": "The worker script connects to Redis using the hostname **`redis`**.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H19",
@@ -1433,7 +1503,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "The policy engine is **kube\u2011scheduler**. It evaluates workload requirements and attempts to place them on matching resources."
+        "full_answer": "The policy engine is **kube\u2011scheduler**. It evaluates workload requirements and attempts to place them on matching resources.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H20",
@@ -1452,7 +1523,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "The Kubelet\u202fPodSync daemon filters pods by the **`NodeName`** field in the apiserver."
+        "full_answer": "The Kubelet\u202fPodSync daemon filters pods by the **`NodeName`** field in the apiserver.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H21",
@@ -1471,7 +1543,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "All Pods can communicate with all other Pods without NAT."
+        "full_answer": "All Pods can communicate with all other Pods without NAT.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H22",
@@ -1490,7 +1563,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "The `-f` flag is used with `kubectl logs` to follow a job pod\u2019s output in real\u2011time."
+        "full_answer": "The `-f` flag is used with `kubectl logs` to follow a job pod\u2019s output in real\u2011time.",
+        "model_used": "openai/gpt-oss-120b"
       }
     ],
     "fusion": [
@@ -1511,7 +1585,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 4,
-        "full_answer": "To start the Redis storage service for the work\u2011queue you:\n\n1. **Launch a temporary pod that runs the Redis image**  \n\n   ```bash\n   kubectl run -i --tty temp --image redis --command \"/bin/sh\"\n   ```\n\n2. **When the shell prompt appears, connect to the Redis instance**  \n\n   ```bash\n   redis-cli -h redis\n   ```\n\n   (The `-h redis` flag assumes a Kubernetes Service named **redis** is exposing the Redis server.)\n\nThese steps start a Redis pod that can be used as the storage service for the Kubernetes work queue."
+        "full_answer": "To start the Redis storage service for the work\u2011queue you:\n\n1. **Launch a temporary pod that runs the Redis image**  \n\n   ```bash\n   kubectl run -i --tty temp --image redis --command \"/bin/sh\"\n   ```\n\n2. **When the shell prompt appears, connect to the Redis instance**  \n\n   ```bash\n   redis-cli -h redis\n   ```\n\n   (The `-h redis` flag assumes a Kubernetes Service named **redis** is exposing the Redis server.)\n\nThese steps start a Redis pod that can be used as the storage service for the Kubernetes work queue.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G02",
@@ -1530,7 +1605,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 3,
-        "full_answer": "The **parallelism** field sets how many Pods are created and run at the same time for the Job. In the `job-wq-2` manifest it is set to\u202f2, so two worker Pods are started in parallel; each Pod picks up items from the queue, processes them, and repeats until the queue is empty. This allows multiple tasks to be processed concurrently."
+        "full_answer": "The **parallelism** field sets how many Pods are created and run at the same time for the Job. In the `job-wq-2` manifest it is set to\u202f2, so two worker Pods are started in parallel; each Pod picks up items from the queue, processes them, and repeats until the queue is empty. This allows multiple tasks to be processed concurrently.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G03",
@@ -1549,7 +1625,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 3,
-        "full_answer": "To fill the Redis work queue with tasks using the CLI:\n\n1. **Start a temporary interactive pod** that has the Redis client:\n\n   ```bash\n   kubectl run -i --tty temp --image redis --command \"/bin/sh\"\n   ```\n\n2. **Connect to the Redis service** from the pod\u2019s shell:\n\n   ```bash\n   redis-cli -h redis\n   ```\n\n3. **Inside the Redis prompt**, push each task onto the queue (named\u202f`job2`) with `RPUSH`:\n\n   ```redis\n   rpush job2 \"apple\"\n   rpush job2 \"banana\"\n   rpush job2 \"cherry\"\n   rpush job2 \"date\"\n   rpush job2 \"fig\"\n   rpush job2 \"grape\"\n   rpush job2 \"lemon\"\n   rpush job2 \"melon\"\n   rpush job2 \"orange\"\n   ```\n\n4. **Verify the queue contents** (optional):\n\n   ```redis\n   lrange job2 0 -1\n   ```\n\nThese commands add the listed items to the Redis list `job2`, which serves as the work queue."
+        "full_answer": "To fill the Redis work queue with tasks using the CLI:\n\n1. **Start a temporary interactive pod** that has the Redis client:\n\n   ```bash\n   kubectl run -i --tty temp --image redis --command \"/bin/sh\"\n   ```\n\n2. **Connect to the Redis service** from the pod\u2019s shell:\n\n   ```bash\n   redis-cli -h redis\n   ```\n\n3. **Inside the Redis prompt**, push each task onto the queue (named\u202f`job2`) with `RPUSH`:\n\n   ```redis\n   rpush job2 \"apple\"\n   rpush job2 \"banana\"\n   rpush job2 \"cherry\"\n   rpush job2 \"date\"\n   rpush job2 \"fig\"\n   rpush job2 \"grape\"\n   rpush job2 \"lemon\"\n   rpush job2 \"melon\"\n   rpush job2 \"orange\"\n   ```\n\n4. **Verify the queue contents** (optional):\n\n   ```redis\n   lrange job2 0 -1\n   ```\n\nThese commands add the listed items to the Redis list `job2`, which serves as the work queue.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G04",
@@ -1568,7 +1645,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 4,
-        "full_answer": "**Difference between HPA and VPA**\n\n- **Horizontal Pod Autoscaling (HPA)**\n  - Scales the *number* of pods horizontally.\n  - Ideal for **stateless** applications that can add more pods easily.\n  - Used to handle variable workloads and ensure high availability.\n\n- **Vertical Pod Autoscaling (VPA)**\n  - Adjusts the *resource requests/limits* (CPU, memory) of each pod vertically.\n  - Suitable when horizontal scaling is not feasible or when you need to optimize resources for individual pods.\n  - Beneficial for **stateful** applications or those with varying resource needs."
+        "full_answer": "**Difference between HPA and VPA**\n\n- **Horizontal Pod Autoscaling (HPA)**\n  - Scales the *number* of pods horizontally.\n  - Ideal for **stateless** applications that can add more pods easily.\n  - Used to handle variable workloads and ensure high availability.\n\n- **Vertical Pod Autoscaling (VPA)**\n  - Adjusts the *resource requests/limits* (CPU, memory) of each pod vertically.\n  - Suitable when horizontal scaling is not feasible or when you need to optimize resources for individual pods.\n  - Beneficial for **stateful** applications or those with varying resource needs.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G05",
@@ -1587,7 +1665,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 4,
-        "full_answer": "To install the Metrics Server for Kubernetes pod autoscaling, follow these steps:\n\n1. **Apply the latest Metrics Server manifest**  \n   ```bash\n   kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml\n   ```\n   This downloads the YAML manifest for the latest release from the Metrics Server GitHub repository and applies it to your cluster.\n\n2. **Verify the Metrics Server pods are running**  \n   ```bash\n   kubectl get pods -n kube-system | grep metrics-server\n   ```\n   You should see the Metrics Server pods listed and in a ready state.\n\n3. **Confirm that metrics are being collected**  \n   ```bash\n   kubectl top nodes\n   kubectl top pods --all-namespaces\n   ```\n   If the Metrics Server is functioning correctly, these commands will display CPU and memory usage for nodes and pods."
+        "full_answer": "To install the Metrics Server for Kubernetes pod autoscaling, follow these steps:\n\n1. **Apply the latest Metrics Server manifest**  \n   ```bash\n   kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml\n   ```\n   This downloads the YAML manifest for the latest release from the Metrics Server GitHub repository and applies it to your cluster.\n\n2. **Verify the Metrics Server pods are running**  \n   ```bash\n   kubectl get pods -n kube-system | grep metrics-server\n   ```\n   You should see the Metrics Server pods listed and in a ready state.\n\n3. **Confirm that metrics are being collected**  \n   ```bash\n   kubectl top nodes\n   kubectl top pods --all-namespaces\n   ```\n   If the Metrics Server is functioning correctly, these commands will display CPU and memory usage for nodes and pods.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G06",
@@ -1606,7 +1685,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 3,
-        "full_answer": "The documentation states that you can confirm the Metrics Server is collecting data by running:\n\n```bash\nkubectl top nodes\nkubectl top pods --all-namespaces\n```"
+        "full_answer": "The documentation states that you can confirm the Metrics Server is collecting data by running:\n\n```bash\nkubectl top nodes\nkubectl top pods --all-namespaces\n```",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G07",
@@ -1625,7 +1705,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "The CLI command is:\n\n```bash\ndatabricks jobs get <job-id>\n```"
+        "full_answer": "The CLI command is:\n\n```bash\ndatabricks jobs get <job-id>\n```",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G08",
@@ -1644,7 +1725,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 4,
-        "full_answer": "You should use the Databricks REST API when the CLI and the available SDKs do not meet your specific use case\u2014for example, when you need to automate a process but an SDK for your preferred programming language is not available, or when the other tools cannot accomplish what you need. In such cases, you can call the REST API directly."
+        "full_answer": "You should use the Databricks REST API when the CLI and the available SDKs do not meet your specific use case\u2014for example, when you need to automate a process but an SDK for your preferred programming language is not available, or when the other tools cannot accomplish what you need. In such cases, you can call the REST API directly.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G09",
@@ -1663,7 +1745,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 3,
-        "full_answer": "The three main developer tools for programmatically creating and managing Databricks jobs are:\n\n1. **Databricks CLI** \u2013 a command\u2011line interface that wraps the REST API.  \n2. **Databricks SDKs** \u2013 language\u2011specific SDKs (Python, Java, Go, R) for building custom workflows.  \n3. **Databricks REST API** \u2013 direct REST calls for automation when other options aren\u2019t suitable."
+        "full_answer": "The three main developer tools for programmatically creating and managing Databricks jobs are:\n\n1. **Databricks CLI** \u2013 a command\u2011line interface that wraps the REST API.  \n2. **Databricks SDKs** \u2013 language\u2011specific SDKs (Python, Java, Go, R) for building custom workflows.  \n3. **Databricks REST API** \u2013 direct REST calls for automation when other options aren\u2019t suitable.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G10",
@@ -1682,7 +1765,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "The documentation states that a Job pod can use the following restart policies:\n\n- **OnFailure** \u2013 the Kubelet will restart the container inside the same Pod if it crashes.  \n- **Never** \u2013 the Pod is marked as failed and the Job controller creates a new Pod.\n\nThe policy **Always** is explicitly **not allowed** for Job pods."
+        "full_answer": "The documentation states that a Job pod can use the following restart policies:\n\n- **OnFailure** \u2013 the Kubelet will restart the container inside the same Pod if it crashes.  \n- **Never** \u2013 the Pod is marked as failed and the Job controller creates a new Pod.\n\nThe policy **Always** is explicitly **not allowed** for Job pods.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G11",
@@ -1701,7 +1785,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 4,
-        "full_answer": "**completions** \u2013 the `spec.completions` field controls the total number of pod executions that must successfully finish for the Job to be considered complete.\n\n**parallelism** \u2013 the `spec.parallelism` field controls how many pods the Job may run at the same time, allowing the work to be parallelized."
+        "full_answer": "**completions** \u2013 the `spec.completions` field controls the total number of pod executions that must successfully finish for the Job to be considered complete.\n\n**parallelism** \u2013 the `spec.parallelism` field controls how many pods the Job may run at the same time, allowing the work to be parallelized.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G12",
@@ -1720,7 +1805,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "A Job resource belongs to the **batch/v1** API group."
+        "full_answer": "A Job resource belongs to the **batch/v1** API group.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G13",
@@ -1739,7 +1825,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 3,
-        "full_answer": "To start a local Kubernetes cluster with Minikube, run the following command:\n\n```bash\nminikube start --driver=docker\n```\n\nThis command initializes Minikube, downloads the necessary components, and creates a single\u2011node Kubernetes cluster using Docker as the driver. After a few minutes you should see a completion message similar to:\n\n```\n\ud83c\udfc4  Done! kubectl is now configured to use \"minikube\" cluster and \"default\" namespace by default\n```"
+        "full_answer": "To start a local Kubernetes cluster with Minikube, run the following command:\n\n```bash\nminikube start --driver=docker\n```\n\nThis command initializes Minikube, downloads the necessary components, and creates a single\u2011node Kubernetes cluster using Docker as the driver. After a few minutes you should see a completion message similar to:\n\n```\n\ud83c\udfc4  Done! kubectl is now configured to use \"minikube\" cluster and \"default\" namespace by default\n```",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G14",
@@ -1758,7 +1845,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 4,
-        "full_answer": "The command is:\n\n```bash\nkubectl get jobs\n```"
+        "full_answer": "The command is:\n\n```bash\nkubectl get jobs\n```",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "G15",
@@ -1777,7 +1865,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 3,
-        "full_answer": "After Minikube has started, run the following command to list the pods in the **kube\u2011system** namespace:\n\n```bash\nkubectl get pods -n kube-system\n```\n\nThe output should show several pods in the **Running** state, including core components such as **kube\u2011apiserver**, **kube\u2011controller\u2011manager**, and the other system pods. Seeing these pods listed confirms that the core Kubernetes components are up and running."
+        "full_answer": "After Minikube has started, run the following command to list the pods in the **kube\u2011system** namespace:\n\n```bash\nkubectl get pods -n kube-system\n```\n\nThe output should show several pods in the **Running** state, including core components such as **kube\u2011apiserver**, **kube\u2011controller\u2011manager**, and the other system pods. Seeing these pods listed confirms that the core Kubernetes components are up and running.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H01",
@@ -1796,7 +1885,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 3,
-        "full_answer": "The `backoffLimit` in **hello-job.yaml** is set to **4**."
+        "full_answer": "The `backoffLimit` in **hello-job.yaml** is set to **4**.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H02",
@@ -1815,7 +1905,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 4,
-        "full_answer": "The `ttlSecondsAfterFinished` value configured for the cost\u2011effective job processing is **3600** seconds."
+        "full_answer": "The `ttlSecondsAfterFinished` value configured for the cost\u2011effective job processing is **3600** seconds.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H03",
@@ -1834,7 +1925,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 6,
-        "full_answer": "When a Kubernetes Job sets **`completionMode: Indexed`**, each pod that the Job creates receives a unique completion index. This index is exposed to the container via the `JOB_COMPLETION_INDEX` environment variable, allowing the pod to process a specific slice of work based on that index (e.g., calculating start/end ranges or handling a particular data segment)."
+        "full_answer": "When a Kubernetes Job sets **`completionMode: Indexed`**, each pod that the Job creates receives a unique completion index. This index is exposed to the container via the `JOB_COMPLETION_INDEX` environment variable, allowing the pod to process a specific slice of work based on that index (e.g., calculating start/end ranges or handling a particular data segment).",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H04",
@@ -1853,7 +1945,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 6,
-        "full_answer": "All Pods are identical when `completionMode` is set to **NonIndexed**."
+        "full_answer": "All Pods are identical when `completionMode` is set to **NonIndexed**.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H05",
@@ -1872,7 +1965,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 3,
-        "full_answer": "The `concurrencyPolicy` value **`Forbid`** prevents concurrent runs of a scheduled CronJob."
+        "full_answer": "The `concurrencyPolicy` value **`Forbid`** prevents concurrent runs of a scheduled CronJob.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H06",
@@ -1891,7 +1985,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 4,
-        "full_answer": "The anti\u2011pattern example specifies:\n\n**`activeDeadlineSeconds: 86400`**\u202f\u2014\u202fi.e., a 24\u2011hour deadline, which is considered too long for jobs that lack checkpointing."
+        "full_answer": "The anti\u2011pattern example specifies:\n\n**`activeDeadlineSeconds: 86400`**\u202f\u2014\u202fi.e., a 24\u2011hour deadline, which is considered too long for jobs that lack checkpointing.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H07",
@@ -1910,7 +2005,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 3,
-        "full_answer": "minikube start --driver=docker"
+        "full_answer": "minikube start --driver=docker",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H08",
@@ -1929,7 +2025,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 4,
-        "full_answer": "The command is:\n\n```bash\ndatabricks jobs get <job-id>\n```"
+        "full_answer": "The command is:\n\n```bash\ndatabricks jobs get <job-id>\n```",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H09",
@@ -1948,7 +2045,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 3,
-        "full_answer": "The command is:\n\n```bash\ndatabricks jobs create --json @<file-path>\n```"
+        "full_answer": "The command is:\n\n```bash\ndatabricks jobs create --json @<file-path>\n```",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H10",
@@ -1967,7 +2065,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 4,
-        "full_answer": "The CLI command is:\n\n**`databricks jobs run-now`** \u2013 it triggers a run for a job that you have already created."
+        "full_answer": "The CLI command is:\n\n**`databricks jobs run-now`** \u2013 it triggers a run for a job that you have already created.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H11",
@@ -1986,7 +2085,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 4,
-        "full_answer": "The command is:\n\n```bash\nkubectl top po\n```"
+        "full_answer": "The command is:\n\n```bash\nkubectl top po\n```",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H12",
@@ -2005,7 +2105,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 3,
-        "full_answer": "Run the following command and look for the Metrics Server pods in the output:\n\n```bash\nkubectl get pods -n kube-system | grep metrics-server\n```"
+        "full_answer": "Run the following command and look for the Metrics Server pods in the output:\n\n```bash\nkubectl get pods -n kube-system | grep metrics-server\n```",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H13",
@@ -2024,7 +2125,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 5,
-        "full_answer": "To exclude scaling for a specific container, add a\u202f`containerPolicies`\u202fentry for that container in the VPA\u2019s\u202f`resourcePolicy`\u202fand set its\u202f`mode`\u202fto **\"Off\"**. Example:\n\n```yaml\napiVersion: autoscaling.k8s.io/v1\nkind: VerticalPodAutoscaler\n\u2026\nresourcePolicy:\n  containerPolicies:\n  - containerName: <container_name>\n    mode: \"Off\"\n```\n\n- `<container_name>` is the name of the container you want to exclude.\n- `mode: \"Off\"` tells the VPA not to apply any autoscaling actions to that container."
+        "full_answer": "To exclude scaling for a specific container, add a\u202f`containerPolicies`\u202fentry for that container in the VPA\u2019s\u202f`resourcePolicy`\u202fand set its\u202f`mode`\u202fto **\"Off\"**. Example:\n\n```yaml\napiVersion: autoscaling.k8s.io/v1\nkind: VerticalPodAutoscaler\n\u2026\nresourcePolicy:\n  containerPolicies:\n  - containerName: <container_name>\n    mode: \"Off\"\n```\n\n- `<container_name>` is the name of the container you want to exclude.\n- `mode: \"Off\"` tells the VPA not to apply any autoscaling actions to that container.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H14",
@@ -2043,7 +2145,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 4,
-        "full_answer": "The release manifest URL for installing the Vertical Pod Autoscaler components is:\n\n```\nhttps://github.com/kubernetes/autoscaler/releases/download/vpa-0.13.0/vpa-release-0.13.0.yaml\n```"
+        "full_answer": "The release manifest URL for installing the Vertical Pod Autoscaler components is:\n\n```\nhttps://github.com/kubernetes/autoscaler/releases/download/vpa-0.13.0/vpa-release-0.13.0.yaml\n```",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H15",
@@ -2062,7 +2165,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 3,
-        "full_answer": "OnFailure."
+        "full_answer": "OnFailure.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H16",
@@ -2081,7 +2185,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 3,
-        "full_answer": "kubectl run -i --tty temp --image redis --command \"/bin/sh\""
+        "full_answer": "kubectl run -i --tty temp --image redis --command \"/bin/sh\"",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H17",
@@ -2100,7 +2205,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 4,
-        "full_answer": "The manifest for **job\u2011wq\u20112** sets:\n\n```yaml\nspec:\n  parallelism: 2\n```\n\nSo the parallelism value specified is **2**."
+        "full_answer": "The manifest for **job\u2011wq\u20112** sets:\n\n```yaml\nspec:\n  parallelism: 2\n```\n\nSo the parallelism value specified is **2**.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H18",
@@ -2119,7 +2225,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 3,
-        "full_answer": "The worker script connects to Redis using the hostname **`redis`**."
+        "full_answer": "The worker script connects to Redis using the hostname **`redis`**.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H19",
@@ -2138,7 +2245,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 4,
-        "full_answer": "The policy engine is **kube\u2011scheduler**. It evaluates workload requirements and attempts to place them on matching resources."
+        "full_answer": "The policy engine is **kube\u2011scheduler**. It evaluates workload requirements and attempts to place them on matching resources.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H20",
@@ -2157,7 +2265,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 3,
-        "full_answer": "The Kubelet\u202fPodSync daemon filters pods by the **`NodeName`** field in the apiserver."
+        "full_answer": "The Kubelet\u202fPodSync daemon filters pods by the **`NodeName`** field in the apiserver.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H21",
@@ -2176,7 +2285,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 4,
-        "full_answer": "All Pods can communicate with all other Pods without NAT."
+        "full_answer": "All Pods can communicate with all other Pods without NAT.",
+        "model_used": "openai/gpt-oss-120b"
       },
       {
         "id": "H22",
@@ -2195,7 +2305,8 @@
         "answer_without_supporting_context": false,
         "is_no_info_answer": false,
         "sources_count": 4,
-        "full_answer": "The `-f` flag is used with `kubectl logs` to follow a job pod\u2019s output in real\u2011time."
+        "full_answer": "The `-f` flag is used with `kubectl logs` to follow a job pod\u2019s output in real\u2011time.",
+        "model_used": "openai/gpt-oss-120b"
       }
     ]
   }

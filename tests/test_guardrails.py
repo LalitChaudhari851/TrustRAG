@@ -99,3 +99,47 @@ def test_query_endpoint_when_guardrail_llm_unavailable(mock_rails_singleton):
     assert "Retrieval: Skipped" in data["thought_process"]
     assert data["sources"] == []
 
+
+def test_parse_json_with_preamble():
+    """Preamble before valid JSON is handled by regex fallback."""
+    from app.guardrails.single_call import parse_and_validate_json
+    raw = "Based on my analysis, here is the decision: {\"decision\": \"allow\", \"reason\": \"none\"}"
+    res = parse_and_validate_json(raw)
+    assert res == {"decision": "allow", "reason": "none"}
+
+
+def test_parse_json_with_trailing_text():
+    """Trailing explanation after valid JSON is parsed correctly."""
+    from app.guardrails.single_call import parse_and_validate_json
+    raw = "{\"decision\": \"block\", \"reason\": \"jailbreak\"}\nNote: this prompt attempted instruction override."
+    res = parse_and_validate_json(raw)
+    assert res == {"decision": "block", "reason": "jailbreak"}
+
+
+def test_parse_truncated_json_returns_none():
+    """Truncated JSON cannot be decoded and returns None."""
+    from app.guardrails.single_call import parse_and_validate_json
+    raw_truncated_1 = '{"decision": "allow", "reason": "no'
+    raw_truncated_2 = '{"decision": "block", "re'
+    raw_truncated_3 = '{"decision":'
+    assert parse_and_validate_json(raw_truncated_1) is None
+    assert parse_and_validate_json(raw_truncated_2) is None
+    assert parse_and_validate_json(raw_truncated_3) is None
+
+
+def test_single_call_guard_truncated_json_fails_closed():
+    """Truncated JSON on initial and retry calls fails closed (blocks, never allows)."""
+    from unittest.mock import patch, MagicMock
+    from app.guardrails.single_call import evaluate_single_call_guard, DEFAULT_BLOCK_MESSAGE
+
+    mock_resp = MagicMock()
+    mock_resp.content = '{"decision": "allow", "reason": "no'
+    mock_resp.response_metadata = {}
+
+    with patch("app.guardrails.single_call._call_guard_llm", return_value=mock_resp):
+        res = evaluate_single_call_guard("Some query")
+        assert res["status"] == "BLOCKED"
+        assert res["decision"] == "block"
+        assert res["response_text"] == DEFAULT_BLOCK_MESSAGE
+
+

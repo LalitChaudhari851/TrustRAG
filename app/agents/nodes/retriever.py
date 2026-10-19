@@ -64,7 +64,8 @@ def retrieve_node(state: AgentState):
         formatted_docs = []
         for doc in selected_docs:
             source = doc.get("source", "Unknown")
-            section = doc.get("section") or doc.get("slide_title") or f"Page {doc.get('page')}" if doc.get("page") else "General"
+            page_val = f"Page {doc.get('page')}" if doc.get("page") else None
+            section = doc.get("section") or doc.get("slide_title") or page_val or "General"
             header = f"[Source: {source} | Section: {section}]"
             formatted_docs.append(f"{header}\n{doc.get('content', '')}")
 

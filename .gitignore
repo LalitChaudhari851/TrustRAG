@@ -67,3 +67,5 @@ checkpoints.db
 
 # Scratch scripts and temporary files
 scratch/
+secrets_to_purge.txt
+replacements.txt

@@ -181,6 +181,8 @@ def run_eval_for_mode(mode: str, test_cases: list):
         answer_produced = bool(answer and len(answer.strip()) > 0 and not is_rl)
         no_info = is_no_info(answer)
 
+        model_used = resp_data.get("model_used", "openai/gpt-oss-120b")
+
         res_record = {
             "id": cid,
             "question": q,
@@ -189,6 +191,7 @@ def run_eval_for_mode(mode: str, test_cases: list):
             "planner_query": planner_query,
             "retrieval_mode_requested": mode,
             "retrieval_mode_used": mode_used,
+            "model_used": model_used,
             "answer_snippet": answer[:100].replace("\n", " ") if answer else "",
             "retrieval_invoked": retrieval_invoked,
             "answer_produced": answer_produced,

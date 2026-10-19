@@ -17,6 +17,7 @@ logfire.configure(token=os.getenv("LOGFIRE_TOKEN"))
 
 # Now safe to import app modules - logfire is already active
 from fastapi import FastAPI, Response
+from app.config import settings
 from app.agents.graph import rag_agent
 from app.guardrails import initialize_rails, guard
 from app.services.retrieval.embedding import _init as init_embeddings
@@ -92,7 +93,8 @@ def query(request: QueryRequest):
         "documents": [],
         "plan": ["Start"],
         "status": "Initializing Graph...",
-        "retrieval_mode": request.retrieval_mode
+        "retrieval_mode": request.retrieval_mode,
+        "model_used": None
     }
     
     # Configuration for Memory (Thread ID)
@@ -108,7 +110,8 @@ def query(request: QueryRequest):
                 "answer": rail_response,
                 "thought_process": ["Intent: Guardrails Fired", "Retrieval: Skipped"],
                 "status": "Blocked by guardrails.",
-                "sources": []
+                "sources": [],
+                "model_used": None
             }
 
         # Gate 2: LangGraph RAG pipeline
@@ -123,7 +126,8 @@ def query(request: QueryRequest):
             "thought_process": final_output.get("plan"),
             "status": final_output.get("status"),
             "sources": final_output.get("documents", []),
-            "retrieval_mode": mode_used
+            "retrieval_mode": mode_used,
+            "model_used": final_output.get("model_used")
         }
     except Exception as e:
         logfire.error(f"❌ Backend Execution Failed: {e}")
@@ -132,5 +136,6 @@ def query(request: QueryRequest):
             "answer": "I apologize, but I encountered an internal error while processing your request. Please try again later.",
             "thought_process": ["Error encountered during execution."],
             "status": "error",
-            "sources": []
+            "sources": [],
+            "model_used": None
         }

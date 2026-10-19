@@ -43,7 +43,8 @@ def generate_node(state: AgentState):
                 "final_answer": refusal,
                 "status": "Insufficient context.",
                 "plan": state.get("plan", []) + ["Refusal: Insufficient Context"],
-                "messages": [{"role": "assistant", "content": refusal}]
+                "messages": [{"role": "assistant", "content": refusal}],
+                "model_used": None
             }
 
         logfire.info("Generating technical RAG response.")
@@ -91,6 +92,7 @@ def generate_node(state: AgentState):
             response = execute_gateway_chat(**create_params)
 
             content = response.choices[0].message.content
+            model_returned = getattr(response, "model", None) or settings.GROQ_MODEL
             cache_status = extract_cache_status(response)
             is_cache_hit = cache_status == "HIT"
 
@@ -107,7 +109,8 @@ def generate_node(state: AgentState):
                 "final_answer": content,
                 "status": status,
                 "plan": plan_update,
-                "messages": [{"role": "assistant", "content": content}]
+                "messages": [{"role": "assistant", "content": content}],
+                "model_used": model_returned
             }
 
         except Exception as e:
@@ -122,6 +125,7 @@ def generate_node(state: AgentState):
                 "final_answer": fallback_reply,
                 "status": "error",
                 "plan": state["plan"] + ["Error: LLM Generation Failed"],
-                "messages": [{"role": "assistant", "content": fallback_reply}]
+                "messages": [{"role": "assistant", "content": fallback_reply}],
+                "model_used": None
             }
 

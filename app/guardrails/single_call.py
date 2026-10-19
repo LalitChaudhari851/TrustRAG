@@ -90,7 +90,7 @@ def parse_and_validate_json(raw_text: str) -> Optional[Dict[str, str]]:
 _ACTIVE_GUARD_MODEL: Optional[str] = None
 
 
-def get_guard_llm(active_model: Optional[str] = None) -> ChatGroq:
+def get_guard_llm(active_model: Optional[str] = None, api_key: Optional[str] = None) -> ChatGroq:
     """Create a ChatGroq instance for the single-call input guard."""
     global _ACTIVE_GUARD_MODEL
     model_name = active_model or _ACTIVE_GUARD_MODEL or settings.GUARDRAIL_MODEL
@@ -137,6 +137,18 @@ def evaluate_single_call_guard(
       - model_used: str
     """
     global _ACTIVE_GUARD_MODEL
+    from app.agents.nodes.planner import is_pure_chitchat
+    if is_pure_chitchat(message):
+        return {
+            "status": "PASSED",
+            "decision": "allow",
+            "reason": "none",
+            "response_text": None,
+            "prompt_tokens": 0,
+            "completion_tokens": 0,
+            "model_used": None
+        }
+
     model_name = active_model or _ACTIVE_GUARD_MODEL or settings.GUARDRAIL_MODEL
     if model_name == "llama-3.1-8b-instant":
         model_name = "openai/gpt-oss-20b"

@@ -168,14 +168,7 @@ def execute_gateway_chat(**create_params) -> Any:
                 params["model"] = model_name
                 return fallback_client.chat.completions.create(**params)
             except Exception as e_fb:
-                if is_daily_quota_exhaustion(e_fb) or "rate_limit" in str(e_fb).lower():
-                    for alt_model in ["openai/gpt-oss-120b", "allam-2-7b"]:
-                        try:
-                            logfire.warning(f"⚠️ Model '{model_name}' exhausted quota on fallback key. Switching to '{alt_model}'.")
-                            params["model"] = alt_model
-                            return fallback_client.chat.completions.create(**params)
-                        except Exception:
-                            continue
+                logfire.error(f"❌ Fallback key execution failed for model '{model_name}': {e_fb}. Failing loudly without model substitution.")
                 raise e_fb
         raise e
 

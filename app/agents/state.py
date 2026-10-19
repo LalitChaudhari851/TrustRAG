@@ -14,3 +14,4 @@ class AgentState(TypedDict, total=False):
     route: str
     planner_raw_output: str
     retrieval_mode: str
+    model_used: str
