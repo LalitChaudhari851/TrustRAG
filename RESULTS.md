@@ -96,9 +96,11 @@
 | Recall | 1.0000 | `guardrails_dev_22_results.json` (recall) |
 | F1 Score | 1.0000 | `guardrails_dev_22_results.json` (f1) |
 
-### Key Guardrail Findings & Resolved False-Blocks:
-1. **G03 Scope False-Block**: "How do you fill the Redis work queue with tasks using the CLI?" was initially blocked as off-topic when the guard prompt restricted domain scope to general Kubernetes without explicitly defining Redis and work queues as valid corpus scope. Expanding the system scope definition to match the actual multi-format indexed corpus (Kubernetes, Redis, Databricks jobs, OS/kernel, C++, networking, ML) eliminated the false block.
-2. **H19 Truncated JSON False-Block**: "What policy engine in Kubernetes evaluates workload requirements and places them on matching resources?" triggered a false block when the guard LLM returned conversational preambles or truncated JSON output before the closing bracket. Adding robust regex extraction (`re.search(r"\{.*\}", raw, re.DOTALL)`) and fallback repair resolved this parsing failure.
+### Key Guardrail Findings & Root Cause for G03 and H19:
+1. **Experimental 10-Trial Replication (Temperature 0)**:
+   - **Original Code (`max_tokens=40`)**: Running G03 and H19 10 times each produced `Raw: ''` in 10/10 runs. For `openai/gpt-oss-120b`, the initial reasoning/thought tokens exhausted the 40-token limit before JSON completion could be output. The parser returned `None` and failed closed to `blocked`.
+   - **Current Code (`max_tokens=150` + Multi-Domain Corpus Prompt)**: Running G03 and H19 10 times each produced `{"decision":"allow","reason":"none"}` in 10/10 runs, resulting in 100% allow rate.
+   - **Fail-Closed Parsing**: The parser retries once with fallback repair; if the response is still invalid or truncated, it strictly fails closed (`decision="block"`, `reason="infra/invalid_json"`).
 
 ## 6. Live /query Endpoint Evaluation Across Retrieval Modes (37-Question Dev Set)
 
@@ -106,11 +108,11 @@
 **Dataset Role**: Development Set (37 questions: 15 Golden + 22 Hard Retrieval cases)  
 **Source Artifact**: `evals/results/app_retrieval_modes_eval.json` (Run Timestamp: `2026-10-19 11:39:21`)
 
-| Mode | Total Questions | Retrieval Invoked | Answers Produced | Rate-Limit Errors (429) | Key Phrase in Context | Key Phrase in Answer | Ungrounded Answers |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `tinybert` | 37 | 37 (100%) | 37 (100%) | 0 | 35 / 37 (94.6%) | 25 / 37 (67.6%) | 0 (0.0%) |
-| `rrf` | 37 | 37 (100%) | 37 (100%) | 0 | 36 / 37 (97.3%) | 25 / 37 (67.6%) | 0 (0.0%) |
-| `fusion` | 37 | 37 (100%) | 37 (100%) | 0 | 35 / 37 (94.6%) | 24 / 37 (64.9%) | 0 (0.0%) |
+| Mode | Total Questions | Retrieval Invoked | Answers Produced | Rate-Limit Errors (429) | Key Phrase in Context | Ungrounded Answers |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `tinybert` | 37 | 37 (100%) | 37 (100%) | 0 | 35 / 37 (94.6%) | 0 (0.0%) |
+| `rrf` | 37 | 37 (100%) | 37 (100%) | 0 | 36 / 37 (97.3%) | 0 (0.0%) |
+| `fusion` | 37 | 37 (100%) | 37 (100%) | 0 | 35 / 37 (94.6%) | 0 (0.0%) |
 | Technical Questions Total | 37 | `routing_evaluation.json` (technical_total) |
 | Technical Questions Retrieved | 37 / 37 (100.0%) | `routing_evaluation.json` (technical_retrieved) |
 | Technical Questions Skipped (Erroneous) | 0 / 37 | `routing_evaluation.json` (technical_skipped) |
@@ -153,3 +155,4 @@
 5. **Golden Key-Phrase Tightening & Verification**: Generic key terms (`Q4: 'HPA'`, `Q8: 'REST API'`, `Q9: 'CLI'`, `Q14: 'kubectl get jobs'`) were replaced with verified answer-bearing phrases (`'adjusting the number of running pods'`, `'language is not currently available'`, `'Databricks CLI, the Databricks SDKs, and the REST API'`, `'COMPLETIONS   DURATION   AGE'`). Prior labels are tracked in `label_history`. Golden queries + references SHA256 was recomputed and confirmed 100% identical to baseline (`e2a1e8b65018f6732b5df5be19b059547b8917edfc1fcac38d99fdc5c7a6c73d`).
 6. **Cross-Encoder CPU Latency**: `BAAI/bge-reranker-base` achieves 1.0000 key hit@5 on Hard 22 but requires ~26,006 ms CPU warm median latency per query vs 635 ms for TinyBERT and 0.0 ms for pure RRF.
 7. **Planner Fail-Safe Invariants**: Planner routes directly through a deterministic pre-router for exact social chit-chat (`hi`, `thanks`, `who are you`, etc.). Any unrecognized query, planner exception, or 429 rate limit strictly defaults to `route: 'retrieve'`. In the evaluation run, 100% of technical questions (37/37) invoked hybrid retrieval and TinyBERT reranking, including when transient Groq 429 rate limits occurred on the planner node.
+8. **Default RETRIEVAL_MODE=tinybert Fails H03 and H04**: The default `tinybert` mode drops the target chunks for H03 (Indexed vs NonIndexed Jobs) and H04 (Parallel Processing Patterns in CronJobs) out of the top-5 during FlashRank cross-encoder reranking, resulting in absent key phrases from context. In contrast, `RETRIEVAL_MODE=rrf` retrieves both H03 and H04 into top-5, and `RETRIEVAL_MODE=fusion` retrieves H04 into top-5. Either `rrf` or `fusion` is recommended over `tinybert` pending held-out evaluation.
