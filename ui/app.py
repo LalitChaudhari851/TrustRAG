@@ -34,8 +34,8 @@ except Exception as e:
 
 # --- PAGE CONFIG ---
 st.set_page_config(
-    page_title="Enterprise Agentic RAG",
-    page_icon="🤖",
+    page_title="Trust RAG - Enterprise Agentic Assistant",
+    page_icon="🛡️",
     layout="wide",
 )
 
@@ -55,7 +55,7 @@ if "messages" not in st.session_state:
 
 # --- SIDEBAR ---
 with st.sidebar:
-    st.title("🧠 Agent OS")
+    st.title("🛡️ Trust RAG")
     st.markdown("---")
     st.success(f"Logfire: {LOGFIRE_STATUS}")
     st.info(f"Memory ID: {st.session_state.session_id[:8]}")
@@ -67,7 +67,7 @@ with st.sidebar:
         st.rerun()
 
 # --- MAIN CHAT ---
-st.title("🤖 Enterprise Agentic Assistant")
+st.title("🛡️ Trust RAG - Enterprise Assistant")
 
 
 # Display history

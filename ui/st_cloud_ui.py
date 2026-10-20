@@ -35,7 +35,7 @@ if "messages" not in st.session_state:
 
 # --- SIDEBAR ---
 with st.sidebar:
-    st.title("🧠 Agent OS")
+    st.title("🛡️ Trust RAG")
     st.markdown("---")
 
     base_url = "http://localhost:8000"
@@ -51,7 +51,7 @@ with st.sidebar:
         st.rerun()
 
 # --- MAIN CHAT ---
-st.title("🤖 Enterprise Agentic Assistant")
+st.title("🛡️ Trust RAG - Enterprise Assistant")
 
 # Display history
 for message in st.session_state.messages:
