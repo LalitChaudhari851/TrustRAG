@@ -1,6 +1,6 @@
 # TrustRAG: Enterprise-Grade Agentic RAG Platform
 
-A production-grade, enterprise-level RAG system built with **LangGraph**, **FastAPI**, **Qdrant Hybrid Search**, **Portkey / LiteLLM Gateway**, and dual-layer **Safety Guardrails** (NVIDIA NeMo & Single-Call Guard). 
+Answers grounded in your technical documentation (Kubernetes, Redis, Databricks, systems and networking), with sources. Built with **LangGraph**, **FastAPI**, **Qdrant Hybrid Search**, **Portkey / LiteLLM Gateway**, and dual-layer **Safety Guardrails** (NVIDIA NeMo & Single-Call Guard). 
 
 The system distinguishes between technical target documentation and noisy enterprise background files using native hybrid search (Dense + Sparse BM25 RRF), cross-encoder semantic reranking, intent-aware query planning, and persistent multi-turn conversational memory.
 

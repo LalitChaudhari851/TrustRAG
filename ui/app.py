@@ -19,19 +19,40 @@ if hasattr(sys.stderr, "reconfigure"):
 env_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".env"))
 load_dotenv(dotenv_path=env_path)
 
-# Initialize Logfire
-try:
-    token = os.getenv("LOGFIRE_TOKEN")
-    logfire.configure(token=token)
-    LOGFIRE_STATUS = "Connected & Tracing"
-except Exception as e:
-    LOGFIRE_STATUS = f"Standby ({e})"
+# Initialize Logfire from real configuration
+logfire_token = os.getenv("LOGFIRE_TOKEN", "").strip()
+if logfire_token:
+    try:
+        logfire.configure(token=logfire_token)
+        LOGFIRE_STATUS = "Connected & Tracing"
+    except Exception as e:
+        LOGFIRE_STATUS = f"Standby ({e})"
+else:
+    LOGFIRE_STATUS = None
 
 # 1. ONE PRODUCT NAME IN PAGE CONFIG
 st.set_page_config(
     page_title="TrustRAG",
     page_icon="🛡️",
     layout="wide",
+)
+
+# 5. Hide heading anchor icon via CSS
+st.markdown(
+    """
+    <style>
+    /* Hide heading anchor links */
+    [data-testid="stHeaderActionElements"],
+    [data-testid="stHeadingAction"],
+    [data-testid="stHeadingWithActionElements"] a,
+    .stMarkdown a.header-anchor,
+    .stMarkdown a[href^="#"],
+    a.anchorjs-link {
+        display: none !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
 )
 
 AI_AVATAR = "🛡️"
@@ -71,25 +92,47 @@ if "retry_prompt" not in st.session_state:
 # 1. ONE PRODUCT NAME IN SIDEBAR
 with st.sidebar:
     st.title("🛡️ TrustRAG")
-    st.caption("Enterprise Agentic RAG Platform")
+    # Point 3: Unified scope phrase
+    st.caption("Answers grounded in your technical documentation (Kubernetes, Redis, Databricks, systems and networking), with sources.")
     st.markdown("---")
-    st.success(f"Logfire: {LOGFIRE_STATUS}")
+    # Point 2: Real Logfire status from environment configuration
+    if LOGFIRE_STATUS == "Connected & Tracing":
+        st.success(f"Logfire: {LOGFIRE_STATUS}")
+    elif LOGFIRE_STATUS:
+        st.warning(f"Logfire: {LOGFIRE_STATUS}")
     
     # Point 3: Memory ID moved inside Developer details in sidebar
     with st.expander("🛠️ Developer details", expanded=False):
         st.code(st.session_state.session_id, language="text")
         st.caption("Active Session Thread ID")
 
-    if st.button("🗑️ Clear History & Memory", use_container_width=True, type="primary"):
-        st.session_state.messages = []
-        st.session_state.session_id = f"thread-{uuid.uuid4().hex[:12]}"
-        st.session_state.feedback_given = {}
-        st.rerun()
+    # Point 4: Clear History & Memory as a secondary button with a confirm step
+    if "confirm_clear" not in st.session_state:
+        st.session_state.confirm_clear = False
+
+    if not st.session_state.confirm_clear:
+        if st.button("🗑️ Clear History & Memory", use_container_width=True, type="secondary"):
+            st.session_state.confirm_clear = True
+            st.rerun()
+    else:
+        st.warning("⚠️ Clear conversation history and reset memory?")
+        col_confirm, col_cancel = st.columns(2)
+        with col_confirm:
+            if st.button("Yes, Clear", type="primary", use_container_width=True):
+                st.session_state.messages = []
+                st.session_state.session_id = f"thread-{uuid.uuid4().hex[:12]}"
+                st.session_state.feedback_given = {}
+                st.session_state.confirm_clear = False
+                st.rerun()
+        with col_cancel:
+            if st.button("Cancel", type="secondary", use_container_width=True):
+                st.session_state.confirm_clear = False
+                st.rerun()
 
 
-# 1. ONE PRODUCT NAME IN MAIN TITLE
+# 1 & 3. ONE PRODUCT NAME AND UNIFIED SCOPE PHRASE IN MAIN TITLE
 st.title("🛡️ TrustRAG")
-st.caption("Verified enterprise assistant for Kubernetes, Intel hardware, and distributed systems.")
+st.caption("Answers grounded in your technical documentation (Kubernetes, Redis, Databricks, systems and networking), with sources.")
 
 # Point 8: 4 EXAMPLE-QUESTION BUTTONS
 EXAMPLE_QUESTIONS = [
@@ -237,8 +280,10 @@ if user_query:
         st.markdown(user_query)
 
     with st.chat_message("assistant", avatar=AI_AVATAR):
-        # Point 2: Stage indicator spinner (guard -> retrieval -> generating)
+        # Point 2: Stage indicator spinner driven by real events
         status_box = st.status("🔍 Initializing TrustRAG pipeline...", expanded=True)
+        start_time = time.perf_counter()
+        thought_process = []
         
         meta = {
             "answer_text": "",
@@ -279,15 +324,15 @@ if user_query:
                             except Exception:
                                 data = {}
 
-                            # Stage updates (Point 2)
+                            # Stage text driven by real events from /v1/chat/stream
                             if current_event == "status":
                                 stage = data.get("stage", "")
                                 if stage == "guard":
-                                    status_box.update(label="🛡️ Stage 1/3: Safety Guardrails check...", state="running")
+                                    status_box.update(label="🛡️ Checking guardrails & safety policies...", state="running")
                                 elif stage == "retrieval":
-                                    status_box.update(label="🔎 Stage 2/3: Hybrid Retrieval & FlashRank reranking...", state="running")
+                                    status_box.update(label="🔎 Retrieving documentation & reranking sources...", state="running")
                                 elif stage == "generating":
-                                    status_box.update(label="✍️ Stage 3/3: Grounded Answer Synthesis...", state="running")
+                                    status_box.update(label="✍️ Generating grounded answer...", state="running")
                             
                             elif current_event == "sources":
                                 meta["sources"] = data
@@ -325,7 +370,7 @@ if user_query:
         # Fallback to standard /query if streaming was not reachable
         if not streaming_success:
             try:
-                status_box.update(label="🛡️ Checking guardrails & retrieving context...", state="running")
+                status_box.update(label="⚡ Processing...", state="running")
                 query_url = f"{BASE_URL}/query"
                 q_payload = {"q": user_query, "thread_id": st.session_state.session_id}
                 res = requests.post(query_url, json=q_payload, timeout=90)
