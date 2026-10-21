@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrustRAG Product Layer Upgrade — Implementation Plan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0a0e17;
+      --bg-secondary: #111827;
+      --bg-tertiary: #1f2937;
+      --accent-blue: #3b82f6;
+      --accent-cyan: #06b6d4;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --accent-purple: #8b5cf6;
+      --text-primary: #f9fafb;
+      --text-secondary: #9ca3af;
+      --text-muted: #6b7280;
+      --border-color: #374151;
+      --code-bg: #030712;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      padding: 2.5rem 1.5rem;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 2rem;
+      margin-bottom: 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .brand-title {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 2.25rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #60a5fa, #06b6d4, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .badge-blue { background: rgba(59, 130, 246, 0.15); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.3); }
+    .badge-emerald { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .badge-amber { background: rgba(245, 158, 11, 0.15); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .badge-purple { background: rgba(139, 92, 246, 0.15); color: #c4b5fd; border: 1px solid rgba(139, 92, 246, 0.3); }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 1rem;
+      padding: 1.75rem;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+    }
+
+    .card-purple::before { background: linear-gradient(90deg, var(--accent-purple), var(--accent-rose)); }
+    .card-emerald::before { background: linear-gradient(90deg, var(--accent-emerald), var(--accent-cyan)); }
+    .card-amber::before { background: linear-gradient(90deg, var(--accent-amber), var(--accent-rose)); }
+
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #fff;
+    }
+
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin: 1.25rem 0 0.5rem 0;
+      color: #e5e7eb;
+    }
+
+    p {
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    ul, ol {
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      font-size: 0.875rem;
+    }
+
+    th, td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    th {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+      font-weight: 600;
+      letter-spacing: 0.025em;
+    }
+
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85em;
+      background: var(--code-bg);
+      padding: 0.2rem 0.4rem;
+      border-radius: 0.35rem;
+      color: #38bdf8;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: #e2e8f0;
+      margin: 1rem 0;
+      line-height: 1.5;
+    }
+
+    .flow-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+      padding: 1rem;
+      border-radius: 0.75rem;
+      background: var(--bg-tertiary);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .step-num {
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: 50%;
+      background: var(--accent-blue);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      flex-shrink: 0;
+      font-size: 0.9rem;
+    }
+
+    .invariant-alert {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-left: 4px solid var(--accent-emerald);
+      padding: 1rem 1.25rem;
+      border-radius: 0.5rem;
+      margin-bottom: 2rem;
+      color: #a7f3d0;
+      font-size: 0.95rem;
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-tab {
+      padding: 0.6rem 1.2rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 0.5rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.875rem;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .nav-tab:hover, .nav-tab.active {
+      background: var(--accent-blue);
+      color: #fff;
+      border-color: var(--accent-blue);
+    }
+
+    footer {
+      margin-top: 3rem;
+      border-top: 1px solid var(--border-color);
+      padding-top: 1.5rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <div class="brand-title">🛡️ TrustRAG</div>
+        <p style="margin-top: 0.5rem; font-size: 1.1rem; color: #cbd5e1;">
+          Enterprise UI & Streaming API Modernization Blueprint
+        </p>
+      </div>
+      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+        <span class="badge badge-blue">FastAPI SSE</span>
+        <span class="badge badge-emerald">Next.js 14 App Router</span>
+        <span class="badge badge-purple">shadcn / Tailwind</span>
+        <span class="badge badge-amber">Docker Ready</span>
+      </div>
+    </header>
+
+    <div class="invariant-alert">
+      <strong>🔒 Zero-Mutation Constraint:</strong> Core retrieval, hybrid reranking (FlashRank TinyBERT), safety guardrails (NeMo / Single-Call), and query planner logic remain strictly preserved and untouched.
+    </div>
+
+    <!-- Phase Overview Grid -->
+    <div class="grid-3">
+      <div class="card card-emerald">
+        <span class="badge badge-emerald">Phase 1</span>
+        <h3>FastAPI Streaming Backend</h3>
+        <p>SSE endpoint <code>/v1/chat/stream</code>, multi-turn thread ownership, SQLite feedback store, and token streaming.</p>
+        <ul>
+          <li>Status, sources, token, done events</li>
+          <li>Thread isolation & user cookies</li>
+          <li>Sanitized error mappings (429, no_context)</li>
+        </ul>
+      </div>
+
+      <div class="card card-purple">
+        <span class="badge badge-purple">Phase 2</span>
+        <h3>Next.js Modern Frontend</h3>
+        <p>Production React/TypeScript chat experience with Tailwind, citation sidebars, and keyboard accessibility.</p>
+        <ul>
+          <li>Real-time token typing + stop button</li>
+          <li>Clickable citation chips & preview sheets</li>
+          <li>Thread history sidebar with delete/rename</li>
+        </ul>
+      </div>
+
+      <div class="card card-amber">
+        <span class="badge badge-amber">Phase 3</span>
+        <h3>Docker & Verification</h3>
+        <p>Multi-stage containers, Docker Compose, offline pytest suite with mocked LLM, and Playwright smoke testing.</p>
+        <ul>
+          <li>Multi-tenant thread isolation tests</li>
+          <li>Event order & error code validation</li>
+          <li>Zero-secret verified packaging</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Phase 1: API Contract Detailed -->
+    <div class="card" style="margin-bottom: 2.5rem;">
+      <h2>📡 Server-Sent Events (SSE) Contract — <code>POST /v1/chat/stream</code></h2>
+      <p>Streams live RAG execution states and LLM tokens. Guarantees clean completion across all paths (technical, refusal, chit-chat, guard-blocked).</p>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>Event</th>
+            <th>Payload Schema</th>
+            <th>Trigger Timing</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>status</code></td>
+            <td><code>{"stage": "guard" | "retrieval" | "generating"}</code></td>
+            <td>Emitted at the beginning of each execution phase</td>
+          </tr>
+          <tr>
+            <td><code>sources</code></td>
+            <td><code>[{"id": "doc-1", "source": "pods_autoscale.html", "section": "Metric Server Setup", "page": null, "snippet": "Before testing HPA..."}]</code></td>
+            <td>Emitted after hybrid retrieval + TinyBERT reranking (snippet capped at 300 chars)</td>
+          </tr>
+          <tr>
+            <td><code>token</code></td>
+            <td><code>{"delta": "The "}</code></td>
+            <td>Emitted incrementally as the LLM Gateway streams answer chunks</td>
+          </tr>
+          <tr>
+            <td><code>done</code></td>
+            <td><code>{"message_id": "msg-123", "model_used": "openai/gpt-oss-120b", "retrieval_mode": "rrf", "latency_ms": 1140, "usage": {"total_tokens": 940}}</code></td>
+            <td>Emitted upon successful completion of any path (returns <code>model_used: null</code> if blocked)</td>
+          </tr>
+          <tr>
+            <td><code>error</code></td>
+            <td><code>{"code": "rate_limited", "message": "Reasoning service rate limit reached.", "retryable": true}</code></td>
+            <td>Emitted if an exception interrupts the pipeline (stack traces & secrets suppressed)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Standardized Error Codes</h3>
+      <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.5rem;">
+        <code>guard_blocked</code>
+        <code>guard_unavailable</code>
+        <code>rate_limited</code>
+        <code>quota_exhausted</code>
+        <code>no_context</code>
+        <code>internal</code>
+      </div>
+    </div>
+
+    <!-- Auxiliary Endpoints & Auth -->
+    <div class="grid-2">
+      <div class="card">
+        <h2>🗳️ Feedback & Thread Management</h2>
+        
+        <h3>POST /v1/feedback</h3>
+        <pre>{
+  "message_id": "msg-8f12a34b",
+  "rating": "up", // "up" | "down"
+  "comment": "Accurate CLI commands provided."
+}</pre>
+        <p>Saved to separate <code>feedback.db</code> SQLite database with WAL mode enabled to avoid contention with LangGraph checkpoints.</p>
+
+        <h3>Thread Management Endpoints</h3>
+        <ul>
+          <li><code>GET /v1/threads</code> — List threads for current user</li>
+          <li><code>GET /v1/threads/{id}</code> — Retrieve message history</li>
+          <li><code>DELETE /v1/threads/{id}</code> — Delete thread & clear checkpointer</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>🔐 Identity & Thread Isolation</h2>
+        <p>Configurable via <code>AUTH_MODE=none|apikey|oidc</code>:</p>
+        
+        <div class="flow-step">
+          <div class="step-num">1</div>
+          <div>
+            <strong>Anonymous Cookie Mode (<code>none</code>)</strong>
+            <p>Issues HTTP-only secure cookie <code>trustrag_user_id</code>. Automatically isolates user workspaces in demo/local mode.</p>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-num">2</div>
+          <div>
+            <strong>API Key Mode (<code>apikey</code>)</strong>
+            <p>Validates <code>X-API-Key</code> and scopes all thread access to the key identity.</p>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-num">3</div>
+          <div>
+            <strong>Multi-Tenant Isolation Invariant</strong>
+            <p>Every thread stores <code>owner_user_id</code>. Users guessing other UUIDs are blocked with HTTP 403 Forbidden.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Frontend UI Architecture -->
+    <div class="card" style="margin-bottom: 2.5rem;">
+      <h2>💻 Next.js 14+ Frontend Architecture</h2>
+      <p>Clean, accessible, enterprise interface under <code>frontend/</code>:</p>
+      
+      <div class="grid-3" style="margin-top: 1.25rem;">
+        <div style="background: var(--bg-tertiary); padding: 1.25rem; border-radius: 0.75rem;">
+          <h4 style="color: #60a5fa; margin-bottom: 0.5rem;">Interactive Citations</h4>
+          <p style="font-size: 0.85rem;">Answer sentences map to <code>[1]</code>, <code>[2]</code> citation chips. Clicking an individual chip opens a slide-over panel displaying the document name, section title, page, and raw snippet.</p>
+        </div>
+
+        <div style="background: var(--bg-tertiary); padding: 1.25rem; border-radius: 0.75rem;">
+          <h4 style="color: #a78bfa; margin-bottom: 0.5rem;">State Resilience</h4>
+          <p style="font-size: 0.85rem;">Dedicated visual states for: Loading Skeleton, Blocked by Safety Policy (displays reason), Grounded Refusal ("Not found in docs"), and Rate Limited with 1-click retry.</p>
+        </div>
+
+        <div style="background: var(--bg-tertiary); padding: 1.25rem; border-radius: 0.75rem;">
+          <h4 style="color: #34d399; margin-bottom: 0.5rem;">Transparency Toggle</h4>
+          <p style="font-size: 0.85rem;">Collapsible "Details" drawer showing model name (<code>openai/gpt-oss-120b</code>), retrieval mode, latency in ms, and total token count while hiding internal prompt mechanics.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step by Step Execution Roadmap -->
+    <div class="card card-purple">
+      <h2>🚀 Implementation Sequence</h2>
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <div>
+          <strong>Backend Data & Schemas</strong>: Create <code>app/models/api_schemas.py</code> and <code>app/models/feedback_db.py</code> with SQLite thread & feedback tables.
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <div>
+          <strong>Auth, Rate Limiter & SSE Streaming</strong>: Add <code>app/api/auth.py</code>, <code>app/api/ratelimit.py</code>, and <code>app/api/routes/chat.py</code> streaming tokens via Portkey/Groq gateway.
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <div>
+          <strong>Mount Routes on FastAPI</strong>: Update <code>app/main.py</code> to mount <code>/v1</code> routes, SlowAPI middleware, CORS, and request-id tracing, while preserving legacy <code>POST /query</code>.
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <div>
+          <strong>Backend Unit & Integration Tests</strong>: Write offline tests in <code>tests/test_chat_stream.py</code>, <code>tests/test_thread_isolation.py</code>, and <code>tests/test_feedback.py</code> with a mocked LLM.
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">5</div>
+        <div>
+          <strong>Next.js 14 Frontend</strong>: Initialize <code>frontend/</code> with TypeScript, Tailwind CSS, shadcn/ui components, SSE streaming hook, and citation slide-out.
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">6</div>
+        <div>
+          <strong>Containerization & Packaging</strong>: Write <code>Dockerfile</code> for API, <code>frontend/Dockerfile</code>, and <code>docker-compose.yml</code>.
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      TrustRAG Enterprise Product Layer &middot; High-Performance RAG with Verifiable Guardrails
+    </footer>
+  </div>
+</body>
+</html>

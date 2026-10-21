@@ -50,6 +50,13 @@ class Settings:
     LLM_RETRY_MIN_WAIT = float(os.getenv("LLM_RETRY_MIN_WAIT", "2.0"))
     LLM_RETRY_MAX_WAIT = float(os.getenv("LLM_RETRY_MAX_WAIT", "10.0"))
 
+    # --- PRODUCT & API LAYER ---
+    AUTH_MODE = os.getenv("AUTH_MODE", "none").lower()  # none | apikey | oidc
+    API_KEYS = [k.strip() for k in os.getenv("API_KEYS", "").split(",") if k.strip()]
+    CORS_ORIGINS = [o.strip() for o in os.getenv("CORS_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000,*").split(",") if o.strip()]
+    FEEDBACK_DB_PATH = os.getenv("FEEDBACK_DB_PATH", "feedback.db")
+    RATE_LIMIT_PER_MINUTE = os.getenv("RATE_LIMIT_PER_MINUTE", "60/minute")
+
 # Apply LangChain environment variables for automatic tracing
 os.environ["LANGCHAIN_TRACING_V2"] = os.getenv("LANGSMITH_TRACING", "true")
 os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGSMITH_API_KEY", "")

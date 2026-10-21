@@ -69,3 +69,4 @@ checkpoints.db
 scratch/
 secrets_to_purge.txt
 replacements.txt
+feedback.jsonl

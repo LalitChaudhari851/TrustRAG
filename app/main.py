@@ -16,31 +16,68 @@ load_dotenv()
 logfire.configure(token=os.getenv("LOGFIRE_TOKEN"))
 
 # Now safe to import app modules - logfire is already active
-from fastapi import FastAPI, Response
+import uuid
+from fastapi import FastAPI, Response, Request
+from fastapi.middleware.cors import CORSMiddleware
+from slowapi.errors import RateLimitExceeded
+from slowapi import _rate_limit_exceeded_handler
+
 from app.config import settings
 from app.agents.graph import rag_agent
 from app.guardrails import initialize_rails, guard
 from app.services.retrieval.embedding import _init as init_embeddings
+from app.agents.persistence import get_checkpointer, close_checkpointer
+from app.models.feedback_db import init_feedback_db
+from app.api.ratelimit import limiter
 
 from pydantic import BaseModel
 from typing import Optional
-
-
 from contextlib import asynccontextmanager
-from app.agents.persistence import get_checkpointer, close_checkpointer
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup: Initialize rails, warm up embeddings, and initialize checkpointer
+    # Startup: Initialize rails, warm up embeddings, SQLite checkpointer & feedback DB
     initialize_rails()
     init_embeddings()
     get_checkpointer()
+    init_feedback_db()
     yield
     # Shutdown: Cleanly close persistent connection pools
     close_checkpointer()
 
+
 # Initialize FastAPI with Lifespan
-app = FastAPI(title="Enterprise Agentic RAG API", lifespan=lifespan)
+app = FastAPI(title="TrustRAG Enterprise API", lifespan=lifespan)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+# CORS Middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.CORS_ORIGINS,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+@app.middleware("http")
+async def add_request_id_and_logging(request: Request, call_next):
+    request_id = request.headers.get("x-request-id") or str(uuid.uuid4())
+    response = await call_next(request)
+    response.headers["X-Request-ID"] = request_id
+    return response
+
+
+# Include v1 Modern Product API Routes
+from app.api.routes.chat import router as chat_router
+from app.api.routes.feedback import router as feedback_router
+from app.api.routes.threads import router as threads_router
+
+app.include_router(chat_router)
+app.include_router(feedback_router)
+app.include_router(threads_router)
 
 
 class QueryRequest(BaseModel):
