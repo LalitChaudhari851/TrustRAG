@@ -1,17 +1,21 @@
-# Enterprise Agentic RAG (Scalable Pipeline)
+# TrustRAG: Enterprise-Grade Agentic RAG Platform
 
-A production-grade, enterprise-level RAG system built with **LangGraph**, **Portkey LLM Gateway**, and **Gemini Embeddings**. The system distinguishes between technical "True Data" and random "Noisy Data" using semantic re-ranking, history-aware planning, and NeMo Guardrails for input/output safety.
+A production-grade, enterprise-level RAG system built with **LangGraph**, **FastAPI**, **Qdrant Hybrid Search**, **Portkey / LiteLLM Gateway**, and dual-layer **Safety Guardrails** (NVIDIA NeMo & Single-Call Guard). 
+
+The system distinguishes between technical target documentation and noisy enterprise background files using native hybrid search (Dense + Sparse BM25 RRF), cross-encoder semantic reranking, intent-aware query planning, and persistent multi-turn conversational memory.
+
+---
 
 ## Key Features
 
-- **Agentic Intelligence**: LangGraph for cyclic reasoning, multi-step planning, and conversation memory.
-- **Guardrails**: NeMo Guardrails gate blocks off-topic, jailbreak, and injection inputs before any retrieval.
-- **LLM Gateway**: Portkey routes all LLM calls with automatic fallback between primary and backup Groq keys.
-- **Enterprise Search**: Qdrant Cloud for high-performance vector search + FlashRank for local semantic reranking.
-- **Gemini Embeddings**: Google `gemini-embedding-2-preview` (3072-dim) via `langchain-google-genai`.
-- **Local Document Parsing**: PDF, HTML, TXT, DOCX, PPTX parsed entirely on-device — no external OCR service.
-- **Observability**: Full trace nesting with **Pydantic Logfire** and **LangSmith** across every agent node.
-- **Evaluation Suite**: RAGAS-powered eval pipeline (6 metrics) with a dedicated Streamlit demo app.
+- **Agentic Orchestration**: LangGraph state graph with cyclic reasoning, standalone query bypass, multi-step planning, and multi-turn conversational persistence.
+- **Dual-Layer Safety Guardrails**: Switchable between **NVIDIA NeMo Guardrails** (Colang flows) and an optimized **Single-Call JSON Guard** with automated repair and strict fail-closed safety (100% attack detection, saving 58.2% tokens).
+- **Resilient LLM Gateway**: Portkey / LiteLLM routing with automatic, dynamic fallback across secondary Groq keys and models to eliminate 429 rate-limit outages.
+- **Native Hybrid Search & Reranking**: Qdrant Cloud dense vector search (`all-mpnet-base-v2` or Gemini 3072-dim) combined with FastEmbed BM25 sparse lexical search via Reciprocal Rank Fusion (RRF), followed by local **FlashRank (TinyBERT)** cross-encoder reranking.
+- **Heterogeneous Document Ingestion**: Ingests `.pdf`, `.docx`, `.pptx`, `.html`, `.md`, and `.txt` locally on-device with section-aware chunking, small-fragment merging, and SHA-256 deduplication.
+- **Persistent Conversational Memory**: SQLite checkpointer with Write-Ahead Logging (WAL) enabled for local concurrency, and drop-in connection-pooled `PostgresSaver` support for cloud scale.
+- **Full Distributed Observability**: End-to-end distributed tracing across all agent nodes and LLM requests via **Pydantic Logfire** and **LangSmith**.
+- **Rigorous Evaluation Suite**: 37-question retrieval test set, 22-case guardrail benchmark, and comprehensive audit logs documented in [RESULTS.md](RESULTS.md).
 
 ---
 
@@ -19,14 +23,14 @@ A production-grade, enterprise-level RAG system built with **LangGraph**, **Port
 
 ```mermaid
 graph TD
-    User((User)) --> UI[Streamlit UI]
-    UI --> API[FastAPI /query]
-    API --> Guard{NeMo Guardrails}
-    Guard -->|Blocked| UI
-    Guard -->|Pass| Planner{Planner Node}
-    Planner -->|Conversational| Responder[Responder Node]
-    Planner -->|Technical| Retriever[Retriever Node]
-    Retriever --> Reranker[FlashRank Local Reranker]
+    User((User)) --> UI[Streamlit UI / Client]
+    UI --> API[FastAPI /query Endpoint]
+    API --> Guard{Safety Guardrails\nNeMo / Single-Call}
+    Guard -->|Blocked / Malicious| UI
+    Guard -->|Allowed| Planner{Query Planner Node}
+    Planner -->|Social Chit-Chat| Responder[Responder Node]
+    Planner -->|Technical Query| Retriever[Retriever Node\nQdrant Dense + Sparse RRF]
+    Retriever --> Reranker[FlashRank Local Reranker\nTinyBERT Cross-Encoder]
     Reranker --> Responder
     Responder --> UI
     Responder -.-> Memory[(Persistent Checkpointer\nSQLite WAL / Postgres)]
@@ -36,10 +40,9 @@ graph TD
 > **Checkpointer Architecture & Concurrency:**
 > By default, conversation states are saved to a persistent SQLite database (`checkpoints.db`) with Write-Ahead Logging (WAL) enabled (`PRAGMA journal_mode=WAL;`). SQLite is intended for local single-worker development. For multi-worker or containerized production autoscaling, set `DATABASE_URL=postgresql://...` to enable connection-pooled `PostgresSaver`.
 >
-> **Security Notice (Demo Limitation):** `thread_id` in `/query` requests is client-supplied and unauthenticated. In an enterprise production deployment, bind thread IDs to authenticated JWT session tokens.
+> **Security Notice (Demo Limitation):** `thread_id` in `/query` requests is client-supplied. In an enterprise production deployment, bind thread IDs to authenticated JWT session tokens.
 >
 > **Maintenance & Thread Pruning:** Run `python scripts/prune_checkpoints.py --days 14` to prune old conversations and reclaim disk space.
-
 
 ---
 
@@ -47,40 +50,40 @@ graph TD
 
 ```text
 ├── app/
-│   ├── agents/
-│   │   └── nodes/       # Planner, Retriever, Responder LangGraph nodes
-│   ├── gateway/         # Portkey LLM gateway — primary + fallback Groq routing
-│   ├── guardrails/      # NeMo Guardrails input/output filtering
-│   ├── ingestion/
-│   │   ├── chunking/    # Paragraph-based text splitter (1500 char max)
-│   │   └── loaders/     # Local parsers — PDF (pypdf), HTML, TXT, DOCX, PPTX
-│   ├── services/
-│   │   └── retrieval/   # Gemini embeddings + Qdrant search + FlashRank reranking
-│   ├── config.py        # Centralized environment variable management
-│   └── main.py          # FastAPI entrypoint — guardrails gate + /query endpoint
-├── evals/               # RAGAS evaluation suite + Streamlit 3-tab demo
-├── ui/                  # Streamlit chat interface with reasoning step transparency
-├── processed_data/      # Auto-generated — parsed & chunked JSON output per document
-├── docs/                # Architectural and operational guides (11 docs)
-├── DATA/                # Sample datasets (True vs Noisy documentation)
-└── requirements.txt     # Pinned dependencies
+│   ├── agents/          # LangGraph state machine & nodes (Planner, Retriever, Responder)
+│   │   ├── nodes/       # Node implementations & prompt routines
+│   │   ├── graph.py     # StateGraph definition & compilation
+│   │   └── persistence.py # SQLite WAL / Postgres checkpointer singletons
+│   ├── gateway/         # Portkey & LiteLLM client with dynamic key fallback
+│   ├── guardrails/      # NeMo Guardrails (Colang) & Single-Call fail-closed guard
+│   ├── ingestion/       # Document loaders (PDF, DOCX, PPTX, HTML, TXT) & chunkers
+│   ├── services/        # Embeddings (Gemini / sentence-transformers) & Qdrant hybrid retrieval
+│   ├── config.py        # Centralized Pydantic settings & environment configuration
+│   └── main.py          # FastAPI server & /query endpoint
+├── DATA/                # True technical documentation & noisy corpus
+├── DOCS/                # Complete architectural & operational guides (11 comprehensive docs)
+├── evals/               # Evaluation datasets, benchmark runners, & evaluation Streamlit app
+├── ui/                  # Trust RAG Streamlit web interface with real-time reasoning logs
+├── evals/results/       # Machine-readable evaluation outputs & token measurement logs
+├── scripts/             # CLI evaluation, secret purging, and inspection utilities
+└── requirements.txt     # Pinned Python dependencies
 ```
 
 ---
 
 ## Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| Orchestration | LangChain + LangGraph |
-| LLMs | Groq (Llama 3.3 70B) via **Portkey** gateway |
-| Guardrails | NeMo Guardrails |
-| Vector DB | Qdrant Cloud |
-| Reranking | FlashRank (local, zero-latency) |
-| Embeddings | Gemini `gemini-embedding-2-preview` (3072-dim) |
-| Document Parsing | pypdf + pdfplumber (local, no OCR service) |
-| Observability | Pydantic Logfire + LangSmith |
-| Evaluation | RAGAS + custom Tool Correctness (Jaccard) |
+| Layer | Technology | Purpose |
+|-------|------------|---------|
+| **Orchestration** | LangGraph & LangChain | Cyclic state graph, conditional edges, & conversational routing |
+| **LLMs & Gateway** | Groq (`openai/gpt-oss-120b`, `qwen/qwen3.8-27b`) via **Portkey / LiteLLM** | High-throughput generation with automatic secondary key fallback |
+| **Safety Guardrails** | NVIDIA NeMo Guardrails & Single-Call Guard | Prompt injection, jailbreak, and off-topic defense with fail-closed JSON repair |
+| **Vector DB** | Qdrant Cloud | Native hybrid search: dense vectors + sparse lexical BM25 (RRF fusion) |
+| **Embeddings** | Gemini (`gemini-embedding-2-preview`) or `all-mpnet-base-v2` + FastEmbed BM25 | 3072-dim or 768-dim dense embeddings + sparse lexical vectors |
+| **Semantic Reranking** | FlashRank (`ms-marco-TinyBERT-L-2-v2`) | Local, CPU-efficient cross-encoder reranking |
+| **Document Parsers** | `pypdf`, `pdfplumber`, `python-docx`, `python-pptx`, `bs4` | 100% on-device document extraction without external cloud OCR |
+| **Observability** | Pydantic Logfire & LangSmith | Distributed tracing, span capture, and token telemetry |
+| **UI** | Streamlit | Chat interface with reasoning steps, memory clearing, & source transparency |
 
 ---
 
@@ -89,72 +92,72 @@ graph TD
 ### 1. Install dependencies
 
 ```powershell
-python -m venv tenvv
-.\tenvv\Scripts\activate
+# Clone the repository
+git clone https://github.com/LalitChaudhari851/TrustRAG.git
+cd TrustRAG
+
+# Create and activate virtual environment
+python -m venv .venv
+.\.venv\Scripts\activate
+
+# Install dependencies
 pip install -r requirements.txt
 ```
 
 ### 2. Configure environment
 
-Create a `.env` file with the following keys:
+Create a `.env` file in the root directory (refer to [DOCS/05_ENVIRONMENT_VARIABLES.md](DOCS/05_ENVIRONMENT_VARIABLES.md)):
 
 ```env
-# Groq Reasoning Engine (Llama 3.3)
-GROQ_API_KEY = ""
-GROQ_FALLBACK_API_KEY = ""          # second Groq key, or same as primary
+# Groq Reasoning Engine
+GROQ_API_KEY="gsk_..."
+GROQ_FALLBACK_API_KEY="gsk_..."        # Secondary key for automatic failover
+GROQ_MODEL="openai/gpt-oss-120b"
+
+# Guardrail Configuration ("single_call" or "nemo")
+GUARD_MODE="single_call"
+GUARDRAIL_MODEL="openai/gpt-oss-120b"
+
+# Retrieval & Routing
+RETRIEVAL_MODE="rrf"                   # "tinybert", "rrf", or "fusion"
+QUERY_REWRITE="followup_only"          # "followup_only" or "always"
 
 # Portkey LLM Gateway
-PORTKEY_API_KEY = ""
+PORTKEY_API_KEY="pk_..."
 
-# Qdrant Vector DB
-QDRANT_API_KEY = ""
-QDRANT_CLUSTER_ENDPOINT = ""        # e.g. https://your-cluster.cloud.qdrant.io:6333
+# Qdrant Vector Cloud
+QDRANT_API_KEY="..."
+QDRANT_CLUSTER_ENDPOINT="https://your-cluster.cloud.qdrant.io:6333"
 
-# Pydantic Logfire Observability
-LOGFIRE_TOKEN = ""
+# Observability
+LOGFIRE_TOKEN="..."
+LANGSMITH_TRACING=true
+LANGSMITH_API_KEY="..."
+LANGSMITH_PROJECT="TrustRAG"
 
-# LangSmith
-LANGSMITH_TRACING = true
-LANGSMITH_ENDPOINT = https://api.smith.langchain.com
-LANGSMITH_API_KEY = ""
-LANGSMITH_PROJECT = ""
-
-# Streamlit UI → FastAPI
-BACKEND_URL = ""                    # e.g. http://localhost:8000
-
-# Eval judge LLM (keep separate from main key to avoid rate-limiting the live app)
-JUDGE_GROQ = ""
-
-# Gemini Embeddings
-GEMINI_API_KEY = ""
+# UI & Services
+BACKEND_URL="http://localhost:8000"
 ```
 
 ### 3. Run data ingestion
 
-Parses all documents in `DATA/`, chunks them, saves metadata to `processed_data/`, and indexes vectors into Qdrant.
+Parses documents from `DATA/`, performs section-level chunking, and indexes dense + sparse vectors into Qdrant:
 
 ```powershell
 python -m app.ingestion.processor DATA --wipe
 ```
 
-> Pass `--wipe` to drop and recreate the Qdrant collection. Omit it to append to an existing collection.
-
-### 4. Launch the app
+### 4. Launch the application
 
 ```powershell
-# Terminal 1 — FastAPI backend
-uvicorn app.main:app --reload --port 8000
+# Terminal 1 — FastAPI Backend (Port 8000)
+uvicorn app.main:app --port 8000
 
-# Terminal 2 — Streamlit UI
+# Terminal 2 — Streamlit Chat UI (Port 8501)
 streamlit run ui/app.py
 ```
 
-### 5. Run the eval suite (optional)
-
-```powershell
-# Requires the FastAPI backend running on :8000
-streamlit run evals/app.py
-```
+Open **[http://localhost:8501](http://localhost:8501)** in your browser.
 
 ---
 
@@ -176,20 +179,21 @@ streamlit run evals/app.py
 ## Documentation Index
 
 | # | Guide | What it covers |
-|---|-------|---------------|
-| 01 | [System Overview](docs/01_SYSTEM_OVERVIEW.md) | High-level vision and end-to-end flow |
-| 02 | [Ingestion Engine](docs/02_INGESTION_ENGINE.md) | Document parsing and indexing pipeline |
-| 03 | [Node Intelligence](docs/03_NODE_INTELLIGENCE.md) | Planner, Retriever, Responder internals |
-| 04 | [Observability](docs/04_TRACING_AND_OBSERVABILITY.md) | Logfire + LangSmith tracing |
-| 05 | [Environment Variables](docs/05_ENVIRONMENT_VARIABLES.md) | All env vars and configuration reference |
-| 06 | [Known Gotchas](docs/06_KNOWN_GOTCHAS.md) | Non-obvious bugs and architectural decisions |
-| 07 | [FlashRank Reranking](docs/07_FLASHRANK_RERANKING.md) | Local semantic reranker deep-dive |
-| 08 | [Guardrails](docs/08_GUARDRAILS.md) | NeMo Guardrails implementation |
-| 09 | [LLM Gateway](docs/09_LLM_GATEWAY.md) | Portkey routing, fallback, and observability |
-| 10 | [Evals](docs/10_EVALS.md) | RAGAS metrics theory and token budget |
-| 11 | [Evals Pipeline](docs/11_EVALS_PIPELINE.md) | Live eval pipeline and Streamlit demo |
+|---|-------|----------------|
+| 01 | [System Overview](DOCS/01_SYSTEM_OVERVIEW.md) | High-level vision and end-to-end flow |
+| 02 | [Ingestion Engine](DOCS/02_INGESTION_ENGINE.md) | Document parsing and indexing pipeline |
+| 03 | [Node Intelligence](DOCS/03_NODE_INTELLIGENCE.md) | Planner, Retriever, Responder internals |
+| 04 | [Observability](DOCS/04_TRACING_AND_OBSERVABILITY.md) | Logfire + LangSmith tracing |
+| 05 | [Environment Variables](DOCS/05_ENVIRONMENT_VARIABLES.md) | All env vars and configuration reference |
+| 06 | [Known Gotchas](DOCS/06_KNOWN_GOTCHAS.md) | Non-obvious bugs and architectural decisions |
+| 07 | [FlashRank Reranking](DOCS/07_FLASHRANK_RERANKING.md) | Local semantic reranker deep-dive |
+| 08 | [Guardrails](DOCS/08_GUARDRAILS.md) | NeMo Guardrails & Single-Call architecture |
+| 09 | [LLM Gateway](DOCS/09_LLM_GATEWAY.md) | Portkey routing, fallback, and observability |
+| 10 | [Evals & Benchmarks](DOCS/10_EVALS.md) | RAGAS metrics theory and token budget |
+| 11 | [Evals Pipeline](DOCS/11_EVALS_PIPELINE.md) | Live eval pipeline and Streamlit demo |
+| 12 | [Results & Audit](RESULTS.md) | Full empirical benchmarks, latency, & quota results |
 
 ---
 
-*Built for High-Scale Enterprise Document Intelligence.*
+*Built for High-Scale Enterprise Document Intelligence with Verifiable Safety.*
 
