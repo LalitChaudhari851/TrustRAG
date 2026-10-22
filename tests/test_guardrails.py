@@ -11,8 +11,10 @@ from app.guardrails import rails as rails_module
 
 
 @pytest.fixture
-def mock_rails_singleton():
+def mock_rails_singleton(monkeypatch):
     """Setup a mock NeMo LLMRails instance on rails_module._rails."""
+    from app.config import settings
+    monkeypatch.setattr(settings, "GUARD_MODE", "nemo")
     mock_instance = MagicMock()
     orig = rails_module._rails
     rails_module._rails = mock_instance
@@ -95,7 +97,7 @@ def test_query_endpoint_when_guardrail_llm_unavailable(mock_rails_singleton):
     assert response.status_code == 200
     data = response.json()
     assert data["answer"] == INFRA_UNAVAILABLE_MESSAGE
-    assert data["status"] == "Blocked by guardrails."
+    assert data["status"] == "blocked_by_guardrails"
     assert "Retrieval: Skipped" in data["thought_process"]
     assert data["sources"] == []
 

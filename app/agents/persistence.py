@@ -85,3 +85,32 @@ def close_checkpointer():
         _postgres_pool = None
 
     _checkpointer = None
+
+
+def delete_thread_checkpoint(thread_id: str) -> bool:
+    """Deletes checkpointer state for thread_id from SQLite or Postgres."""
+    global _sqlite_conn, _postgres_pool
+    if _postgres_pool is not None:
+        try:
+            with _postgres_pool.connection() as conn:
+                with conn.cursor() as cur:
+                    cur.execute("DELETE FROM checkpoints WHERE thread_id = %s", (thread_id,))
+                    cur.execute("DELETE FROM writes WHERE thread_id = %s", (thread_id,))
+                conn.commit()
+            return True
+        except Exception as e:
+            logfire.warning(f"Could not delete postgres checkpoint for thread {thread_id}: {e}")
+            return False
+
+    db_path = getattr(settings, "SQLITE_DB_PATH", "checkpoints.db")
+    if os.path.exists(db_path):
+        try:
+            conn = _sqlite_conn if _sqlite_conn is not None else sqlite3.connect(db_path)
+            conn.execute("DELETE FROM checkpoints WHERE thread_id = ?", (thread_id,))
+            conn.execute("DELETE FROM writes WHERE thread_id = ?", (thread_id,))
+            conn.commit()
+            return True
+        except Exception as e:
+            logfire.warning(f"Could not delete sqlite checkpoint for thread {thread_id}: {e}")
+            return False
+    return False

@@ -40,10 +40,11 @@ infra_count = 0
 
 out_lines = []
 out_lines.append("================================================================================")
-out_lines.append("TASK B: SINGLE-CALL GUARD ACCURACY EVALUATION (22-CASE DEV SET)")
+out_lines.append("TASK B: SINGLE-CALL GUARD ACCURACY EVALUATION (dev set, not an unbiased estimate)")
 out_lines.append("================================================================================")
 out_lines.append(f"Dataset File: {INPUT_DATASET}")
 out_lines.append(f"Total Cases:  {len(cases)}")
+out_lines.append(f"Scope Label:  dev set, not an unbiased estimate")
 out_lines.append(f"Prompt Version: Run 1 (Initial System Prompt - no post-result tuning)")
 out_lines.append("")
 

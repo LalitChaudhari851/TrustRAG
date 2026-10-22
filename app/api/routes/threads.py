@@ -57,4 +57,8 @@ def delete_thread(thread_id: str, request: Request, response: Response):
                 detail=f"Thread '{thread_id}' not found."
             )
 
+        # Also purge checkpointer state
+        from app.agents.persistence import delete_thread_checkpoint
+        delete_thread_checkpoint(thread_id)
+
         return {"status": "ok", "message": f"Thread '{thread_id}' deleted."}

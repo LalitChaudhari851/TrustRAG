@@ -109,14 +109,14 @@ pip install -r requirements.txt
 Create a `.env` file in the root directory (refer to [DOCS/05_ENVIRONMENT_VARIABLES.md](DOCS/05_ENVIRONMENT_VARIABLES.md)):
 
 ```env
-# Groq Reasoning Engine
+# Groq Reasoning Engine & Responder
 GROQ_API_KEY="gsk_..."
 GROQ_FALLBACK_API_KEY="gsk_..."        # Secondary key for automatic failover
-GROQ_MODEL="openai/gpt-oss-120b"
+GROQ_MODEL="qwen/qwen3.8-27b"          # Demo responder model (or "openai/gpt-oss-120b")
 
-# Guardrail Configuration ("single_call" or "nemo")
+# Guardrail Configuration ("single_call" [default] or "nemo")
 GUARD_MODE="single_call"
-GUARDRAIL_MODEL="openai/gpt-oss-120b"
+GUARDRAIL_MODEL="openai/gpt-oss-20b"   # Dedicated guardrail model verified on Groq
 
 # Retrieval & Routing
 RETRIEVAL_MODE="rrf"                   # "tinybert", "rrf", or "fusion"
@@ -159,6 +159,43 @@ streamlit run ui/app.py
 
 Open **[http://localhost:8501](http://localhost:8501)** in your browser.
 
+### 5. Web Interface (Streamlit Demo UI)
+
+The TrustRAG interactive UI provides grounded question answering, numbered source citation cards, safety alerts, and developer inspection:
+
+- **Active Model Configuration**: The demo and UI run by default on `GROQ_MODEL=qwen/qwen3.8-27b` (reasoning engine) and `GUARDRAIL_MODEL=openai/gpt-oss-20b` (dedicated safety guardrail), with startup model catalog validation against Groq to prevent silent fallback.
+- **Local Feedback Storage**: User thumbs up/down feedback is stored locally in SQLite (`feedback/feedback.db` via `POST /v1/feedback`) to keep telemetry on-premises.
+- **SSE Token Streaming**: The UI connects to `POST /v1/chat/stream` with real-time token rendering (`st.write_stream`) and stage progression (`guard` -> `retrieval` -> `generating`).
+
+#### Interface Layout
+
+```text
++-----------------------------------------------------------------------------------+
+| 🛡️ TrustRAG                                                                       |
+| Answers grounded in your technical documentation (Kubernetes, Redis, Databricks)  |
+|                                                                                   |
+| 👤 How do you start Redis for a Kubernetes work queue?                            |
+| 🛡️ To start Redis for a Kubernetes work queue, apply the Redis deployment [1]...  |
+|                                                                                   |
+| 📚 Sources & Citations (1)                                                        |
+|   [1] parallel_work_queue.txt · OVERVIEW · p.None                                 |
+|   ```text                                                                         |
+|   kubectl apply -f https://k8s.io/examples/application/job/redis/redis-service.yaml|
+|   ```                                                                             |
+|                                                                                   |
+| 🛠️ Developer details                                                              |
+|   Model: qwen/qwen3.8-27b | Latency: 1240 ms | TTFT: 480 ms | Mode: tinybert       |
+|                                                                                   |
+| 👍 👎                                                                             |
++-----------------------------------------------------------------------------------+
+```
+
+*(Screenshot placeholder: `docs/images/trustrag_ui_main.png`)*
+
+> [!NOTE]
+> **Prototype UI Limitations**:
+> The current Streamlit interface is an operational prototype and auditing tool. A production enterprise deployment would replace Streamlit with an enterprise React/Next.js frontend, Single Sign-On (SSO / SAML / OIDC authentication), token streaming with edge caching, and centralized multi-tenant RBAC.
+
 ---
 
 ## Known Limitations & Production Caveats
@@ -173,6 +210,7 @@ Open **[http://localhost:8501](http://localhost:8501)** in your browser.
    - **22-Case Guardrail Eval (Dev Set)**: Evaluated on `openai/gpt-oss-120b` across 7 domain queries and 15 adversarial attacks (100% accuracy).
    - **Guardrail Findings & Root Cause for G03 & H19**: In 10-trial benchmark runs at temperature 0, the original `single_call` implementation set `max_tokens=40`, causing `openai/gpt-oss-120b`'s reasoning/thought tokens to exceed the completion limit and return empty output `""` (10/10 runs returning `None`, failing closed as blocked). Increasing completion limit to `max_tokens=150` and expanding system prompt scope to explicitly include Redis work queues and Kubernetes scheduler/policy engines resolved the issue (10/10 allow for both G03 and H19).
 5. **Retrieval Limitation (H03/H04 on TinyBERT)**: Default `RETRIEVAL_MODE=tinybert` fails H03 and H04 because the cross-encoder reranker scores the target sections below top-5 despite vector retrieval finding them. `RETRIEVAL_MODE=rrf` or `RETRIEVAL_MODE=fusion` are recommended pending held-out evaluation.
+6. **NeMo Intent Classification Limitation with Instruction Models**: In NVIDIA NeMo Guardrails (`GUARD_MODE=nemo`), input classification prompts the underlying model via few-shot examples to output an exact intent tag (e.g. `attempt jailbreak`). Smaller instruction-tuned models (such as `qwen/qwen3.8-27b`) frequently emit conversational refusal text directly (e.g. `"I cannot fulfill that request..."`) rather than the intent label string. NeMo interprets this conversational response as an unrecognized user intent, which bypasses the Colang `jailbreak protection` flow and results in the guard failing open if downstream checks do not intercept it. For this reason, `GUARD_MODE=single_call` is configured as the production default; it enforces a strict JSON schema (`{"decision": "block", "reason": "jailbreak"}`) with deterministic Pydantic validation and strict fail-closed fallbacks.
 
 ---
 

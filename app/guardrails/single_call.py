@@ -87,16 +87,33 @@ def parse_and_validate_json(raw_text: str) -> Optional[Dict[str, str]]:
     return {"decision": decision, "reason": reason}
 
 
+class GuardResult(tuple):
+    """
+    Two-element tuple subclass (blocked: bool, response_text: Optional[str])
+    preserving 100% backward compatibility with `blocked, resp = guard(msg)`
+    while exposing .blocked, .response_text, .guard_model_used, and .reason.
+    """
+    def __new__(cls, blocked: bool, response_text: Optional[str], model_used: Optional[str] = None, reason: Optional[str] = None):
+        return super().__new__(cls, (blocked, response_text))
+
+    def __init__(self, blocked: bool, response_text: Optional[str], model_used: Optional[str] = None, reason: Optional[str] = None):
+        self.blocked = blocked
+        self.response_text = response_text
+        self.guard_model_used = model_used
+        self.reason = reason
+
+
 _ACTIVE_GUARD_MODEL: Optional[str] = None
 
 
+def get_active_guard_model() -> str:
+    return _ACTIVE_GUARD_MODEL or settings.GUARDRAIL_MODEL
+
+
 def get_guard_llm(active_model: Optional[str] = None, api_key: Optional[str] = None) -> ChatGroq:
-    """Create a ChatGroq instance for the single-call input guard."""
+    """Create a ChatGroq instance for the single-call input guard without silent substitution."""
     global _ACTIVE_GUARD_MODEL
     model_name = active_model or _ACTIVE_GUARD_MODEL or settings.GUARDRAIL_MODEL
-    if model_name == "llama-3.1-8b-instant":
-        model_name = "openai/gpt-oss-20b"
-        _ACTIVE_GUARD_MODEL = model_name
     key = api_key or settings.GROQ_API_KEY
     return ChatGroq(
         api_key=key,
@@ -150,9 +167,6 @@ def evaluate_single_call_guard(
         }
 
     model_name = active_model or _ACTIVE_GUARD_MODEL or settings.GUARDRAIL_MODEL
-    if model_name == "llama-3.1-8b-instant":
-        model_name = "openai/gpt-oss-20b"
-        _ACTIVE_GUARD_MODEL = model_name
 
     messages = [
         {"role": "system", "content": SINGLE_CALL_SYSTEM_PROMPT},
@@ -168,12 +182,7 @@ def evaluate_single_call_guard(
         try:
             raw_response = _call_guard_llm(messages, model_name)
         except Exception as e:
-            if "model_not_found" in str(e).lower() or "404" in str(e):
-                logfire.warning(f"⚠️ Guard model '{model_name}' returned 404, falling back to 'openai/gpt-oss-20b'.")
-                model_name = "openai/gpt-oss-20b"
-                _ACTIVE_GUARD_MODEL = model_name
-                raw_response = _call_guard_llm(messages, model_name)
-            elif is_daily_quota_exhaustion(e) and getattr(settings, "GROQ_FALLBACK_API_KEY", None):
+            if is_daily_quota_exhaustion(e) and getattr(settings, "GROQ_FALLBACK_API_KEY", None):
                 logfire.warning("⚠️ Guard primary key daily quota exhausted. Failing over to GROQ_FALLBACK_API_KEY.")
                 for m_cand in [model_name, "openai/gpt-oss-120b", "allam-2-7b"]:
                     try:
@@ -258,14 +267,13 @@ def evaluate_single_call_guard(
     }
 
 
-def guard_single_call(message: str) -> Tuple[bool, Optional[str]]:
+def guard_single_call(message: str) -> GuardResult:
     """
     Drop-in replacement for app/guardrails/rails.py guard(message).
-    Returns:
-        (True, response_text)  — if blocked or infra unavailable
-        (False, None)          — if allowed to proceed
+    Returns a GuardResult tuple subclass with (blocked, response_text)
+    and attributes .guard_model_used and .reason.
     """
     res = evaluate_single_call_guard(message)
     if res["decision"] in ("block", "infra_unavailable"):
-        return True, res["response_text"]
-    return False, None
+        return GuardResult(True, res["response_text"], res.get("model_used"), res.get("reason"))
+    return GuardResult(False, None, res.get("model_used"), res.get("reason"))

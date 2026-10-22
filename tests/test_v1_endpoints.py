@@ -279,6 +279,50 @@ def test_thread_isolation_between_users():
     assert detail_a_after.status_code == 404
 
 
+def test_delete_thread_purges_checkpointer_and_verifies_threads_list(tmp_path, monkeypatch):
+    """Verifies DELETE /v1/threads/{id} deletes thread, removes it from GET /v1/threads, and purges checkpointer state."""
+    import sqlite3
+    from app.models.feedback_db import upsert_thread
+    from app.agents.persistence import close_checkpointer
+
+    test_cp_db = str(tmp_path / "test_cp.db")
+    monkeypatch.setattr("app.config.settings.SQLITE_DB_PATH", test_cp_db)
+    close_checkpointer()
+
+    # Create dummy checkpointer table with entry
+    conn = sqlite3.connect(test_cp_db)
+    conn.execute("CREATE TABLE checkpoints (thread_id TEXT, checkpoint TEXT)")
+    conn.execute("CREATE TABLE writes (thread_id TEXT, task_id TEXT)")
+    conn.execute("INSERT INTO checkpoints VALUES ('thread-purge-test', 'data')")
+    conn.execute("INSERT INTO writes VALUES ('thread-purge-test', 'write_data')")
+    conn.commit()
+    conn.close()
+
+    # Create thread in feedback DB
+    headers = {"X-User-ID": "user-purge-99"}
+    upsert_thread("thread-purge-test", "user-purge-99", title="Thread To Purge")
+
+    # Confirm thread is listed
+    threads_before = client.get("/v1/threads", headers=headers).json()
+    assert any(t["id"] == "thread-purge-test" for t in threads_before)
+
+    # Delete thread
+    res_del = client.delete("/v1/threads/thread-purge-test", headers=headers)
+    assert res_del.status_code == 200
+
+    # Verify GET /v1/threads no longer lists the old one
+    threads_after = client.get("/v1/threads", headers=headers).json()
+    assert not any(t["id"] == "thread-purge-test" for t in threads_after)
+
+    # Verify checkpointer table has no remaining records
+    conn = sqlite3.connect(test_cp_db)
+    cp_rows = conn.execute("SELECT COUNT(*) FROM checkpoints WHERE thread_id = 'thread-purge-test'").fetchone()[0]
+    wr_rows = conn.execute("SELECT COUNT(*) FROM writes WHERE thread_id = 'thread-purge-test'").fetchone()[0]
+    conn.close()
+    assert cp_rows == 0
+    assert wr_rows == 0
+
+
 # ==============================================================================
 # 4. FEEDBACK STORAGE TESTS
 # ==============================================================================

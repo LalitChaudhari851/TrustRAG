@@ -57,10 +57,14 @@ commands.md
 # Databases & Checkpoints
 *.db
 *.sqlite
-checkpoints.db
+checkpoints.db*
+feedback/*.db
 *.db-shm
 *.db-wal
 *.db-journal
+
+# Streamlit secrets
+.streamlit/secrets.toml
 
 # Logs
 *.log

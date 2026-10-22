@@ -43,21 +43,8 @@ def initialize_rails() -> None:
         # Test model availability
         guard_llm.invoke("probe")
     except Exception as e:
-        if "model_not_found" in str(e).lower() or "404" in str(e):
-            logfire.warning(
-                f"⚠️ GUARDRAIL_MODEL '{active_guard_model}' not found on Groq. "
-                f"Falling back to GROQ_MODEL '{settings.GROQ_MODEL}'."
-            )
-            active_guard_model = settings.GROQ_MODEL
-            guard_llm = ChatGroq(
-                api_key=settings.GROQ_API_KEY,
-                model=active_guard_model,
-                temperature=0,
-                max_tokens=64,
-                max_retries=0
-            )
-        else:
-            raise
+        logfire.error(f"❌ Failed to initialise NeMo Guardrails with GUARDRAIL_MODEL '{active_guard_model}': {e}")
+        raise
 
     yaml_content = YAML_CONTENT.replace(settings.GUARDRAIL_MODEL, active_guard_model)
     config = RailsConfig.from_content(
@@ -117,13 +104,15 @@ def guard(message: str) -> tuple[bool, str | None]:
                                 skip the RAG pipeline entirely (Fail Closed).
         (False, None)          — message is clean; proceed to LangGraph.
     """
-    if getattr(settings, "GUARD_MODE", "nemo").lower() == "single_call":
+    from app.guardrails.single_call import GuardResult
+
+    if getattr(settings, "GUARD_MODE", "single_call").lower() == "single_call":
         from app.guardrails.single_call import guard_single_call
         return guard_single_call(message)
 
     if _rails is None:
         logfire.warning("⚠️ Guardrails not initialised — failing closed for safety.")
-        return True, INFRA_UNAVAILABLE_MESSAGE
+        return GuardResult(True, INFRA_UNAVAILABLE_MESSAGE, settings.GUARDRAIL_MODEL, "infra_uninitialized")
 
     with logfire.span("🛡️ Guardrails Check"):
         try:
@@ -132,7 +121,7 @@ def guard(message: str) -> tuple[bool, str | None]:
             # Case B: Infrastructure / rate limit failure after retries
             logfire.error(f"❌ Guardrail evaluation infra failure after retries: {e}")
             # Fail closed with distinct message (do NOT pass through, do NOT fake policy refusal)
-            return True, INFRA_UNAVAILABLE_MESSAGE
+            return GuardResult(True, INFRA_UNAVAILABLE_MESSAGE, settings.GUARDRAIL_MODEL, "infra_error")
 
         # Log activated_rails and raw rail output for auditing
         rail_names = [getattr(r, "name", str(r)).lower() for r in activated]
@@ -161,8 +150,8 @@ def guard(message: str) -> tuple[bool, str | None]:
             if not cleaned_reply or is_nemo_fallback:
                 cleaned_reply = "I'm an Enterprise IT Assistant focused on Kubernetes, Intel hardware, and networking. I cannot assist with this request."
             logfire.info(f"🛡️ Guardrails fired (blocked) | query='{message[:80]}'")
-            return True, cleaned_reply
+            return GuardResult(True, cleaned_reply, settings.GUARDRAIL_MODEL, "nemo_rail")
 
         logfire.info("✅ Guardrails passed.")
-        return False, None
+        return GuardResult(False, None, settings.GUARDRAIL_MODEL, "none")
 

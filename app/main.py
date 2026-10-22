@@ -35,9 +35,35 @@ from typing import Optional
 from contextlib import asynccontextmanager
 
 
+def check_models_availability():
+    warnings = []
+    available = []
+    try:
+        from groq import Groq
+        client = Groq(api_key=settings.GROQ_API_KEY)
+        available = [m.id for m in client.models.list().data]
+        if settings.GROQ_MODEL not in available:
+            msg = f"Configured GROQ_MODEL '{settings.GROQ_MODEL}' is not available on Groq account! Available: {sorted(available)}"
+            logfire.warning(f"⚠️ {msg}")
+            warnings.append(msg)
+        if settings.GUARDRAIL_MODEL not in available:
+            msg = f"Configured GUARDRAIL_MODEL '{settings.GUARDRAIL_MODEL}' is not available on Groq account! Available: {sorted(available)}"
+            logfire.warning(f"⚠️ {msg}")
+            warnings.append(msg)
+    except Exception as e:
+        msg = f"Could not query Groq models list at startup: {e}"
+        logfire.warning(f"⚠️ {msg}")
+        warnings.append(msg)
+    return {
+        "available_models": available,
+        "warnings": warnings,
+    }
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup: Initialize rails, warm up embeddings, SQLite checkpointer & feedback DB
+    # Startup: Validate models against provider, initialize rails, warm up embeddings, checkpointer & feedback DB
+    app.state.model_check = check_models_availability()
     initialize_rails()
     init_embeddings()
     get_checkpointer()
@@ -95,12 +121,16 @@ def home():
 def get_server_config():
     """Returns the live active runtime configuration for audit and eval verification."""
     from app.config import settings
+    from app.guardrails.single_call import get_active_guard_model
+    model_check = getattr(app.state, "model_check", {}) if hasattr(app, "state") else {}
     return {
         "GROQ_MODEL": settings.GROQ_MODEL,
         "GUARD_MODE": settings.GUARD_MODE,
         "GUARDRAIL_MODEL": settings.GUARDRAIL_MODEL,
+        "guard_model_used": get_active_guard_model(),
         "RETRIEVAL_MODE": settings.RETRIEVAL_MODE,
         "QUERY_REWRITE": settings.QUERY_REWRITE,
+        "model_warnings": model_check.get("warnings", []),
     }
 
 
@@ -116,56 +146,25 @@ def get_graph_image():
         return {"error": f"Could not generate graph image: {e}"}
     
     
+from app.agents.pipeline import execute_rag_pipeline
+
+
 @app.post("/query")
 def query(request: QueryRequest):
     """
-    Executes the LangGraph RAG flow with memory using a POST request.
+    Executes the shared LangGraph RAG flow with memory using a POST request.
     """
     q = request.q
     thread_id = request.thread_id
 
-    initial_state = {
-        "messages": [{"role": "user", "content": q}],
-        "current_query": q,
-        "documents": [],
-        "plan": ["Start"],
-        "status": "Initializing Graph...",
-        "retrieval_mode": request.retrieval_mode,
-        "model_used": None
-    }
-    
-    # Configuration for Memory (Thread ID)
-    config = {"configurable": {"thread_id": thread_id}}
-    
     try:
-        # Gate 1: NeMo Guardrails — blocks off-topic, jailbreaks, and handles dialog
-        rail_fired, rail_response = guard(q)
-        if rail_fired:
-            logfire.info(f"🛡️ Request blocked by guardrails | thread={thread_id}")
-            return {
-                "question": q,
-                "answer": rail_response,
-                "thought_process": ["Intent: Guardrails Fired", "Retrieval: Skipped"],
-                "status": "Blocked by guardrails.",
-                "sources": [],
-                "model_used": None
-            }
-
-        # Gate 2: LangGraph RAG pipeline
-        # Run the graph synchronously to preserve Logfire context variables
-        mode_used = (request.retrieval_mode or getattr(settings, "RETRIEVAL_MODE", "tinybert")).lower()
-        logfire.info(f"Retrieval mode used: {mode_used}")
-        final_output = rag_agent.invoke(initial_state, config=config)
-        
-        return {
-            "question": q,
-            "answer": final_output.get("final_answer"),
-            "thought_process": final_output.get("plan"),
-            "status": final_output.get("status"),
-            "sources": final_output.get("documents", []),
-            "retrieval_mode": mode_used,
-            "model_used": final_output.get("model_used")
-        }
+        return execute_rag_pipeline(
+            q=q,
+            thread_id=thread_id,
+            retrieval_mode=request.retrieval_mode,
+            stream=False,
+            guard_fn=guard,
+        )
     except Exception as e:
         logfire.error(f"❌ Backend Execution Failed: {e}")
         return {

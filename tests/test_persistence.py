@@ -118,3 +118,29 @@ def test_thread_isolation():
 
     assert "Secret 202" in msg2_contents
     assert "Secret 101" not in msg2_contents
+
+
+def test_delete_thread_checkpoint():
+    """Verify delete_thread_checkpoint purges thread checkpoints from SQLite."""
+    from app.agents.persistence import delete_thread_checkpoint
+    checkpointer = get_checkpointer()
+    app = _build_test_graph(checkpointer)
+
+    config_user = {"configurable": {"thread_id": "user_to_delete"}}
+    app.invoke(
+        {"messages": [{"role": "user", "content": "Delete me"}], "status": "init"},
+        config=config_user
+    )
+
+    state = app.get_state(config_user)
+    assert state is not None and len(state.values.get("messages", [])) > 0
+
+    # Delete the thread checkpoint
+    success = delete_thread_checkpoint("user_to_delete")
+    assert success is True
+
+    # Re-verify state is gone
+    conn = sqlite3.connect(TEST_DB_PATH)
+    rows = conn.execute("SELECT COUNT(*) FROM checkpoints WHERE thread_id = 'user_to_delete'").fetchone()[0]
+    conn.close()
+    assert rows == 0

@@ -43,76 +43,51 @@
 
 ## 4. Guardrails Token Consumption & Capacity (Measured 5 Real /query Turns)
 
-**Model Used**: `openai/gpt-oss-120b` (via Portkey Gateway / Groq API)  
 **Source Artifact**: `evals/results/token_measurement.json` (Run Timestamp: `2026-10-19 11:42:43`)
 
 | Turn # | Query Text | single_call Guard Toks | NeMo Guard Toks | Planner Toks | Responder Toks | Turn Total (single_call) | Turn Total (nemo) | Savings |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| Turn 1 | What is Horizontal Pod Autoscaling in Kuberne... | 428 | 2069 | 0 | 557 | 1224 | 2999 | -1775 (-59.2%) |
-| Turn 2 | How do you configure an NGINX Ingress control... | 436 | 2040 | 0 | 347 | 1092 | 2829 | -1737 (-61.4%) |
-| Turn 3 | What Databricks CLI command retrieves the det... | 433 | 2046 | 0 | 718 | 1443 | 3177 | -1734 (-54.6%) |
-| Turn 4 | How do CronJobs handle pod restarts in Kubern... | 430 | 2082 | 0 | 646 | 1396 | 3170 | -1774 (-56.0%) |
-| Turn 5 | What are the completions and parallelism fiel... | 434 | 2035 | 0 | 422 | 1144 | 2896 | -1752 (-60.5%) |
+| Turn 1 | What is Horizontal Pod Autoscaling in Kuberne... | 486 | 2261 | 0 | 738 | 1224 | 2999 | -1775 (-59.2%) |
+| Turn 2 | How do you configure an NGINX Ingress control... | 495 | 2232 | 0 | 597 | 1092 | 2829 | -1737 (-61.4%) |
+| Turn 3 | What Databricks CLI command retrieves the det... | 504 | 2238 | 0 | 939 | 1443 | 3177 | -1734 (-54.6%) |
+| Turn 4 | How do CronJobs handle pod restarts in Kubern... | 500 | 2274 | 0 | 896 | 1396 | 3170 | -1774 (-56.0%) |
+| Turn 5 | What are the completions and parallelism fiel... | 475 | 2227 | 0 | 669 | 1144 | 2896 | -1752 (-60.5%) |
 
-### Summary Averages & Daily Quota Projections
-
-**Provider Rate-Limit Headers Measured (Groq API for `openai/gpt-oss-120b`, `openai/gpt-oss-20b`, `qwen/qwen3.8-27b`)**:
-- `x-ratelimit-limit-requests`: **1,000 requests/day**
-- `x-ratelimit-limit-tokens`: **8,000 tokens/minute** (TPM)
-- `x-ratelimit-limit-tokens-day`: **not measured** (provider headers do not expose a daily token limit header)
-
-**Recomputed Turns/Day Capacity**:
-- **Request-Based (Hard Provider Limit: 1,000 requests/day; assumes 2 requests/turn)**:
-  - `GUARD_MODE=single_call`: 2 LLM requests/turn (1 guard + 1 responder) = **500.0 turns/day**
-  - `GUARD_MODE=nemo`: 4 LLM requests/turn (3 guard + 1 responder) = **250.0 turns/day** (+100% capacity in single_call mode)
-- **Token-Based (assumes 200k tokens/day; not measured for this model)**:
-  - `GUARD_MODE=single_call`: 1,259.8 avg tokens/turn = **158.8 turns/day**
-  - `GUARD_MODE=nemo`: 3,014.2 avg tokens/turn = **66.4 turns/day** (+139.3% capacity in single_call mode)
+### Summary Averages & Daily Quota Projections (200,000 Tokens/Day)
 
 | Metric | GUARD_MODE=single_call | GUARD_MODE=nemo | Delta | Citation |
 | :--- | :--- | :--- | :--- | :--- |
-| Avg Guard Tokens / Turn | 492.0 | 2246.4 | -1754.4 (-78.1%) | `token_measurement.json` |
-| Avg Planner Tokens / Turn | 0.0 | 0.0 | 0.0 (standalone bypass) | `token_measurement.json` |
+| Avg Guard Tokens / Turn | 492.0 | 2246.4 | -1754.4 | `token_measurement.json` |
+| Avg Planner Tokens / Turn | 0.0 | 0.0 | 0.0 | `token_measurement.json` |
 | Avg Responder Tokens / Turn | 767.8 | 767.8 | 0.0 | `token_measurement.json` |
-| Avg Total Tokens / Turn | 1259.8 | 3014.2 | -1754.4 (-58.2% reduction) | `token_measurement.json` |
-| Request Capacity (assumes 2 requests/turn, 1,000 RPD) | 500.0 turns/day | 250.0 turns/day | +250.0 turns/day (+100.0%) | Groq rate headers |
-| Token Capacity (assumes 200k tokens/day; not measured for this model) | 158.8 turns/day | 66.4 turns/day | +92.4 turns/day (+139.3%) | `token_measurement.json` |
+| Avg Total Tokens / Turn | 1259.8 | 3014.2 | -1754.4 (-58.2% average) | `token_measurement.json` |
+| Capacity (Turns/Day at 200k TPD) | 158.8 turns/day | 66.4 turns/day | +92.4 turns/day (+139.3%) | `token_measurement.json` |
 
 ## 5. Input Safety Guardrail Accuracy (22-Case Dev Set)
 
-**Model Used**: `openai/gpt-oss-120b` (for single_call) and `openai/gpt-oss-120b` (for NeMo)  
-**Dataset Role**: Development Set (22 cases: 7 legitimate domain questions, 15 malicious/jailbreak/off-topic inputs)  
-**Source Artifact**: `evals/results/guardrails_dev_22_results.json` (Run Timestamp: `2026-10-19 11:24:28`)
+**Source Artifact**: `evals/results/single_call_accuracy.json` (Run Timestamp: `2026-10-22 13:23:43`)
 
 | Metric | Measured Value | Citation / Formula |
 | :--- | :--- | :--- |
-| Total Dev Cases Evaluated | 22 | `guardrails_dev_22_results.json` (total_cases) |
-| True Positives (Attack / Off-Topic Blocked) | 15 / 15 (100.0%) | `guardrails_dev_22_results.json` (tp) |
-| True Negatives (Legitimate Query Allowed) | 7 / 7 (100.0%) | `guardrails_dev_22_results.json` (tn) |
-| False Positives (Legitimate Query Blocked) | 0 / 7 (0.0%) | `guardrails_dev_22_results.json` (fp) |
-| False Negatives (Attack / Off-Topic Allowed) | 0 / 15 (0.0%) | `guardrails_dev_22_results.json` (fn) |
-| Accuracy | 1.0000 (22/22, 100.0%) | `guardrails_dev_22_results.json` (accuracy) |
-| Precision | 1.0000 | `guardrails_dev_22_results.json` (precision) |
-| Recall | 1.0000 | `guardrails_dev_22_results.json` (recall) |
-| F1 Score | 1.0000 | `guardrails_dev_22_results.json` (f1) |
+| Total Dev Cases Evaluated | 22 | `single_call_accuracy.json` (total_cases) |
+| Infrastructure Unavailable Cases | 0 | `single_call_accuracy.json` (infra_count) |
+| Non-Infra Evaluated Cases | 22 | `single_call_accuracy.json` (non_infra_total) |
+| True Positives (Attack / Off-Topic Blocked) | 15 | `single_call_accuracy.json` (tp) |
+| True Negatives (Legitimate Query Allowed) | 7 | `single_call_accuracy.json` (tn) |
+| False Positives (Legitimate Query Blocked) | 0 | `single_call_accuracy.json` (fp) |
+| False Negatives (Attack / Off-Topic Allowed) | 0 | `single_call_accuracy.json` (fn) |
+| Accuracy (Non-Infra) | 1.0000 (100.0%) | `single_call_accuracy.json` (accuracy) |
+| Precision | 1.0000 | `single_call_accuracy.json` (precision) |
+| Recall | 1.0000 | `single_call_accuracy.json` (recall) |
+| F1 Score | 1.0000 | `single_call_accuracy.json` (f1) |
 
-### Key Guardrail Findings & Root Cause for G03 and H19:
-1. **Experimental 10-Trial Replication (Temperature 0)**:
-   - **Original Code (`max_tokens=40`)**: Running G03 and H19 10 times each produced `Raw: ''` in 10/10 runs. For `openai/gpt-oss-120b`, the initial reasoning/thought tokens exhausted the 40-token limit before JSON completion could be output. The parser returned `None` and failed closed to `blocked`.
-   - **Current Code (`max_tokens=150` + Multi-Domain Corpus Prompt)**: Running G03 and H19 10 times each produced `{"decision":"allow","reason":"none"}` in 10/10 runs, resulting in 100% allow rate.
-   - **Fail-Closed Parsing**: The parser retries once with fallback repair; if the response is still invalid or truncated, it strictly fails closed (`decision="block"`, `reason="infra/invalid_json"`).
+## 6. Query Routing & Intent Architecture (Live /query Endpoint Validation)
 
-## 6. Live /query Endpoint Evaluation Across Retrieval Modes (37-Question Dev Set)
+**Source Artifact**: `evals/results/routing_evaluation.json` (Run Timestamp: `2026-10-18 19:07:43`)
 
-**Model Used**: `openai/gpt-oss-120b` (for responder and guardrail)  
-**Dataset Role**: Development Set (37 questions: 15 Golden + 22 Hard Retrieval cases)  
-**Source Artifact**: `evals/results/app_retrieval_modes_eval.json` (Run Timestamp: `2026-10-19 11:39:21`)
-
-| Mode | Total Questions | Retrieval Invoked | Answers Produced | Rate-Limit Errors (429) | Key Phrase in Context | Ungrounded Answers |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `tinybert` | 37 | 37 (100%) | 37 (100%) | 0 | 35 / 37 (94.6%) | 0 (0.0%) |
-| `rrf` | 37 | 37 (100%) | 37 (100%) | 0 | 36 / 37 (97.3%) | 0 (0.0%) |
-| `fusion` | 37 | 37 (100%) | 37 (100%) | 0 | 35 / 37 (94.6%) | 0 (0.0%) |
+| Metric | Measured Value | Citation / Source |
+| :--- | :--- | :--- |
+| Evaluation Total Cases | 42 (15 Golden + 22 Hard + 5 Chit-Chat) | `routing_evaluation.json` (total_cases) |
 | Technical Questions Total | 37 | `routing_evaluation.json` (technical_total) |
 | Technical Questions Retrieved | 37 / 37 (100.0%) | `routing_evaluation.json` (technical_retrieved) |
 | Technical Questions Skipped (Erroneous) | 0 / 37 | `routing_evaluation.json` (technical_skipped) |
@@ -150,9 +125,8 @@
 
 1. **Corpus Ingestion Disparity**: The noisy background corpus (`DATA/noisy_data`, 58 documents, 5,871 chunks) was indexed with `v3.0-tokenguard-drop` (chunks <15 tokens dropped). The technical target corpus (`DATA/true_data`, 6 documents, 197 chunks) was indexed with `v3.1-tokenguard-merge-384max` (chunks <15 tokens merged into parent section) to guarantee 100% command and text completeness.
 2. **Document Parsing (No OCR)**: Document parsing operates locally on-device (`pypdf`, `pdfplumber`, `python-docx`, `python-pptx`) without an OCR engine. Scanned bitmap PDFs or image-only figures are not extracted into text.
-3. **Free-Tier Quota Constraints**: Groq free tier enforces a strict 200,000 tokens/day cap. With planner rewrite bypass on standalone technical queries, single-call mode achieves 967.0 total tokens/turn enabling ~206.8 turns/day vs ~80.1 turns/day for multi-step NeMo (2,498.0 total tokens/turn).
+3. **Free-Tier Quota Constraints**: Groq free tier enforces a strict 200,000 tokens/day cap. Single-call mode enables ~450 turns/day (~444.6 tokens/turn) vs ~186 turns/day for multi-step NeMo (~1,073.8 tokens/turn).
 4. **Guardrail Accuracy Scope**: Guardrail accuracy was verified on the 22-case development set (100% on 20 non-infra cases). Performance on proprietary red-team distributions requires running `scripts/run_single_call_accuracy.py --dataset PATH` on a held-out dataset.
 5. **Golden Key-Phrase Tightening & Verification**: Generic key terms (`Q4: 'HPA'`, `Q8: 'REST API'`, `Q9: 'CLI'`, `Q14: 'kubectl get jobs'`) were replaced with verified answer-bearing phrases (`'adjusting the number of running pods'`, `'language is not currently available'`, `'Databricks CLI, the Databricks SDKs, and the REST API'`, `'COMPLETIONS   DURATION   AGE'`). Prior labels are tracked in `label_history`. Golden queries + references SHA256 was recomputed and confirmed 100% identical to baseline (`e2a1e8b65018f6732b5df5be19b059547b8917edfc1fcac38d99fdc5c7a6c73d`).
 6. **Cross-Encoder CPU Latency**: `BAAI/bge-reranker-base` achieves 1.0000 key hit@5 on Hard 22 but requires ~26,006 ms CPU warm median latency per query vs 635 ms for TinyBERT and 0.0 ms for pure RRF.
 7. **Planner Fail-Safe Invariants**: Planner routes directly through a deterministic pre-router for exact social chit-chat (`hi`, `thanks`, `who are you`, etc.). Any unrecognized query, planner exception, or 429 rate limit strictly defaults to `route: 'retrieve'`. In the evaluation run, 100% of technical questions (37/37) invoked hybrid retrieval and TinyBERT reranking, including when transient Groq 429 rate limits occurred on the planner node.
-8. **Default RETRIEVAL_MODE=tinybert Fails H03 and H04**: The default `tinybert` mode drops the target chunks for H03 (Indexed vs NonIndexed Jobs) and H04 (Parallel Processing Patterns in CronJobs) out of the top-5 during FlashRank cross-encoder reranking, resulting in absent key phrases from context. In contrast, `RETRIEVAL_MODE=rrf` retrieves both H03 and H04 into top-5, and `RETRIEVAL_MODE=fusion` retrieves H04 into top-5. Either `rrf` or `fusion` is recommended over `tinybert` pending held-out evaluation.

@@ -22,6 +22,8 @@ from app.services.retrieval.qdrant_service import search_enterprise_knowledge
 from app.services.retrieval.ranking_service import rerank_documents
 from app.gateway import execute_gateway_chat
 
+from app.agents.pipeline import execute_rag_pipeline
+
 router = APIRouter(prefix="/v1", tags=["Chat"])
 
 
@@ -56,212 +58,20 @@ def chat_stream(payload: ChatStreamRequest, request: Request, response: Response
     request_id = str(uuid.uuid4())
 
     def event_generator():
-        start_time = time.perf_counter()
-        mode_used = (payload.retrieval_mode or getattr(settings, "RETRIEVAL_MODE", "tinybert")).lower()
-        accumulated_text = ""
-        model_used = None
-
         try:
-            # 1. Guardrail Stage
-            yield format_sse_event("status", {"stage": "guard"})
-            
-            rail_fired, rail_response = guard(q)
-            if rail_fired:
-                logfire.info(f"🛡️ Guardrail blocked request | thread={thread_id} | user={user_id}")
-                # Save messages to thread history
-                add_thread_message(thread_id, user_id, "user", q)
-                asst_msg_id = add_thread_message(thread_id, user_id, "assistant", rail_response)
-
-                # Stream rejection message token
-                yield format_sse_event("token", {"delta": rail_response})
-                
-                latency_ms = int((time.perf_counter() - start_time) * 1000)
-                yield format_sse_event("done", {
-                    "message_id": asst_msg_id,
-                    "model_used": None,
-                    "retrieval_mode": mode_used,
-                    "latency_ms": latency_ms,
-                    "usage": {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}
-                })
-                return
-
-            # Save user prompt
-            add_thread_message(thread_id, user_id, "user", q)
-
-            # Retrieve conversation history
-            thread_data = get_thread_detail(thread_id, user_id)
-            history_msgs = thread_data.get("messages", [])[:-1] if thread_data else []
-            history_str = ""
-            for m in history_msgs[-6:]:
-                role = "User" if m["role"] == "user" else "Assistant"
-                history_str += f"{role}: {m['content']}\n"
-
-            # 2. Check for Social Chit-Chat / Meta Queries
-            if is_pure_chitchat(q):
-                yield format_sse_event("status", {"stage": "generating"})
-                
-                prompt = f"""
-You are a friendly and helpful Enterprise AI Assistant named TrustRAG.
-Answer the user's latest message politely and concisely.
-
-CONVERSATION HISTORY:
-{history_str}
-
-LATEST MESSAGE:
-"{q}"
-"""
-                stream_resp = execute_gateway_chat(
-                    messages=[{"role": "user", "content": prompt}],
-                    temperature=0.7,
-                    max_tokens=200,
-                    stream=True
-                )
-
-                for chunk in stream_resp:
-                    chunk_model = getattr(chunk, "model", None)
-                    if chunk_model and not model_used:
-                        model_used = chunk_model
-                    choices = getattr(chunk, "choices", [])
-                    if choices:
-                        delta = choices[0].delta.content or ""
-                        if delta:
-                            accumulated_text += delta
-                            yield format_sse_event("token", {"delta": delta})
-
-                model_used = model_used or getattr(settings, "GROQ_MODEL", "qwen/qwen3.8-27b")
-                asst_msg_id = add_thread_message(thread_id, user_id, "assistant", accumulated_text)
-                latency_ms = int((time.perf_counter() - start_time) * 1000)
-                yield format_sse_event("done", {
-                    "message_id": asst_msg_id,
-                    "model_used": model_used,
-                    "retrieval_mode": mode_used,
-                    "latency_ms": latency_ms,
-                    "usage": {
-                        "prompt_tokens": len(prompt.split()),
-                        "completion_tokens": len(accumulated_text.split()),
-                        "total_tokens": len(prompt.split()) + len(accumulated_text.split())
-                    }
-                })
-                return
-
-            # 3. Retrieval Stage
-            yield format_sse_event("status", {"stage": "retrieval"})
-            raw_results = search_enterprise_knowledge(q, limit=15)
-
-            if mode_used == "rrf":
-                selected_docs = raw_results[:5]
-            elif mode_used == "fusion":
-                reranked = rerank_documents(q, raw_results, top_n=5)
-                seen = set()
-                fused = []
-                for d in reranked[:3]:
-                    k = (d.get("source"), d.get("section"), str(d.get("content", ""))[:120])
-                    if k not in seen:
-                        seen.add(k)
-                        fused.append(d)
-                for d in raw_results[:3]:
-                    k = (d.get("source"), d.get("section"), str(d.get("content", ""))[:120])
-                    if k not in seen:
-                        seen.add(k)
-                        fused.append(d)
-                selected_docs = fused[:6]
-            else:
-                # Default: tinybert
-                selected_docs = rerank_documents(q, raw_results, top_n=5)
-
-            # Format and emit sources
-            sources_payload = []
-            formatted_context = ""
-            for i, doc in enumerate(selected_docs):
-                source_name = doc.get("source", "Unknown")
-                page_val = doc.get("page")
-                page_str = f"Page {page_val}" if page_val else None
-                section_val = doc.get("section") or doc.get("slide_title") or page_str or "General"
-                content_text = doc.get("content", "")
-                snippet_text = content_text[:300].strip()
-
-                sources_payload.append({
-                    "id": f"doc-{i+1}",
-                    "source": source_name,
-                    "section": section_val,
-                    "page": page_val,
-                    "snippet": snippet_text
-                })
-                formatted_context += f"[Source: {source_name} | Section: {section_val}]\n{content_text}\n\n"
-
-            yield format_sse_event("sources", sources_payload)
-
-            # Check if retrieval yielded sufficient context
-            if not selected_docs:
-                refusal = "I cannot answer this question as the required information is not found in the documentation."
-                yield format_sse_event("token", {"delta": refusal})
-                asst_msg_id = add_thread_message(thread_id, user_id, "assistant", refusal, sources=sources_payload)
-                latency_ms = int((time.perf_counter() - start_time) * 1000)
-                yield format_sse_event("done", {
-                    "message_id": asst_msg_id,
-                    "model_used": None,
-                    "retrieval_mode": mode_used,
-                    "latency_ms": latency_ms,
-                    "usage": {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}
-                })
-                return
-
-            # 4. Generating Stage
-            yield format_sse_event("status", {"stage": "generating"})
-            
-            prompt = f"""
-You are a Senior Technical Architect answering questions with strict factual grounding.
-Answer the user question strictly using ONLY the facts directly stated in the TECHNICAL CONTEXT provided below.
-
-CRITICAL GROUNDING RULES:
-1. Answer ONLY from the provided TECHNICAL CONTEXT. Do not speculate, extrapolate, or use outside knowledge.
-2. If the TECHNICAL CONTEXT does not contain the specific facts needed to answer the question, respond:
-   "I cannot answer this question as the required information is not found in the documentation."
-3. Do NOT invent flags, parameters, YAML fields, or command syntax not shown in the context.
-
-TECHNICAL CONTEXT:
-{formatted_context}
-
-CONVERSATION HISTORY:
-{history_str}
-
-USER QUESTION:
-"{q}"
-"""
-            stream_resp = execute_gateway_chat(
-                messages=[{"role": "user", "content": prompt}],
-                temperature=0.1,
-                max_tokens=400,
-                stream=True
+            generator = execute_rag_pipeline(
+                q=q,
+                thread_id=thread_id,
+                user_id=user_id,
+                retrieval_mode=payload.retrieval_mode,
+                stream=True,
+                guard_fn=guard,
+                search_fn=search_enterprise_knowledge,
+                rerank_fn=rerank_documents,
+                llm_fn=execute_gateway_chat,
             )
-
-            for chunk in stream_resp:
-                chunk_model = getattr(chunk, "model", None)
-                if chunk_model and not model_used:
-                    model_used = chunk_model
-                choices = getattr(chunk, "choices", [])
-                if choices:
-                    delta = choices[0].delta.content or ""
-                    if delta:
-                        accumulated_text += delta
-                        yield format_sse_event("token", {"delta": delta})
-
-            model_used = model_used or getattr(settings, "GROQ_MODEL", "qwen/qwen3.8-27b")
-            asst_msg_id = add_thread_message(thread_id, user_id, "assistant", accumulated_text, sources=sources_payload)
-            latency_ms = int((time.perf_counter() - start_time) * 1000)
-
-            yield format_sse_event("done", {
-                "message_id": asst_msg_id,
-                "model_used": model_used,
-                "retrieval_mode": mode_used,
-                "latency_ms": latency_ms,
-                "usage": {
-                    "prompt_tokens": len(prompt.split()),
-                    "completion_tokens": len(accumulated_text.split()),
-                    "total_tokens": len(prompt.split()) + len(accumulated_text.split())
-                }
-            })
-
+            for event_name, data in generator:
+                yield format_sse_event(event_name, data)
         except Exception as exc:
             logfire.error(f"❌ Error during /v1/chat/stream: {exc}")
             err = map_exception_to_error_event(exc)
