@@ -148,7 +148,8 @@ def guard(message: str) -> tuple[bool, str | None]:
         if has_blocked_rail or has_marker or is_nemo_fallback:
             cleaned_reply = _clean_user_message(content)
             if not cleaned_reply or is_nemo_fallback:
-                cleaned_reply = "I'm an Enterprise IT Assistant focused on Kubernetes, Intel hardware, and networking. I cannot assist with this request."
+                from app.guardrails.single_call import DEFAULT_BLOCK_MESSAGE
+                cleaned_reply = DEFAULT_BLOCK_MESSAGE
             logfire.info(f"🛡️ Guardrails fired (blocked) | query='{message[:80]}'")
             return GuardResult(True, cleaned_reply, settings.GUARDRAIL_MODEL, "nemo_rail")
 

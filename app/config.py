@@ -23,7 +23,6 @@ class Settings:
     GROQ_MODEL = os.getenv("GROQ_MODEL", "qwen/qwen3.8-27b")
     GUARDRAIL_MODEL = os.getenv("GUARDRAIL_MODEL", "openai/gpt-oss-20b")
     GUARD_MODE = os.getenv("GUARD_MODE", "single_call").lower()  # single_call | nemo
-    GROQ_FALLBACK_API_KEY = os.getenv("GROQ_FALLBACK_API_KEY")
     QUERY_REWRITE = os.getenv("QUERY_REWRITE", "followup_only").lower()  # followup_only | always | off
     RETRIEVAL_MODE = os.getenv("RETRIEVAL_MODE", "tinybert").lower()  # tinybert | rrf | fusion
 

@@ -294,6 +294,8 @@ with open(TXT_OUT, "w", encoding="utf-8") as f:
 payload = {
     "script": "scripts/measure_guard_modes_tokens.py",
     "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
+    "guard_model": getattr(settings, "GUARDRAIL_MODEL", "openai/gpt-oss-20b"),
+    "responder_model": getattr(settings, "GROQ_MODEL", "qwen/qwen3.8-27b"),
     "turns": turns_data,
     "summary": {
         "avg_sc_guard": avg_sc_guard if turns_data else "not measured",

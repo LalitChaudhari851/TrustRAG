@@ -12,8 +12,23 @@ from app.gateway.client import is_retryable_exception, is_daily_quota_exhaustion
 INFRA_UNAVAILABLE_MESSAGE = (
     "Safety check temporarily unavailable, please retry in a moment."
 )
+
+GUARD_SCOPE_TOPICS = [
+    "Kubernetes",
+    "Redis",
+    "Databricks",
+    "OS/kernel",
+    "C++",
+    "compilers",
+    "networking",
+    "ML papers",
+    "databases",
+    "defensive security",
+]
+
 DEFAULT_BLOCK_MESSAGE = (
-    "I'm an Enterprise IT Assistant focused on Kubernetes, Intel hardware, and networking. I cannot assist with this request."
+    f"I'm an Enterprise IT Assistant focused on {', '.join(GUARD_SCOPE_TOPICS[:-1])}, and {GUARD_SCOPE_TOPICS[-1]}. "
+    "I cannot assist with this request."
 )
 
 VALID_DECISIONS = {"allow", "block"}
@@ -110,13 +125,12 @@ def get_active_guard_model() -> str:
     return _ACTIVE_GUARD_MODEL or settings.GUARDRAIL_MODEL
 
 
-def get_guard_llm(active_model: Optional[str] = None, api_key: Optional[str] = None) -> ChatGroq:
+def get_guard_llm(active_model: Optional[str] = None) -> ChatGroq:
     """Create a ChatGroq instance for the single-call input guard without silent substitution."""
     global _ACTIVE_GUARD_MODEL
     model_name = active_model or _ACTIVE_GUARD_MODEL or settings.GUARDRAIL_MODEL
-    key = api_key or settings.GROQ_API_KEY
     return ChatGroq(
-        api_key=key,
+        api_key=settings.GROQ_API_KEY,
         model=model_name,
         temperature=0,
         max_tokens=150,
@@ -131,9 +145,9 @@ def get_guard_llm(active_model: Optional[str] = None, api_key: Optional[str] = N
     before_sleep=log_retry_attempt,
     reraise=True
 )
-def _call_guard_llm(messages: list, active_model: str, api_key: Optional[str] = None) -> Any:
+def _call_guard_llm(messages: list, active_model: str) -> Any:
     """Invoke the guard LLM with tenacity retry for transient 429/503 errors."""
-    llm = get_guard_llm(active_model, api_key=api_key)
+    llm = get_guard_llm(active_model)
     return llm.invoke(messages)
 
 
@@ -179,24 +193,7 @@ def evaluate_single_call_guard(
     completion_tokens = 0
 
     try:
-        try:
-            raw_response = _call_guard_llm(messages, model_name)
-        except Exception as e:
-            if is_daily_quota_exhaustion(e) and getattr(settings, "GROQ_FALLBACK_API_KEY", None):
-                logfire.warning("⚠️ Guard primary key daily quota exhausted. Failing over to GROQ_FALLBACK_API_KEY.")
-                for m_cand in [model_name, "openai/gpt-oss-120b", "allam-2-7b"]:
-                    try:
-                        raw_response = _call_guard_llm(messages, m_cand, api_key=settings.GROQ_FALLBACK_API_KEY)
-                        model_name = m_cand
-                        break
-                    except Exception as e_cand:
-                        if is_daily_quota_exhaustion(e_cand):
-                            continue
-                        raise e_cand
-                else:
-                    raise e
-            else:
-                raise e
+        raw_response = _call_guard_llm(messages, model_name)
 
         # Extract usage metadata if present
         if hasattr(raw_response, "response_metadata") and isinstance(raw_response.response_metadata, dict):

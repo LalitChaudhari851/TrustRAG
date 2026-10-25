@@ -117,6 +117,7 @@ def main():
         avg_savings_pct = (avg_delta / avg_nemo_turn * 100.0) if avg_nemo_turn > 0 else 0.0
         md.append("\n### Summary Averages & Daily Quota Projections (200,000 Tokens/Day)\n\n")
         md.append("| Metric | GUARD_MODE=single_call | GUARD_MODE=nemo | Delta | Citation |\n| :--- | :--- | :--- | :--- | :--- |\n")
+        md.append(f"| Model Evaluated | model not recorded in the artifact | model not recorded in the artifact | n/a | `token_measurement.json` |\n")
         md.append(f"| Avg Guard Tokens / Turn | {summ.get('avg_sc_guard', 0.0):.1f} | {summ.get('avg_nemo_guard', 0.0):.1f} | -{summ.get('avg_nemo_guard', 0.0) - summ.get('avg_sc_guard', 0.0):.1f} | `token_measurement.json` |\n")
         md.append(f"| Avg Planner Tokens / Turn | {summ.get('avg_planner', 0.0):.1f} | {summ.get('avg_planner', 0.0):.1f} | 0.0 | `token_measurement.json` |\n")
         md.append(f"| Avg Responder Tokens / Turn | {summ.get('avg_responder', 0.0):.1f} | {summ.get('avg_responder', 0.0):.1f} | 0.0 | `token_measurement.json` |\n")
@@ -129,6 +130,7 @@ def main():
     md.append(f"**Source Artifact**: `evals/results/single_call_accuracy.json` (Run Timestamp: `{ts_acc}`)\n\n")
     if accuracy:
         md.append("| Metric | Measured Value | Citation / Formula |\n| :--- | :--- | :--- |\n")
+        md.append(f"| Guard Model Evaluated | model not recorded in the artifact | `single_call_accuracy.json` |\n")
         md.append(f"| Total Dev Cases Evaluated | {accuracy.get('total_cases', 0)} | `single_call_accuracy.json` (total_cases) |\n")
         md.append(f"| Infrastructure Unavailable Cases | {accuracy.get('infra_count', 0)} | `single_call_accuracy.json` (infra_count) |\n")
         md.append(f"| Non-Infra Evaluated Cases | {accuracy.get('non_infra_total', 0)} | `single_call_accuracy.json` (non_infra_total) |\n")
@@ -156,6 +158,7 @@ def main():
         corr = routing.get("routing_correctness", 1.0)
         md.append(f"**Source Artifact**: `evals/results/routing_evaluation.json` (Run Timestamp: `{ts_route}`)\n\n")
         md.append("| Metric | Measured Value | Citation / Source |\n| :--- | :--- | :--- |\n")
+        md.append(f"| Endpoint Models Evaluated | model not recorded in the artifact | `routing_evaluation.json` |\n")
         md.append(f"| Evaluation Total Cases | {tot} (15 Golden + 22 Hard + 5 Chit-Chat) | `routing_evaluation.json` (total_cases) |\n")
         md.append(f"| Technical Questions Total | {tech_tot} | `routing_evaluation.json` (technical_total) |\n")
         md.append(f"| Technical Questions Retrieved | {tech_ret} / {tech_tot} ({tech_ret/tech_tot*100:.1f}%) | `routing_evaluation.json` (technical_retrieved) |\n")

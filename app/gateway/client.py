@@ -153,24 +153,7 @@ def execute_gateway_chat(**create_params) -> Any:
     if "model" not in create_params and not PORTKEY_CONFIG:
         create_params["model"] = f"@{settings.GROQ_SLUG}/{settings.GROQ_MODEL}"
         
-    try:
-        return portkey_client.chat.completions.create(**create_params)
-    except Exception as e:
-        if is_daily_quota_exhaustion(e) and getattr(settings, "GROQ_FALLBACK_API_KEY", None):
-            logfire.warning("⚠️ Primary key daily quota exhausted. Failing over to GROQ_FALLBACK_API_KEY.")
-            import groq
-            fallback_client = groq.Groq(api_key=settings.GROQ_FALLBACK_API_KEY)
-            params = dict(create_params)
-            model_name = params.get("model", settings.GROQ_MODEL)
-            if "@" in model_name:
-                model_name = model_name.split("/", 1)[-1]
-            try:
-                params["model"] = model_name
-                return fallback_client.chat.completions.create(**params)
-            except Exception as e_fb:
-                logfire.error(f"❌ Fallback key execution failed for model '{model_name}': {e_fb}. Failing loudly without model substitution.")
-                raise e_fb
-        raise e
+    return portkey_client.chat.completions.create(**create_params)
 
 
 def get_langchain_llm(feature: str = "rag", max_tokens: int = 50) -> ChatOpenAI:

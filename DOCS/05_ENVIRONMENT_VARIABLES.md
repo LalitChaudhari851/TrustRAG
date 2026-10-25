@@ -9,7 +9,6 @@ The project uses a `.env` file for local development. All configuration is manag
 | Variable | Description | Example |
 | :--- | :--- | :--- |
 | `GROQ_API_KEY` | Primary key for Groq LLM calls (Planner + Responder nodes) | `gsk_...` |
-| `GROQ_FALLBACK_API_KEY` | Second Groq key used by Portkey as the fallback target; can be the same as primary | `gsk_...` |
 
 ---
 

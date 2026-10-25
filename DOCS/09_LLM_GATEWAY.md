@@ -583,7 +583,7 @@ GATEWAY_CONFIG = {
 }
 ```
 
-**Slugs:** `rag` and `brag` are the Portkey dashboard integration names for the two Groq API keys. The fallback key is stored in `.env` as `GROQ_FALLBACK_API_KEY` — Portkey reads it from the `brag` dashboard integration, not from code.
+**Slugs:** `rag` and `brag` are the Portkey dashboard integration names. Secondary key fallback in code was removed because keys in the same organization share quota limits; resilience is provided via Tenacity exponential retry with jitter and `Retry-After` honoring on the primary key.
 
 ### Two Clients, Two Purposes
 

@@ -57,6 +57,7 @@
 
 | Metric | GUARD_MODE=single_call | GUARD_MODE=nemo | Delta | Citation |
 | :--- | :--- | :--- | :--- | :--- |
+| Model Evaluated | model not recorded in the artifact | model not recorded in the artifact | n/a | `token_measurement.json` |
 | Avg Guard Tokens / Turn | 492.0 | 2246.4 | -1754.4 | `token_measurement.json` |
 | Avg Planner Tokens / Turn | 0.0 | 0.0 | 0.0 | `token_measurement.json` |
 | Avg Responder Tokens / Turn | 767.8 | 767.8 | 0.0 | `token_measurement.json` |
@@ -69,6 +70,7 @@
 
 | Metric | Measured Value | Citation / Formula |
 | :--- | :--- | :--- |
+| Guard Model Evaluated | model not recorded in the artifact | `single_call_accuracy.json` |
 | Total Dev Cases Evaluated | 22 | `single_call_accuracy.json` (total_cases) |
 | Infrastructure Unavailable Cases | 0 | `single_call_accuracy.json` (infra_count) |
 | Non-Infra Evaluated Cases | 22 | `single_call_accuracy.json` (non_infra_total) |
@@ -87,6 +89,7 @@
 
 | Metric | Measured Value | Citation / Source |
 | :--- | :--- | :--- |
+| Endpoint Models Evaluated | model not recorded in the artifact | `routing_evaluation.json` |
 | Evaluation Total Cases | 42 (15 Golden + 22 Hard + 5 Chit-Chat) | `routing_evaluation.json` (total_cases) |
 | Technical Questions Total | 37 | `routing_evaluation.json` (technical_total) |
 | Technical Questions Retrieved | 37 / 37 (100.0%) | `routing_evaluation.json` (technical_retrieved) |

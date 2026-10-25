@@ -76,7 +76,7 @@ graph TD
 | Layer | Technology | Purpose |
 |-------|------------|---------|
 | **Orchestration** | LangGraph & LangChain | Cyclic state graph, conditional edges, & conversational routing |
-| **LLMs & Gateway** | Groq (`openai/gpt-oss-120b`, `qwen/qwen3.8-27b`) via **Portkey / LiteLLM** | High-throughput generation with automatic secondary key fallback |
+| **LLMs & Gateway** | Groq (`openai/gpt-oss-120b`, `qwen/qwen3.8-27b`) via **Portkey / LiteLLM** | High-throughput generation with Tenacity retry resilience |
 | **Safety Guardrails** | NVIDIA NeMo Guardrails & Single-Call Guard | Prompt injection, jailbreak, and off-topic defense with fail-closed JSON repair |
 | **Vector DB** | Qdrant Cloud | Native hybrid search: dense vectors + sparse lexical BM25 (RRF fusion) |
 | **Embeddings** | Gemini (`gemini-embedding-2-preview`) or `all-mpnet-base-v2` + FastEmbed BM25 | 3072-dim or 768-dim dense embeddings + sparse lexical vectors |
@@ -111,7 +111,6 @@ Create a `.env` file in the root directory (refer to [DOCS/05_ENVIRONMENT_VARIAB
 ```env
 # Groq Reasoning Engine & Responder
 GROQ_API_KEY="gsk_..."
-GROQ_FALLBACK_API_KEY="gsk_..."        # Secondary key for automatic failover
 GROQ_MODEL="qwen/qwen3.8-27b"          # Demo responder model (or "openai/gpt-oss-120b")
 
 # Guardrail Configuration ("single_call" [default] or "nemo")
@@ -206,9 +205,11 @@ The TrustRAG interactive UI provides grounded question answering, numbered sourc
    - Request-based capacity: assumes 2 requests/turn in `GUARD_MODE=single_call` yielding **500.0 turns/day** vs **250.0 turns/day** for NeMo (4 requests/turn).
    - Token-based capacity: assumes 200k tokens/day; not measured for this model. single_call consumes 1,259.8 tokens/turn (**158.8 turns/day**) vs 3,014.2 tokens/turn for multi-step NeMo (**66.4 turns/day**).
 4. **Development Set Evaluations & Model Identification**:
-   - **37-Question App Eval (Dev Set)**: Evaluated across `tinybert`, `rrf`, and `fusion` on `openai/gpt-oss-120b` (responder & single-call guard). Achieved 100% retrieval invocation (37/37) with 0 ungrounded answers.
-   - **22-Case Guardrail Eval (Dev Set)**: Evaluated on `openai/gpt-oss-120b` across 7 domain queries and 15 adversarial attacks (100% accuracy).
-   - **Guardrail Findings & Root Cause for G03 & H19**: In 10-trial benchmark runs at temperature 0, the original `single_call` implementation set `max_tokens=40`, causing `openai/gpt-oss-120b`'s reasoning/thought tokens to exceed the completion limit and return empty output `""` (10/10 runs returning `None`, failing closed as blocked). Increasing completion limit to `max_tokens=150` and expanding system prompt scope to explicitly include Redis work queues and Kubernetes scheduler/policy engines resolved the issue (10/10 allow for both G03 and H19).
+   - **Multi-Mode App Retrieval Eval (`evals/results/app_retrieval_modes_eval.json`)**: Evaluated across `tinybert`, `rrf`, and `fusion`. Recorded model in artifact: `server_runtime_config.GROQ_MODEL: 'openai/gpt-oss-120b'`, `server_runtime_config.GUARDRAIL_MODEL: 'openai/gpt-oss-120b'`, and per-case `model_used: 'openai/gpt-oss-120b'`. Achieved 100% retrieval invocation (37/37) with 0 ungrounded answers.
+   - **37-Question App Routing Eval (`evals/results/routing_evaluation.json`)**: Evaluated via live `/query` endpoint. Model: model not recorded in the artifact.
+   - **22-Case Guardrail Eval (`evals/results/single_call_accuracy.json`)**: Model: model not recorded in the artifact (evaluated with configured `GUARD_MODE=single_call`).
+   - **Guardrail Tokens Measurement (`evals/results/token_measurement.json`)**: Model: model not recorded in the artifact (measured across 5 real `/query` turns comparing `single_call` vs `nemo`).
+   - **Guardrail Findings & Root Cause for G03 & H19**: In exploratory benchmark runs on `openai/gpt-oss-120b` at temperature 0, an earlier `single_call` prototype set `max_tokens=40`, causing reasoning/thought tokens to exceed the completion limit and return empty output `""` (failing closed as blocked). Increasing completion limit to `max_tokens=150` and expanding system prompt scope to explicitly include Redis work queues and Kubernetes scheduler/policy engines resolved the issue.
 5. **Retrieval Limitation (H03/H04 on TinyBERT)**: Default `RETRIEVAL_MODE=tinybert` fails H03 and H04 because the cross-encoder reranker scores the target sections below top-5 despite vector retrieval finding them. `RETRIEVAL_MODE=rrf` or `RETRIEVAL_MODE=fusion` are recommended pending held-out evaluation.
 6. **NeMo Intent Classification Limitation with Instruction Models**: In NVIDIA NeMo Guardrails (`GUARD_MODE=nemo`), input classification prompts the underlying model via few-shot examples to output an exact intent tag (e.g. `attempt jailbreak`). Smaller instruction-tuned models (such as `qwen/qwen3.8-27b`) frequently emit conversational refusal text directly (e.g. `"I cannot fulfill that request..."`) rather than the intent label string. NeMo interprets this conversational response as an unrecognized user intent, which bypasses the Colang `jailbreak protection` flow and results in the guard failing open if downstream checks do not intercept it. For this reason, `GUARD_MODE=single_call` is configured as the production default; it enforces a strict JSON schema (`{"decision": "block", "reason": "jailbreak"}`) with deterministic Pydantic validation and strict fail-closed fallbacks.
 

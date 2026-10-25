@@ -11,7 +11,10 @@ if hasattr(sys.stderr, "reconfigure"):
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from app.guardrails.single_call import evaluate_single_call_guard
+import hashlib
+import subprocess
+from app.guardrails.single_call import evaluate_single_call_guard, SINGLE_CALL_SYSTEM_PROMPT
+from app.config import settings
 
 import argparse
 
@@ -26,8 +29,19 @@ base_name = os.path.splitext(os.path.basename(INPUT_DATASET))[0]
 JSON_OUT = f"evals/results/{base_name}_accuracy.json" if is_custom_dataset else "evals/results/single_call_accuracy.json"
 TXT_OUT = f"evals/results/{base_name}_accuracy.txt" if is_custom_dataset else "evals/results/single_call_accuracy.txt"
 
-with open(INPUT_DATASET, "r", encoding="utf-8") as f:
-    cases = json.load(f)
+with open(INPUT_DATASET, "rb") as df:
+    dataset_bytes = df.read()
+    cases = json.loads(dataset_bytes.decode("utf-8"))
+    dataset_sha = hashlib.sha256(dataset_bytes).hexdigest()[:12]
+
+prompt_sha = hashlib.sha256(SINGLE_CALL_SYSTEM_PROMPT.encode("utf-8")).hexdigest()[:12]
+
+try:
+    git_commit = subprocess.check_output(["git", "rev-parse", "--short", "HEAD"], text=True).strip()
+except Exception:
+    git_commit = "unknown"
+
+guard_model = getattr(settings, "GUARDRAIL_MODEL", "openai/gpt-oss-20b")
 
 print(f"Evaluating {len(cases)} cases from '{INPUT_DATASET}' on single_call guard...")
 
@@ -42,10 +56,13 @@ out_lines = []
 out_lines.append("================================================================================")
 out_lines.append("TASK B: SINGLE-CALL GUARD ACCURACY EVALUATION (dev set, not an unbiased estimate)")
 out_lines.append("================================================================================")
-out_lines.append(f"Dataset File: {INPUT_DATASET}")
-out_lines.append(f"Total Cases:  {len(cases)}")
-out_lines.append(f"Scope Label:  dev set, not an unbiased estimate")
-out_lines.append(f"Prompt Version: Run 1 (Initial System Prompt - no post-result tuning)")
+out_lines.append(f"Dataset File:   {INPUT_DATASET}")
+out_lines.append(f"Total Cases:    {len(cases)}")
+out_lines.append(f"Dataset SHA256: {dataset_sha}")
+out_lines.append(f"Prompt SHA256:  {prompt_sha}")
+out_lines.append(f"Git Commit:     {git_commit}")
+out_lines.append(f"Guard Model:    {guard_model}")
+out_lines.append(f"Scope Label:    dev set, not an unbiased estimate")
 out_lines.append("")
 
 out_lines.append(f"{'ID':<5} | {'Type':<12} | {'Exp Blocked':<11} | {'Guard Status':<17} | {'Decision':<8} | {'Reason':<14} | {'Match?':<6}")
@@ -134,6 +151,8 @@ with open(TXT_OUT, "w", encoding="utf-8") as f:
 json_payload = {
     "script": "scripts/run_single_call_accuracy.py",
     "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
+    "guard_model": getattr(settings, "GUARDRAIL_MODEL", "openai/gpt-oss-20b"),
+    "responder_model": getattr(settings, "GROQ_MODEL", "qwen/qwen3.8-27b"),
     "total_cases": len(cases),
     "infra_count": infra_count,
     "non_infra_total": non_infra_total,
