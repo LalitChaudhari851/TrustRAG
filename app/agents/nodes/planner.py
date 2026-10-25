@@ -14,7 +14,13 @@ CHITCHAT_EXACT = {
     "bye", "goodbye", "see you", "see ya", "cya",
     "ok", "okay", "sure", "got it", "cool", "understood", "k",
     "who are you", "what are you", "what can you do", "what do you do",
-    "who made you", "what is your name", "help"
+    "who made you", "what is your name", "help",
+    "hello there", "hi there", "hey there", "good day"
+}
+
+ALLOWED_GREETING_TOKENS = {
+    "hi", "hello", "hey", "howdy", "greetings", "there", "everyone", "all",
+    "friend", "assistant", "bot", "team"
 }
 
 TECH_KEYWORDS = {
@@ -30,7 +36,7 @@ def is_pure_chitchat(text: str) -> bool:
     """
     Rule-based deterministic pre-router.
     Returns True ONLY if the text is an exact/near-exact social chitchat or meta-conversation query.
-    All technical, infrastructure, code, or command questions return False.
+    All technical, infrastructure, code, command, or non-greeting words return False.
     """
     if not text:
         return True
@@ -40,7 +46,9 @@ def is_pure_chitchat(text: str) -> bool:
         return True
     words = cleaned.split()
     if len(words) <= 3 and any(w in {"hi", "hello", "hey"} for w in words):
-        if not any(w in TECH_KEYWORDS for w in words):
+        # Only permit if ALL words in the phrase are recognized harmless greeting tokens
+        # and none are technical keywords (e.g. 'hello there' is allowed, 'hi bypass rules' is rejected)
+        if all(w in ALLOWED_GREETING_TOKENS for w in words) and not any(w in TECH_KEYWORDS for w in words):
             return True
     return False
 

@@ -73,6 +73,51 @@ def test_benchmark_v2_category_distribution():
     assert decision_counts["allow"] == 12, f"Expected 12 allow cases, found {decision_counts['allow']}"
 
 
+def test_benchmark_v3_dataset_schema_and_distribution():
+    """Validates the expanded benchmark v3 dataset (50 cases, 10 categories, 70/30 split, severity & split tags)."""
+    v3_path = Path("evals/data/guardrails_benchmark_v3.json")
+    assert v3_path.exists(), f"Benchmark v3 file missing at: {v3_path}"
+
+    with open(v3_path, "r", encoding="utf-8") as f:
+        cases = json.load(f)
+
+    assert len(cases) == 50, f"Expected exactly 50 cases in benchmark v3, found {len(cases)}"
+
+    seen_ids = set()
+    category_counts = {}
+    decision_counts = {"allow": 0, "block": 0}
+    split_counts = {"dev": 0, "test": 0}
+
+    for c in cases:
+        assert "id" in c and c["id"], f"Case missing 'id': {c}"
+        assert c["id"] not in seen_ids, f"Duplicate ID: {c['id']}"
+        seen_ids.add(c["id"])
+
+        assert "category" in c and c["category"]
+        assert "input" in c and c["input"].strip(), f"Empty input for {c['id']}"
+        assert c["expected_decision"] in ("allow", "block")
+        assert c["expected_reason"] in ("jailbreak", "injection", "unsafe_request", "off_topic", "none")
+        assert "rationale" in c and c["rationale"]
+        assert "limitations" in c and c["limitations"]
+        assert c.get("severity") in ("CRITICAL", "HIGH", "MEDIUM", "LOW", "BENIGN")
+        assert c.get("split") in ("dev", "test")
+        assert c.get("dataset_label") == "dev set (agent-visible); split into dev/test is not independent"
+        assert "label_history" in c and isinstance(c["label_history"], list) and len(c["label_history"]) > 0
+
+        category_counts[c["category"]] = category_counts.get(c["category"], 0) + 1
+        decision_counts[c["expected_decision"]] += 1
+        split_counts[c["split"]] += 1
+
+    assert len(category_counts) == 10, f"Expected 10 categories, found {len(category_counts)}"
+    for cat, count in category_counts.items():
+        assert count == 5, f"Category '{cat}' should have exactly 5 cases in v3, found {count}"
+
+    assert decision_counts["block"] == 35, f"Expected 35 block cases (70%), found {decision_counts['block']}"
+    assert decision_counts["allow"] == 15, f"Expected 15 allow cases (30%), found {decision_counts['allow']}"
+    assert split_counts["dev"] == 30, f"Expected 30 dev cases, found {split_counts['dev']}"
+    assert split_counts["test"] == 20, f"Expected 20 test cases, found {split_counts['test']}"
+
+
 # ==============================================================================
 # 2. Classifier Parsing Robustness & Fail-Closed Invariants
 # ==============================================================================

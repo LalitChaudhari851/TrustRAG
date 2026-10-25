@@ -62,7 +62,17 @@ def check_models_availability():
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup: Validate models against provider, initialize rails, warm up embeddings, checkpointer & feedback DB
+    # Startup: Log guard configuration and validate models against provider
+    CODE_DEFAULT_GUARD_MODE = "single_call"
+    active_guard_mode = getattr(settings, "GUARD_MODE", "single_call")
+    active_guard_model = getattr(settings, "GUARDRAIL_MODEL", "openai/gpt-oss-20b")
+    logfire.info(
+        f"🛡️ Startup Guardrail Config: GUARD_MODE='{active_guard_mode}', GUARDRAIL_MODEL='{active_guard_model}'"
+    )
+    if active_guard_mode != CODE_DEFAULT_GUARD_MODE:
+        logfire.warning(
+            f"⚠️ Active GUARD_MODE '{active_guard_mode}' differs from code default '{CODE_DEFAULT_GUARD_MODE}'"
+        )
     app.state.model_check = check_models_availability()
     initialize_rails()
     init_embeddings()
@@ -126,6 +136,7 @@ def get_server_config():
     return {
         "GROQ_MODEL": settings.GROQ_MODEL,
         "GUARD_MODE": settings.GUARD_MODE,
+        "code_default_guard_mode": "single_call",
         "GUARDRAIL_MODEL": settings.GUARDRAIL_MODEL,
         "guard_model_used": get_active_guard_model(),
         "RETRIEVAL_MODE": settings.RETRIEVAL_MODE,

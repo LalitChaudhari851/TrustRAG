@@ -98,6 +98,18 @@ def record_feedback(message_id: str, rating: str, comment: str = ""):
         pass  # Non-critical – don't block UI
 
 
+@st.cache_data(ttl=60)
+def fetch_server_config() -> dict:
+    """Fetch live server config from backend for runtime transparency."""
+    try:
+        resp = requests.get(f"{BASE_URL}/config", timeout=2)
+        if resp.status_code == 200:
+            return resp.json()
+    except Exception:
+        pass
+    return {}
+
+
 # ---------------------------------------------------------------------------
 # Citation marker helper (Point 5)
 # ---------------------------------------------------------------------------
@@ -320,8 +332,13 @@ for idx, message in enumerate(st.session_state.messages):
                 with c4:
                     st.metric("Retrieval", message.get("retrieval_mode") or "—")
 
+                srv_cfg = fetch_server_config()
+                guard_mode_val = message.get("guard_mode") or srv_cfg.get("GUARD_MODE") or "—"
+                guard_model_val = message.get("guard_model_used") or srv_cfg.get("GUARDRAIL_MODEL") or "—"
+
                 st.markdown(f"**Thread ID:** `{st.session_state.session_id}`")
-                st.markdown(f"**Guard Model:** `{message.get('guard_model_used') or '—'}`")
+                st.markdown(f"**Guard Mode:** `{guard_mode_val}`")
+                st.markdown(f"**Guard Model:** `{guard_model_val}`")
 
                 thought = message.get("thought_process", [])
                 if thought:
@@ -460,6 +477,7 @@ if user_query:
                                     "message_id", meta["message_id"]
                                 )
                                 meta["model_used"] = data.get("model_used")
+                                meta["guard_mode"] = data.get("guard_mode")
                                 meta["guard_model_used"] = data.get("guard_model_used")
                                 meta["retrieval_mode"] = data.get("retrieval_mode")
                                 meta["latency_ms"] = data.get("latency_ms")
@@ -499,6 +517,7 @@ if user_query:
                 meta["sources"] = data.get("sources", [])
                 thought_process = data.get("thought_process", [])
                 meta["model_used"] = data.get("model_used")
+                meta["guard_mode"] = data.get("guard_mode")
                 meta["guard_model_used"] = data.get("guard_model_used")
                 meta["retrieval_mode"] = data.get("retrieval_mode")
                 meta["latency_ms"] = int((time.perf_counter() - start_time) * 1000)

@@ -69,6 +69,7 @@ def execute_rag_pipeline(
                 "sources": [],
                 "retrieval_mode": mode_used,
                 "model_used": None,
+                "guard_mode": getattr(settings, "GUARD_MODE", "single_call"),
                 "guard_model_used": guard_model_used,
             }
 
@@ -132,6 +133,7 @@ USER QUESTION:
                 "sources": [],
                 "retrieval_mode": mode_used,
                 "model_used": None,
+                "guard_mode": getattr(settings, "GUARD_MODE", "single_call"),
                 "guard_model_used": guard_model_used,
             }
 
@@ -179,6 +181,7 @@ USER QUESTION:
             "sources": sources_list,
             "retrieval_mode": mode_used,
             "model_used": model_returned,
+            "guard_mode": getattr(settings, "GUARD_MODE", "single_call"),
             "guard_model_used": guard_model_used,
         }
 
@@ -209,6 +212,7 @@ USER QUESTION:
                 "message_id": asst_msg_id,
                 "status": "blocked_by_guardrails",
                 "model_used": None,
+                "guard_mode": getattr(settings, "GUARD_MODE", "single_call"),
                 "guard_model_used": guard_model_used,
                 "retrieval_mode": mode_used,
                 "latency_ms": latency_ms,
@@ -267,6 +271,7 @@ LATEST MESSAGE:
             yield ("done", {
                 "message_id": asst_msg_id,
                 "model_used": model_used,
+                "guard_mode": getattr(settings, "GUARD_MODE", "single_call"),
                 "guard_model_used": guard_model_used,
                 "retrieval_mode": mode_used,
                 "latency_ms": latency_ms,
@@ -389,6 +394,7 @@ USER QUESTION:
         yield ("done", {
             "message_id": asst_msg_id,
             "model_used": model_used,
+            "guard_mode": getattr(settings, "GUARD_MODE", "single_call"),
             "guard_model_used": guard_model_used,
             "retrieval_mode": mode_used,
             "latency_ms": latency_ms,

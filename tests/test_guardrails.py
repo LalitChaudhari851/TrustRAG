@@ -23,10 +23,12 @@ def mock_rails_singleton(monkeypatch):
 
 
 def test_guardrails_clean_pass(mock_rails_singleton):
-    """Clean technical question passes with (False, None)."""
+    """Clean technical question passes with (False, None) under explicit positive allow contract."""
+    mock_rail = MagicMock()
+    mock_rail.name = "handle technical"
     mock_result = MagicMock()
-    mock_result.response = [{"content": "Kubernetes pods are the smallest deployable units."}]
-    mock_result.log.activated_rails = []
+    mock_result.response = [{"content": "[GUARDRAIL_ALLOWED: technical] Kubernetes pods are the smallest deployable units."}]
+    mock_result.log.activated_rails = [mock_rail]
     mock_rails_singleton.generate.return_value = mock_result
 
     blocked, response = guard("How do pods scale in Kubernetes?")

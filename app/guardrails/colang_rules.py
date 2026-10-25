@@ -3,10 +3,52 @@
 # off-topic + jailbreak rails stacked with dialog rails (greeting/farewell/capabilities).
 from app.config import settings
 
-# Structured marker prefix used as secondary fallback
+# Structured marker prefixes used for explicit policy confirmation
 BLOCKED_MARKER = "[GUARDRAIL_BLOCKED:"
+ALLOWED_MARKER = "[GUARDRAIL_ALLOWED:"
+
+# Explicit sets for authoritative NeMo flow matching
+ALLOWED_FLOWS = {
+    "handle technical",
+    "permit technical",
+    "greeting",
+    "capabilities",
+    "farewell",
+}
+
+BLOCKED_FLOWS = {
+    "handle off topic",
+    "jailbreak protection",
+    "refuse off topic",
+    "refuse jailbreak",
+}
 
 COLANG_CONTENT = """
+define user ask technical
+  "how does kubernetes scheduler work"
+  "what is redis replication"
+  "how to configure databricks cluster"
+  "explain c++ virtual memory"
+  "how to deploy a pod in k8s"
+  "what is bgp routing"
+  "explain linux kernel syscalls"
+  "how does tinybert reranker work"
+  "what are redis work queues"
+  "explain database storage engine"
+  "how to optimize sql query"
+  "what is zero trust architecture"
+  "explain container network interface"
+  "how does compiler optimization work"
+  "what is kubernetes horizontal pod autoscaling"
+
+define bot permit technical
+  "[GUARDRAIL_ALLOWED: technical] Query is within enterprise technical scope."
+
+define flow handle technical
+  user ask technical
+  bot permit technical
+
+
 define user ask off topic
   "tell me something funny"
   "write a song about cats"

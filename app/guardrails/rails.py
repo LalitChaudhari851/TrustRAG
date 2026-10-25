@@ -7,7 +7,15 @@ from nemoguardrails.rails.llm.options import GenerationOptions
 from tenacity import retry, stop_after_attempt, wait_random_exponential, retry_if_exception
 
 from app.config import settings
-from app.guardrails.colang_rules import COLANG_CONTENT, YAML_CONTENT, RAIL_INDICATORS, BLOCKED_MARKER
+from app.guardrails.colang_rules import (
+    COLANG_CONTENT,
+    YAML_CONTENT,
+    RAIL_INDICATORS,
+    BLOCKED_MARKER,
+    ALLOWED_MARKER,
+    ALLOWED_FLOWS,
+    BLOCKED_FLOWS,
+)
 from app.gateway.client import is_retryable_exception, tenacity_wait_with_retry_after, log_retry_attempt
 
 _rails: LLMRails | None = None
@@ -26,7 +34,8 @@ def initialize_rails() -> None:
     """
     global _rails
 
-    if getattr(settings, "GUARD_MODE", "nemo").lower() == "single_call":
+    mode = getattr(settings, "GUARD_MODE", "single_call").lower()
+    if mode == "single_call":
         logfire.info("🛡️ single_call Guardrails mode active — NeMo startup bypassed.")
         return
 
@@ -91,68 +100,138 @@ def _generate_rails_response(message: str) -> Tuple[str, list]:
 def _clean_user_message(content: str) -> str:
     """Strip any internal markers (e.g. [GUARDRAIL_BLOCKED: reason]) before showing to user."""
     cleaned = re.sub(r"\[GUARDRAIL_BLOCKED:[^\]]+\]\s*", "", content)
+    cleaned = re.sub(r"\[GUARDRAIL_ALLOWED:[^\]]+\]\s*", "", cleaned)
     return cleaned.strip()
+
+
+def evaluate_nemo_guard(message: str) -> dict:
+    """
+    Evaluates NeMo Guardrails against an explicit positive allow contract.
+    Returns structured dict:
+      - status: 'PASSED' | 'BLOCKED' | 'INFRA_UNAVAILABLE' | 'INVALID_DECISION'
+      - decision: 'allow' | 'block' | 'infra_unavailable' | 'invalid_decision'
+      - reason: 'none' | 'off_topic' | 'jailbreak' | 'nemo_refusal' | 'nemo_rail' | 'unrecognized_intent' | 'infra_error'
+      - response_text: user-facing refusal text or None
+      - model_used: str
+      - activated_rails: list[str]
+    """
+    from app.guardrails.single_call import DEFAULT_BLOCK_MESSAGE
+
+    if _rails is None:
+        logfire.warning("⚠️ NeMo Guardrails not initialised — failing closed for safety.")
+        return {
+            "status": "INFRA_UNAVAILABLE",
+            "decision": "infra_unavailable",
+            "reason": "infra_uninitialized",
+            "response_text": INFRA_UNAVAILABLE_MESSAGE,
+            "model_used": settings.GUARDRAIL_MODEL,
+            "activated_rails": [],
+        }
+
+    with logfire.span("🛡️ NeMo Guardrails Check"):
+        try:
+            content, activated = _generate_rails_response(message)
+        except Exception as e:
+            logfire.error(f"❌ NeMo evaluation infra failure after retries: {e}")
+            return {
+                "status": "INFRA_UNAVAILABLE",
+                "decision": "infra_unavailable",
+                "reason": "infra_error",
+                "response_text": INFRA_UNAVAILABLE_MESSAGE,
+                "model_used": settings.GUARDRAIL_MODEL,
+                "activated_rails": [],
+            }
+
+        rail_names = [getattr(r, "name", str(r)).lower() for r in activated]
+        raw_content = (content or "").strip()
+        logfire.info(f"🛡️ NeMo Raw Output: '{raw_content}' | activated_rails={rail_names}")
+
+        # 1. Primary Signal: Blocking flow or blocked marker injected
+        has_blocked_rail = any(
+            r in BLOCKED_FLOWS or "refuse" in r or "jailbreak" in r or "off topic" in r
+            for r in rail_names
+        )
+        has_blocked_marker = BLOCKED_MARKER in raw_content
+
+        if has_blocked_rail or has_blocked_marker:
+            reason = "jailbreak" if ("jailbreak" in raw_content or any("jailbreak" in r for r in rail_names)) else "off_topic"
+            cleaned_reply = _clean_user_message(raw_content) or DEFAULT_BLOCK_MESSAGE
+            logfire.info(f"🛡️ NeMo explicitly blocked request | reason={reason}")
+            return {
+                "status": "BLOCKED",
+                "decision": "block",
+                "reason": reason,
+                "response_text": cleaned_reply,
+                "model_used": settings.GUARDRAIL_MODEL,
+                "activated_rails": rail_names,
+            }
+
+        # 2. Refusal Detection Signal: Model conversational refusal / indicators
+        is_nemo_fallback = raw_content.lower() == "i'm sorry, i can't respond to that."
+        has_refusal_indicator = any(ind.lower() in raw_content.lower() for ind in RAIL_INDICATORS)
+
+        if is_nemo_fallback or has_refusal_indicator:
+            logfire.info(f"🛡️ NeMo model conversational refusal detected | indicators={has_refusal_indicator}")
+            return {
+                "status": "BLOCKED",
+                "decision": "block",
+                "reason": "nemo_refusal",
+                "response_text": DEFAULT_BLOCK_MESSAGE,
+                "model_used": settings.GUARDRAIL_MODEL,
+                "activated_rails": rail_names,
+            }
+
+        # 3. Authoritative Explicit Allow Contract:
+        # Requires positive confirmation of an allowed technical or dialog flow OR explicit allow marker
+        has_allowed_marker = ALLOWED_MARKER in raw_content
+        has_allowed_rail = any(
+            r in ALLOWED_FLOWS or "permit" in r or "technical" in r
+            for r in rail_names
+        )
+
+        if has_allowed_marker or has_allowed_rail:
+            logfire.info("✅ NeMo explicitly allowed request.")
+            return {
+                "status": "PASSED",
+                "decision": "allow",
+                "reason": "none",
+                "response_text": None,
+                "model_used": settings.GUARDRAIL_MODEL,
+                "activated_rails": rail_names,
+            }
+
+        # 4. Fail-Closed on Unrecognized / Ambiguous Output:
+        # If NeMo neither matched an allowed flow/marker nor cleanly blocked, it cannot be trusted to allow.
+        logfire.warning(f"⚠️ NeMo returned unrecognized output without explicit allow/block. Failing closed: '{raw_content[:80]}'")
+        return {
+            "status": "BLOCKED",
+            "decision": "invalid_decision",
+            "reason": "unrecognized_intent",
+            "response_text": DEFAULT_BLOCK_MESSAGE,
+            "model_used": settings.GUARDRAIL_MODEL,
+            "activated_rails": rail_names,
+        }
+
+
+def guard_nemo(message: str):
+    """Drop-in GuardResult wrapper for NeMo Guardrails."""
+    from app.guardrails.single_call import GuardResult, DEFAULT_BLOCK_MESSAGE
+    res = evaluate_nemo_guard(message)
+    if res["decision"] == "allow":
+        return GuardResult(False, None, res.get("model_used"), "none")
+    return GuardResult(
+        True,
+        res.get("response_text") or DEFAULT_BLOCK_MESSAGE,
+        res.get("model_used"),
+        res.get("reason"),
+    )
 
 
 def guard(message: str) -> tuple[bool, str | None]:
     """
-    Run a user message through the guardrails gate.
-    Routes to single_call or NeMo according to settings.GUARD_MODE.
-
-    Returns:
-        (True,  rail_response) — a rail fired or infra error; return this response immediately,
-                                skip the RAG pipeline entirely (Fail Closed).
-        (False, None)          — message is clean; proceed to LangGraph.
+    Centralized dispatcher: routes to orchestrator.guard(message).
+    Preserves 100% backward compatibility for all callers and tests.
     """
-    from app.guardrails.single_call import GuardResult
-
-    if getattr(settings, "GUARD_MODE", "single_call").lower() == "single_call":
-        from app.guardrails.single_call import guard_single_call
-        return guard_single_call(message)
-
-    if _rails is None:
-        logfire.warning("⚠️ Guardrails not initialised — failing closed for safety.")
-        return GuardResult(True, INFRA_UNAVAILABLE_MESSAGE, settings.GUARDRAIL_MODEL, "infra_uninitialized")
-
-    with logfire.span("🛡️ Guardrails Check"):
-        try:
-            content, activated = _generate_rails_response(message)
-        except Exception as e:
-            # Case B: Infrastructure / rate limit failure after retries
-            logfire.error(f"❌ Guardrail evaluation infra failure after retries: {e}")
-            # Fail closed with distinct message (do NOT pass through, do NOT fake policy refusal)
-            return GuardResult(True, INFRA_UNAVAILABLE_MESSAGE, settings.GUARDRAIL_MODEL, "infra_error")
-
-        # Log activated_rails and raw rail output for auditing
-        rail_names = [getattr(r, "name", str(r)).lower() for r in activated]
-        logfire.info(f"🛡️ NeMo Raw Output: '{content}' | activated_rails={rail_names}")
-
-        # Primary Signal: Check activated rails log for blocking flow
-        # In Colang, blocking flows are named 'handle off topic' or 'jailbreak protection',
-        # and their bot actions are 'refuse off topic' or 'refuse jailbreak'.
-        has_blocked_rail = any(
-            r in ("handle off topic", "jailbreak protection", "refuse off topic", "refuse jailbreak")
-            or "refuse" in r
-            for r in rail_names
-        )
-
-        # Secondary Signal: Structured marker prefix explicitly injected by our bot refusal actions
-        has_marker = BLOCKED_MARKER in content
-
-        # Tertiary Signal: NeMo built-in safety fallback refusal
-        # When NeMo's LLM detects an off-topic or safety violation that doesn't cleanly match
-        # a Colang flow, it produces its built-in fallback: "I'm sorry, I can't respond to that."
-        # This is an EXACT match check, NOT a broad substring match, preventing false positives on legitimate queries.
-        is_nemo_fallback = content.strip().lower() == "i'm sorry, i can't respond to that."
-
-        if has_blocked_rail or has_marker or is_nemo_fallback:
-            cleaned_reply = _clean_user_message(content)
-            if not cleaned_reply or is_nemo_fallback:
-                from app.guardrails.single_call import DEFAULT_BLOCK_MESSAGE
-                cleaned_reply = DEFAULT_BLOCK_MESSAGE
-            logfire.info(f"🛡️ Guardrails fired (blocked) | query='{message[:80]}'")
-            return GuardResult(True, cleaned_reply, settings.GUARDRAIL_MODEL, "nemo_rail")
-
-        logfire.info("✅ Guardrails passed.")
-        return GuardResult(False, None, settings.GUARDRAIL_MODEL, "none")
+    from app.guardrails.orchestrator import guard as orchestrator_guard
+    return orchestrator_guard(message)
 

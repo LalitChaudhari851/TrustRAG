@@ -113,10 +113,20 @@ Create a `.env` file in the root directory (refer to [DOCS/05_ENVIRONMENT_VARIAB
 GROQ_API_KEY="gsk_..."
 GROQ_MODEL="qwen/qwen3.8-27b"          # Demo responder model (or "openai/gpt-oss-120b")
 
-# Guardrail Configuration ("single_call" [default] or "nemo")
+# Guardrail Configuration ("single_call" [default], "nemo", or "combined")
 GUARD_MODE="single_call"
 GUARDRAIL_MODEL="openai/gpt-oss-20b"   # Dedicated guardrail model verified on Groq
+```
 
+> [!NOTE]
+> **Guardrail Enforcement Modes (`GUARD_MODE`):**
+> - `single_call` (**Default / Baseline**): Fast single-turn structured JSON guard with automated repair and strict fail-closed safety.
+> - `nemo`: NVIDIA NeMo Guardrails multi-step Colang flow adapter with explicit positive allow verification.
+> - `combined` (**Opt-in Defense in Depth**): Sequential execution enforcing strict AND semantics (Stage 1 `single_call` -> Stage 2 `nemo`). Short-circuits immediately if Stage 1 blocks or errors.
+> - **Combined Mode Cost**: Running in `combined` mode costs roughly Stage-1 tokens plus NeMo's multi-call dialog tokens; the exact live token overhead is **not measured** in offline evaluation.
+> - **Greeting Guard Overhead**: Every message (including conversational greetings such as "hi") passes through Gate 1 guardrails first to guarantee prompt-injection resistance before reaching the chitchat generator, incurring guard model tokens on greetings.
+
+```env
 # Retrieval & Routing
 RETRIEVAL_MODE="rrf"                   # "tinybert", "rrf", or "fusion"
 QUERY_REWRITE="followup_only"          # "followup_only" or "always"
