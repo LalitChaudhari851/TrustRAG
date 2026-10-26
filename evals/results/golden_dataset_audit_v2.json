@@ -1,0 +1,403 @@
+{
+  "dataset_path": "evals/data/retrieval_golden_seed_v1.json",
+  "total_records": 50,
+  "corpus_unique_chunks": 197,
+  "dataset_candidate_chunk_ids": 35,
+  "qdrant_verification": {
+    "checked": true,
+    "total": 35,
+    "found": 35,
+    "missing": [],
+    "collection": "enterprise_rag_v2",
+    "error": null
+  },
+  "findings_count": {
+    "definite_errors": 0,
+    "suspected_issues": 63,
+    "items_requiring_human_review": 50,
+    "potential_semantic_duplicates": 0
+  },
+  "definite_errors": [],
+  "suspected_issues": [
+    {
+      "record_id": "seed_004",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk '134fb45c-5ffa-5fd2-b5b8-02c405f097d9'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_005",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk '1c470929-b8ba-52dc-afd7-ff41adcd2672'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_006",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk '81a4f786-ef7a-52e5-9af0-339d7dd76240'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_007",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk 'dd8b3b09-eaf6-59dd-b6d3-1844d69b8901'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_008",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk '28cb15bb-064d-5f01-a0fc-0b0c718ed336'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_009",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk 'c0f1220e-829c-50f0-bf0d-2e48be167355'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_010",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk '6abf9610-2c0e-589b-b750-9721ae48209d'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_012",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk 'acb1333f-abc9-5354-aefd-d1c7e5363ac7'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_013",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk 'ae33514d-f6dd-5196-88fb-5c2bdfd486ca'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_014",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk '6d56e8c5-bbe7-5b5c-bfc9-d70f78860f8a'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_015",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk 'd7ffbe9f-96d5-5b67-97a6-f427a438db9f'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_017",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk 'b78e305c-b8e8-5dbb-83c5-1c82aa074a81'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_018",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk '162d277b-bab0-5ec4-8394-8c2d4e995485'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_021",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk '035b47c7-23b2-50c0-ba48-3fc7c1618743'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_022",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk '978f78e6-b72f-5e0e-b3f5-02537347e6f9'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_023",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk '0caf42f8-acd1-5ba1-a3cb-cfb255ec39d0'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_024",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk '641b2b5f-33d3-5c99-9bdf-73aaa6b5c7a0'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_025",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk '951973ef-00b5-56e7-b8f5-fd4e902592a5'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_026",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk 'a0679ae4-768b-5707-ab7e-5d2c4c497374'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_027",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk '3b74d3dc-cc5e-5278-86f6-e8f62f11bbfb'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_028",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk '970d2701-aab8-5f97-902b-438917febcf0'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_029",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk 'f8f23e79-1072-5d9e-a18e-48335d357ab2'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_030",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk '65050403-7244-5c49-9ec2-4f8e52cc101e'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_031",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [2] is not an exact substring of chunk 'd731bfd3-be36-57c0-827f-d1c85339dac3'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_031",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk '38bfbdef-fa3f-542a-b5c0-6f739d9004cc'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_031",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk '83358e9c-431c-51b4-97e8-baacb2d11344'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_031",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [2] is not an exact substring of chunk '83358e9c-431c-51b4-97e8-baacb2d11344'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_032",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [2] is not an exact substring of chunk '134fb45c-5ffa-5fd2-b5b8-02c405f097d9'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_032",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk '81a4f786-ef7a-52e5-9af0-339d7dd76240'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_032",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [2] is not an exact substring of chunk '81a4f786-ef7a-52e5-9af0-339d7dd76240'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_033",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk 'dd8b3b09-eaf6-59dd-b6d3-1844d69b8901'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_033",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [2] is not an exact substring of chunk 'dd8b3b09-eaf6-59dd-b6d3-1844d69b8901'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_033",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk '28cb15bb-064d-5f01-a0fc-0b0c718ed336'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_033",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [2] is not an exact substring of chunk '28cb15bb-064d-5f01-a0fc-0b0c718ed336'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_034",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [2] is not an exact substring of chunk 'c0f1220e-829c-50f0-bf0d-2e48be167355'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_034",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk '6abf9610-2c0e-589b-b750-9721ae48209d'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_034",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [2] is not an exact substring of chunk '6abf9610-2c0e-589b-b750-9721ae48209d'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_034",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk '4c8a8363-c0ff-51a5-8d81-3a2451d86e18'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_034",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [2] is not an exact substring of chunk '4c8a8363-c0ff-51a5-8d81-3a2451d86e18'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_035",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk 'a0679ae4-768b-5707-ab7e-5d2c4c497374'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_035",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [2] is not an exact substring of chunk 'a0679ae4-768b-5707-ab7e-5d2c4c497374'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_035",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk '6d56e8c5-bbe7-5b5c-bfc9-d70f78860f8a'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_035",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [2] is not an exact substring of chunk '6d56e8c5-bbe7-5b5c-bfc9-d70f78860f8a'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_035",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk 'acb1333f-abc9-5354-aefd-d1c7e5363ac7'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_035",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [2] is not an exact substring of chunk 'acb1333f-abc9-5354-aefd-d1c7e5363ac7'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_036",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk 'b78e305c-b8e8-5dbb-83c5-1c82aa074a81'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_036",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [2] is not an exact substring of chunk 'b78e305c-b8e8-5dbb-83c5-1c82aa074a81'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_036",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk 'ec8addca-27cd-551c-ae24-160f9dbd48d9'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_036",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [2] is not an exact substring of chunk 'ec8addca-27cd-551c-ae24-160f9dbd48d9'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_037",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk '035b47c7-23b2-50c0-ba48-3fc7c1618743'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_037",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [2] is not an exact substring of chunk '035b47c7-23b2-50c0-ba48-3fc7c1618743'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_037",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk '978f78e6-b72f-5e0e-b3f5-02537347e6f9'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_037",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [2] is not an exact substring of chunk '978f78e6-b72f-5e0e-b3f5-02537347e6f9'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_038",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [2] is not an exact substring of chunk 'e073ea7e-0849-56f7-ad12-f65a1b4f98ab'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_038",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk '641b2b5f-33d3-5c99-9bdf-73aaa6b5c7a0'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_038",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [2] is not an exact substring of chunk '641b2b5f-33d3-5c99-9bdf-73aaa6b5c7a0'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_039",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [2] is not an exact substring of chunk 'd7ffbe9f-96d5-5b67-97a6-f427a438db9f'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_039",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk '3dd9d259-0b91-5980-9630-5951638d7349'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_039",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk 'aaa73a7c-a388-55be-9693-2f14f69dc961'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_039",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [2] is not an exact substring of chunk 'aaa73a7c-a388-55be-9693-2f14f69dc961'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_040",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [2] is not an exact substring of chunk 'acb1333f-abc9-5354-aefd-d1c7e5363ac7'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_040",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [1] is not an exact substring of chunk 'ae33514d-f6dd-5196-88fb-5c2bdfd486ca'.",
+      "severity": "low"
+    },
+    {
+      "record_id": "seed_040",
+      "category": "quote_not_exact_substring",
+      "description": "Evidence quote [2] is not an exact substring of chunk 'ae33514d-f6dd-5196-88fb-5c2bdfd486ca'.",
+      "severity": "low"
+    }
+  ],
+  "potential_semantic_duplicates": [],
+  "items_requiring_human_review_count": 50
+}

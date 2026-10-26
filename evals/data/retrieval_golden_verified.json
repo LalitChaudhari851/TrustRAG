@@ -1,0 +1,21 @@
+{
+  "manifest": {
+    "dataset_name": "TrustRAG Retrieval Golden Benchmark (Blocked)",
+    "version": "2.0-freeze-blocked",
+    "export_timestamp": "2026-10-26T05:39:54.690147+00:00",
+    "status": "BLOCKED_PENDING_HUMAN_REVIEW",
+    "verified_count": 0,
+    "source_dataset": "evals/data/retrieval_golden_seed_v1.json",
+    "freeze_validation": {
+      "is_freeze_ready": false,
+      "total_approved": 0,
+      "content_hash": "",
+      "errors": [
+        "Benchmark freeze failed: 0 approved records provided. Cannot freeze an empty benchmark."
+      ],
+      "warnings": [],
+      "counts": {}
+    }
+  },
+  "records": []
+}

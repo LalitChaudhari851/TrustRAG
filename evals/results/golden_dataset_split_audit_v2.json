@@ -1,0 +1,134 @@
+{
+  "dataset_path": "evals/data/retrieval_golden_seed_v1.json",
+  "counts": {
+    "dev_records": 30,
+    "test_records": 20,
+    "dev_candidate_chunks": 23,
+    "test_candidate_chunks": 18,
+    "shared_chunks_count": 6,
+    "shared_source_files_count": 6,
+    "verbatim_query_leakage_count": 0,
+    "cross_split_high_similarity_count": 0
+  },
+  "query_leakage": [],
+  "shared_chunks": [
+    {
+      "chunk_id": "3dd9d259-0b91-5980-9630-5951638d7349",
+      "filename": "monitor_job.docx",
+      "section": "Starting Minikube",
+      "dev_records": [
+        "seed_016"
+      ],
+      "test_records": [
+        "seed_039"
+      ],
+      "snippet": "Now let's start Minikube to create a local Kubernetes cluster:\nminikube start --driver=docker\nThis command will take a f..."
+    },
+    {
+      "chunk_id": "a0679ae4-768b-5707-ab7e-5d2c4c497374",
+      "filename": "architecture.pptx",
+      "section": "Slide 12",
+      "dev_records": [
+        "seed_035"
+      ],
+      "test_records": [
+        "seed_026"
+      ],
+      "snippet": "etcd\nEtcd acts as the cluster datastore; providing a strong, consistent and highly  available key-value store used for p..."
+    },
+    {
+      "chunk_id": "acb1333f-abc9-5354-aefd-d1c7e5363ac7",
+      "filename": "architecture.pptx",
+      "section": "Master Components",
+      "dev_records": [
+        "seed_012",
+        "seed_035"
+      ],
+      "test_records": [
+        "seed_040"
+      ],
+      "snippet": "Master Components\nKube-apiserver\nEtcd\nKube-controller-manager\nCloud-controller-manager\nKube-scheduler..."
+    },
+    {
+      "chunk_id": "ae33514d-f6dd-5196-88fb-5c2bdfd486ca",
+      "filename": "architecture.pptx",
+      "section": "kube-apiserver",
+      "dev_records": [
+        "seed_013"
+      ],
+      "test_records": [
+        "seed_040"
+      ],
+      "snippet": "kube-apiserver\nThe apiserver provides a forward facing REST interface into the kubernetes  control plane and datastore. ..."
+    },
+    {
+      "chunk_id": "d7ffbe9f-96d5-5b67-97a6-f427a438db9f",
+      "filename": "monitor_job.docx",
+      "section": "Installing Minikube",
+      "dev_records": [
+        "seed_015"
+      ],
+      "test_records": [
+        "seed_039"
+      ],
+      "snippet": "Minikube is typically pre-installed on many lab environments. Let's verify the installation by checking the version:\nmin..."
+    },
+    {
+      "chunk_id": "e073ea7e-0849-56f7-ad12-f65a1b4f98ab",
+      "filename": "pods_autoscale.html",
+      "section": "Step 3: Create an HPA",
+      "dev_records": [
+        "seed_011"
+      ],
+      "test_records": [
+        "seed_038"
+      ],
+      "snippet": "Create a file named hpa.yaml with the following content:\n\n```\napiVersion: autoscaling/v2\nkind: HorizontalPodAutoscaler\nm..."
+    }
+  ],
+  "source_distribution": [
+    {
+      "filename": "architecture.pptx",
+      "dev_queries": 4,
+      "test_queries": 3,
+      "shared": true
+    },
+    {
+      "filename": "cronjobs.docx",
+      "dev_queries": 7,
+      "test_queries": 4,
+      "shared": true
+    },
+    {
+      "filename": "job_management.html",
+      "dev_queries": 3,
+      "test_queries": 1,
+      "shared": true
+    },
+    {
+      "filename": "monitor_job.docx",
+      "dev_queries": 2,
+      "test_queries": 3,
+      "shared": true
+    },
+    {
+      "filename": "parallel_work_queue.txt",
+      "dev_queries": 4,
+      "test_queries": 2,
+      "shared": true
+    },
+    {
+      "filename": "pods_autoscale.html",
+      "dev_queries": 4,
+      "test_queries": 3,
+      "shared": true
+    }
+  ],
+  "cross_split_similarities": [],
+  "split_risk_assessment": {
+    "verbatim_leakage_risk": "ZERO",
+    "chunk_leakage_risk": "HIGH",
+    "source_leakage_risk": "CRITICAL",
+    "recommendation": "Current partition uses random query-level splitting across all 6 documents. For an enterprise benchmark resistant to memorization, a document-disjoint split (e.g. 4 documents dev / 2 documents test) or cluster-disjoint split is strongly recommended."
+  }
+}

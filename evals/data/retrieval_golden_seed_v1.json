@@ -1,0 +1,1621 @@
+{
+  "version": "1.0",
+  "manifest": {
+    "dataset_name": "TrustRAG Retrieval Seed Benchmark v1",
+    "description": "Seed candidate retrieval evaluation dataset for enterprise technical documentation.",
+    "version": "1.0-seed",
+    "provenance": "Synthetic seed candidates generated from processed_data/true/ approved documents.",
+    "verification_notice": "ALL records are marked unverified_synthetic. Must undergo explicit human review before being treated as a benchmark.",
+    "collection_name": "enterprise_rag_v2",
+    "total_corpus_chunks": 197,
+    "embedding_model": "sentence-transformers/all-mpnet-base-v2 (768-d) + FastEmbed BM25 IDF",
+    "generator_script": "evals/dataset_generator.py",
+    "counts": {
+      "total": 50,
+      "by_type": {
+        "answerable_single_hop": 30,
+        "answerable_multi_hop": 10,
+        "unanswerable": 10
+      },
+      "by_unanswerable_subtype": {
+        "corpus_unanswerable": 6,
+        "unresolved_evidence": 4
+      },
+      "by_verification": {
+        "unverified_synthetic": 50,
+        "verified_human": 0,
+        "rejected": 0
+      },
+      "by_split": {
+        "dev": 30,
+        "test": 20
+      }
+    }
+  },
+  "records": [
+    {
+      "id": "seed_001",
+      "query": "How do you start Redis for a Kubernetes work queue?",
+      "query_type": "answerable_single_hop",
+      "difficulty": "easy",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "parallel_work_queue.txt"
+      ],
+      "expected_sections": [
+        "STEP 1: STARTING REDIS"
+      ],
+      "evidence_quotes": [
+        "Run the following commands:\n\n    kubectl apply -f https://k8s.io/examples/application/job/redis/redis-pod.yaml\n    kubectl apply -f https://k8s.io/examples/application/job/redis/redis-service.yaml"
+      ],
+      "candidate_chunk_ids": [
+        "b9f7708c-ec05-517b-9e33-b33cd86aa109"
+      ],
+      "relevance_grades": {
+        "b9f7708c-ec05-517b-9e33-b33cd86aa109": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "b9f7708c-ec05-517b-9e33-b33cd86aa109"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "dev",
+      "unanswerable_subtype": null,
+      "expected_answer": "Run kubectl apply on redis-pod.yaml and redis-service.yaml.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic single-hop question; requires human review to verify."
+    },
+    {
+      "id": "seed_002",
+      "query": "Which CLI commands push tasks into the Redis queue named job2?",
+      "query_type": "answerable_single_hop",
+      "difficulty": "easy",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "parallel_work_queue.txt"
+      ],
+      "expected_sections": [
+        "STEP 2: FILLING THE QUEUE WITH TASKS"
+      ],
+      "evidence_quotes": [
+        "Once the prompt appears, connect to Redis and fill the queue (named \"job2\"):\n\n    redis-cli -h redis\n\n    # Inside the redis prompt:\n    rpush job2 \"apple\""
+      ],
+      "candidate_chunk_ids": [
+        "737920f2-0936-53da-82e8-e2a63c86ba07"
+      ],
+      "relevance_grades": {
+        "737920f2-0936-53da-82e8-e2a63c86ba07": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "737920f2-0936-53da-82e8-e2a63c86ba07"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "dev",
+      "unanswerable_subtype": null,
+      "expected_answer": "Use redis-cli -h redis and rpush job2 with task names.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic single-hop question; requires human review to verify."
+    },
+    {
+      "id": "seed_003",
+      "query": "What parallelism value is specified in the job-wq-2 manifest?",
+      "query_type": "answerable_single_hop",
+      "difficulty": "medium",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "parallel_work_queue.txt"
+      ],
+      "expected_sections": [
+        "STEP 4: DEFINING A JOB"
+      ],
+      "evidence_quotes": [
+        "spec:\n      parallelism: 2\n      template:"
+      ],
+      "candidate_chunk_ids": [
+        "38bfbdef-fa3f-542a-b5c0-6f739d9004cc"
+      ],
+      "relevance_grades": {
+        "38bfbdef-fa3f-542a-b5c0-6f739d9004cc": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "38bfbdef-fa3f-542a-b5c0-6f739d9004cc"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "dev",
+      "unanswerable_subtype": null,
+      "expected_answer": "Parallelism is set to 2 in spec.parallelism.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic single-hop question; requires human review to verify."
+    },
+    {
+      "id": "seed_004",
+      "query": "What restart policies are permitted for Kubernetes Job pods?",
+      "query_type": "answerable_single_hop",
+      "difficulty": "medium",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "cronjobs.docx"
+      ],
+      "expected_sections": [
+        "1. Restart Policy Requirements"
+      ],
+      "evidence_quotes": [
+        "Jobs have strict requirements for Pod restart policies:\nOnFailure: Kubelet restarts the container within the existing Pod if it fails.\nNever: The Job controller launches a replacement Pod instead."
+      ],
+      "candidate_chunk_ids": [
+        "134fb45c-5ffa-5fd2-b5b8-02c405f097d9"
+      ],
+      "relevance_grades": {
+        "134fb45c-5ffa-5fd2-b5b8-02c405f097d9": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "134fb45c-5ffa-5fd2-b5b8-02c405f097d9"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "dev",
+      "unanswerable_subtype": null,
+      "expected_answer": "Only OnFailure or Never are permitted; Always is not allowed.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic single-hop question; requires human review to verify."
+    },
+    {
+      "id": "seed_005",
+      "query": "Which API group and version defines the Kubernetes Job resource?",
+      "query_type": "answerable_single_hop",
+      "difficulty": "medium",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "cronjobs.docx"
+      ],
+      "expected_sections": [
+        "2. API Group and Immutability"
+      ],
+      "evidence_quotes": [
+        "apiVersion: batch/v1\nkind: Job\nmetadata:\n  name: batch-processor"
+      ],
+      "candidate_chunk_ids": [
+        "1c470929-b8ba-52dc-afd7-ff41adcd2672"
+      ],
+      "relevance_grades": {
+        "1c470929-b8ba-52dc-afd7-ff41adcd2672": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "1c470929-b8ba-52dc-afd7-ff41adcd2672"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "dev",
+      "unanswerable_subtype": null,
+      "expected_answer": "The batch/v1 API group defines the Job resource.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic single-hop question; requires human review to verify."
+    },
+    {
+      "id": "seed_006",
+      "query": "What is the default backoffLimit for a Kubernetes Job?",
+      "query_type": "answerable_single_hop",
+      "difficulty": "medium",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "cronjobs.docx"
+      ],
+      "expected_sections": [
+        "Parallelism"
+      ],
+      "evidence_quotes": [
+        "spec:\n  backoffLimit: 6\n  template:"
+      ],
+      "candidate_chunk_ids": [
+        "81a4f786-ef7a-52e5-9af0-339d7dd76240"
+      ],
+      "relevance_grades": {
+        "81a4f786-ef7a-52e5-9af0-339d7dd76240": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "81a4f786-ef7a-52e5-9af0-339d7dd76240"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "dev",
+      "unanswerable_subtype": null,
+      "expected_answer": "The default backoffLimit is 6.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic single-hop question; requires human review to verify."
+    },
+    {
+      "id": "seed_007",
+      "query": "What does activeDeadlineSeconds do when applied to a Job?",
+      "query_type": "answerable_single_hop",
+      "difficulty": "hard",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "cronjobs.docx"
+      ],
+      "expected_sections": [
+        "NonIndexed (Default)"
+      ],
+      "evidence_quotes": [
+        "activeDeadlineSeconds: 600\nThis sets a strict execution ceiling across all Pods."
+      ],
+      "candidate_chunk_ids": [
+        "dd8b3b09-eaf6-59dd-b6d3-1844d69b8901"
+      ],
+      "relevance_grades": {
+        "dd8b3b09-eaf6-59dd-b6d3-1844d69b8901": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "dd8b3b09-eaf6-59dd-b6d3-1844d69b8901"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "dev",
+      "unanswerable_subtype": null,
+      "expected_answer": "It sets an absolute maximum duration after which the Job and its Pods are terminated.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic single-hop question; requires human review to verify."
+    },
+    {
+      "id": "seed_008",
+      "query": "How does ttlSecondsAfterFinished clean up completed Kubernetes Jobs?",
+      "query_type": "answerable_single_hop",
+      "difficulty": "medium",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "cronjobs.docx"
+      ],
+      "expected_sections": [
+        "Indexed Mode"
+      ],
+      "evidence_quotes": [
+        "ttlSecondsAfterFinished: 86400\nThe TTL-after-finished controller automatically cleans up finished Jobs"
+      ],
+      "candidate_chunk_ids": [
+        "28cb15bb-064d-5f01-a0fc-0b0c718ed336"
+      ],
+      "relevance_grades": {
+        "28cb15bb-064d-5f01-a0fc-0b0c718ed336": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "28cb15bb-064d-5f01-a0fc-0b0c718ed336"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "dev",
+      "unanswerable_subtype": null,
+      "expected_answer": "It automatically deletes finished Jobs and their Pods after the specified TTL expires.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic single-hop question; requires human review to verify."
+    },
+    {
+      "id": "seed_009",
+      "query": "What is the core difference between HPA and VPA in Kubernetes?",
+      "query_type": "answerable_single_hop",
+      "difficulty": "easy",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "pods_autoscale.html"
+      ],
+      "expected_sections": [
+        "Introduction to Kubernetes Autoscaling"
+      ],
+      "evidence_quotes": [
+        "HPA scales pods horizontally by adding or removing replicas, while VPA scales pods vertically by adjusting CPU and memory reservations."
+      ],
+      "candidate_chunk_ids": [
+        "c0f1220e-829c-50f0-bf0d-2e48be167355"
+      ],
+      "relevance_grades": {
+        "c0f1220e-829c-50f0-bf0d-2e48be167355": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "c0f1220e-829c-50f0-bf0d-2e48be167355"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "dev",
+      "unanswerable_subtype": null,
+      "expected_answer": "HPA adjusts replica counts horizontally while VPA adjusts container CPU/memory requests vertically.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic single-hop question; requires human review to verify."
+    },
+    {
+      "id": "seed_010",
+      "query": "Which insecure TLS argument is commonly added to Metrics Server in test clusters?",
+      "query_type": "answerable_single_hop",
+      "difficulty": "medium",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "pods_autoscale.html"
+      ],
+      "expected_sections": [
+        "Metric Server Setup"
+      ],
+      "evidence_quotes": [
+        "- --kubelet-insecure-tls"
+      ],
+      "candidate_chunk_ids": [
+        "6abf9610-2c0e-589b-b750-9721ae48209d"
+      ],
+      "relevance_grades": {
+        "6abf9610-2c0e-589b-b750-9721ae48209d": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "6abf9610-2c0e-589b-b750-9721ae48209d"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "dev",
+      "unanswerable_subtype": null,
+      "expected_answer": "--kubelet-insecure-tls is added to args in the Metrics Server deployment.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic single-hop question; requires human review to verify."
+    },
+    {
+      "id": "seed_011",
+      "query": "What target CPU utilization percentage is configured in the sample HPA manifest?",
+      "query_type": "answerable_single_hop",
+      "difficulty": "medium",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "pods_autoscale.html"
+      ],
+      "expected_sections": [
+        "Step 3: Create an HPA"
+      ],
+      "evidence_quotes": [
+        "averageUtilization: 50"
+      ],
+      "candidate_chunk_ids": [
+        "e073ea7e-0849-56f7-ad12-f65a1b4f98ab"
+      ],
+      "relevance_grades": {
+        "e073ea7e-0849-56f7-ad12-f65a1b4f98ab": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "e073ea7e-0849-56f7-ad12-f65a1b4f98ab"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "dev",
+      "unanswerable_subtype": null,
+      "expected_answer": "Target average utilization is configured to 50 percent.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic single-hop question; requires human review to verify."
+    },
+    {
+      "id": "seed_012",
+      "query": "What are the four primary master control plane components in Kubernetes?",
+      "query_type": "answerable_single_hop",
+      "difficulty": "easy",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "architecture.pptx"
+      ],
+      "expected_sections": [
+        "Master Components"
+      ],
+      "evidence_quotes": [
+        "Master Components\nkube-apiserver\netcd\nkube-scheduler\nkube-controller-manager"
+      ],
+      "candidate_chunk_ids": [
+        "acb1333f-abc9-5354-aefd-d1c7e5363ac7"
+      ],
+      "relevance_grades": {
+        "acb1333f-abc9-5354-aefd-d1c7e5363ac7": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "acb1333f-abc9-5354-aefd-d1c7e5363ac7"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "dev",
+      "unanswerable_subtype": null,
+      "expected_answer": "Kube-apiserver, etcd, kube-scheduler, and kube-controller-manager.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic single-hop question; requires human review to verify."
+    },
+    {
+      "id": "seed_013",
+      "query": "What role does etcd serve in a Kubernetes cluster?",
+      "query_type": "answerable_single_hop",
+      "difficulty": "medium",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "architecture.pptx"
+      ],
+      "expected_sections": [
+        "kube-apiserver"
+      ],
+      "evidence_quotes": [
+        "etcd\nConsistent and highly-available key value store used as Kubernetes' backing store for all cluster data."
+      ],
+      "candidate_chunk_ids": [
+        "ae33514d-f6dd-5196-88fb-5c2bdfd486ca"
+      ],
+      "relevance_grades": {
+        "ae33514d-f6dd-5196-88fb-5c2bdfd486ca": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "ae33514d-f6dd-5196-88fb-5c2bdfd486ca"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "dev",
+      "unanswerable_subtype": null,
+      "expected_answer": "It provides consistent and highly-available key-value storage for all cluster state data.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic single-hop question; requires human review to verify."
+    },
+    {
+      "id": "seed_014",
+      "query": "What component on worker nodes ensures containers are running in a Pod?",
+      "query_type": "answerable_single_hop",
+      "difficulty": "medium",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "architecture.pptx"
+      ],
+      "expected_sections": [
+        "kube-scheduler"
+      ],
+      "evidence_quotes": [
+        "kubelet\nAn agent that runs on each node in the cluster. It makes sure that containers are running in a pod."
+      ],
+      "candidate_chunk_ids": [
+        "6d56e8c5-bbe7-5b5c-bfc9-d70f78860f8a"
+      ],
+      "relevance_grades": {
+        "6d56e8c5-bbe7-5b5c-bfc9-d70f78860f8a": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "6d56e8c5-bbe7-5b5c-bfc9-d70f78860f8a"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "dev",
+      "unanswerable_subtype": null,
+      "expected_answer": "The kubelet agent ensures containers described in PodSpecs are running and healthy.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic single-hop question; requires human review to verify."
+    },
+    {
+      "id": "seed_015",
+      "query": "Which command checks if Minikube is properly installed on the local system?",
+      "query_type": "answerable_single_hop",
+      "difficulty": "easy",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "monitor_job.docx"
+      ],
+      "expected_sections": [
+        "Installing Minikube"
+      ],
+      "evidence_quotes": [
+        "minikube version\nYou should see output similar to:\nminikube version: v1.32.0"
+      ],
+      "candidate_chunk_ids": [
+        "d7ffbe9f-96d5-5b67-97a6-f427a438db9f"
+      ],
+      "relevance_grades": {
+        "d7ffbe9f-96d5-5b67-97a6-f427a438db9f": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "d7ffbe9f-96d5-5b67-97a6-f427a438db9f"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "dev",
+      "unanswerable_subtype": null,
+      "expected_answer": "minikube version verifies the Minikube installation.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic single-hop question; requires human review to verify."
+    },
+    {
+      "id": "seed_016",
+      "query": "How do you start Minikube using the Docker driver?",
+      "query_type": "answerable_single_hop",
+      "difficulty": "medium",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "monitor_job.docx"
+      ],
+      "expected_sections": [
+        "Starting Minikube"
+      ],
+      "evidence_quotes": [
+        "minikube start --driver=docker"
+      ],
+      "candidate_chunk_ids": [
+        "3dd9d259-0b91-5980-9630-5951638d7349"
+      ],
+      "relevance_grades": {
+        "3dd9d259-0b91-5980-9630-5951638d7349": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "3dd9d259-0b91-5980-9630-5951638d7349"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "dev",
+      "unanswerable_subtype": null,
+      "expected_answer": "Run minikube start --driver=docker.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic single-hop question; requires human review to verify."
+    },
+    {
+      "id": "seed_017",
+      "query": "How do you install the Databricks CLI using curl?",
+      "query_type": "answerable_single_hop",
+      "difficulty": "easy",
+      "domain": "databricks_job_management",
+      "source_files": [
+        "job_management.html"
+      ],
+      "expected_sections": [
+        "Get started with the Databricks CLI"
+      ],
+      "evidence_quotes": [
+        "curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh"
+      ],
+      "candidate_chunk_ids": [
+        "b78e305c-b8e8-5dbb-83c5-1c82aa074a81"
+      ],
+      "relevance_grades": {
+        "b78e305c-b8e8-5dbb-83c5-1c82aa074a81": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "b78e305c-b8e8-5dbb-83c5-1c82aa074a81"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "dev",
+      "unanswerable_subtype": null,
+      "expected_answer": "Execute curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic single-hop question; requires human review to verify."
+    },
+    {
+      "id": "seed_018",
+      "query": "Which Databricks CLI command retrieves details of an existing job?",
+      "query_type": "answerable_single_hop",
+      "difficulty": "medium",
+      "domain": "databricks_job_management",
+      "source_files": [
+        "job_management.html"
+      ],
+      "expected_sections": [
+        "Example: Retrieve a job using the CLI"
+      ],
+      "evidence_quotes": [
+        "databricks jobs get --job-id"
+      ],
+      "candidate_chunk_ids": [
+        "162d277b-bab0-5ec4-8394-8c2d4e995485"
+      ],
+      "relevance_grades": {
+        "162d277b-bab0-5ec4-8394-8c2d4e995485": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "162d277b-bab0-5ec4-8394-8c2d4e995485"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "dev",
+      "unanswerable_subtype": null,
+      "expected_answer": "databricks jobs get --job-id <job-id> retrieves job metadata.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic single-hop question; requires human review to verify."
+    },
+    {
+      "id": "seed_019",
+      "query": "Which kubectl command waits for a Job named job-wq-2 to complete?",
+      "query_type": "answerable_single_hop",
+      "difficulty": "easy",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "parallel_work_queue.txt"
+      ],
+      "expected_sections": [
+        "STEP 5: RUNNING THE JOB"
+      ],
+      "evidence_quotes": [
+        "kubectl wait --for=condition=complete --timeout=300s job/job-wq-2"
+      ],
+      "candidate_chunk_ids": [
+        "e5172a1a-014c-5359-a1e1-ed647ac67907"
+      ],
+      "relevance_grades": {
+        "e5172a1a-014c-5359-a1e1-ed647ac67907": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "e5172a1a-014c-5359-a1e1-ed647ac67907"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "test",
+      "unanswerable_subtype": null,
+      "expected_answer": "kubectl wait --for=condition=complete --timeout=300s job/job-wq-2.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic single-hop question; requires human review to verify."
+    },
+    {
+      "id": "seed_020",
+      "query": "What background processing library is recommended as an alternative to Redis work queues?",
+      "query_type": "answerable_single_hop",
+      "difficulty": "medium",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "parallel_work_queue.txt"
+      ],
+      "expected_sections": [
+        "ALTERNATIVES"
+      ],
+      "evidence_quotes": [
+        "Consider using a background processing library such as Resque:\nhttps://github.com/resque/resque"
+      ],
+      "candidate_chunk_ids": [
+        "8fc6a306-e249-512b-a6ea-26e4d668a058"
+      ],
+      "relevance_grades": {
+        "8fc6a306-e249-512b-a6ea-26e4d668a058": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "8fc6a306-e249-512b-a6ea-26e4d668a058"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "test",
+      "unanswerable_subtype": null,
+      "expected_answer": "Resque (https://github.com/resque/resque) is suggested for continuous background processing.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic single-hop question; requires human review to verify."
+    },
+    {
+      "id": "seed_021",
+      "query": "What is the difference between completions and parallelism in a Kubernetes Job spec?",
+      "query_type": "answerable_single_hop",
+      "difficulty": "medium",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "cronjobs.docx"
+      ],
+      "expected_sections": [
+        "Completions"
+      ],
+      "evidence_quotes": [
+        "Completions specifies how many Pods must terminate successfully for the Job to succeed.\nParallelism sets the maximum number of Pods that can run simultaneously."
+      ],
+      "candidate_chunk_ids": [
+        "035b47c7-23b2-50c0-ba48-3fc7c1618743"
+      ],
+      "relevance_grades": {
+        "035b47c7-23b2-50c0-ba48-3fc7c1618743": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "035b47c7-23b2-50c0-ba48-3fc7c1618743"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "test",
+      "unanswerable_subtype": null,
+      "expected_answer": "Completions specifies the number of successful Pod completions required, while parallelism sets the max concurrently running Pods.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic single-hop question; requires human review to verify."
+    },
+    {
+      "id": "seed_022",
+      "query": "What are the three allowed values for concurrencyPolicy in a Kubernetes CronJob?",
+      "query_type": "answerable_single_hop",
+      "difficulty": "hard",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "cronjobs.docx"
+      ],
+      "expected_sections": [
+        "Schedule Configuration"
+      ],
+      "evidence_quotes": [
+        "concurrencyPolicy: Allow | Forbid | Replace"
+      ],
+      "candidate_chunk_ids": [
+        "978f78e6-b72f-5e0e-b3f5-02537347e6f9"
+      ],
+      "relevance_grades": {
+        "978f78e6-b72f-5e0e-b3f5-02537347e6f9": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "978f78e6-b72f-5e0e-b3f5-02537347e6f9"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "test",
+      "unanswerable_subtype": null,
+      "expected_answer": "Allow, Forbid, and Replace.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic single-hop question; requires human review to verify."
+    },
+    {
+      "id": "seed_023",
+      "query": "What does startingDeadlineSeconds configure in a CronJob?",
+      "query_type": "answerable_single_hop",
+      "difficulty": "medium",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "cronjobs.docx"
+      ],
+      "expected_sections": [
+        "1. Data Processing Pipeline"
+      ],
+      "evidence_quotes": [
+        "startingDeadlineSeconds: 100\nDefines the time window for starting a missed execution."
+      ],
+      "candidate_chunk_ids": [
+        "0caf42f8-acd1-5ba1-a3cb-cfb255ec39d0"
+      ],
+      "relevance_grades": {
+        "0caf42f8-acd1-5ba1-a3cb-cfb255ec39d0": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "0caf42f8-acd1-5ba1-a3cb-cfb255ec39d0"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "test",
+      "unanswerable_subtype": null,
+      "expected_answer": "The deadline in seconds for starting a job if it misses its scheduled time.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic single-hop question; requires human review to verify."
+    },
+    {
+      "id": "seed_024",
+      "query": "What command uses Apache Bench to simulate traffic on an autoscaled deployment?",
+      "query_type": "answerable_single_hop",
+      "difficulty": "medium",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "pods_autoscale.html"
+      ],
+      "expected_sections": [
+        "Advantages of VPA"
+      ],
+      "evidence_quotes": [
+        "ab -n 500000 -c 1000"
+      ],
+      "candidate_chunk_ids": [
+        "641b2b5f-33d3-5c99-9bdf-73aaa6b5c7a0"
+      ],
+      "relevance_grades": {
+        "641b2b5f-33d3-5c99-9bdf-73aaa6b5c7a0": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "641b2b5f-33d3-5c99-9bdf-73aaa6b5c7a0"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "test",
+      "unanswerable_subtype": null,
+      "expected_answer": "ab -n 500000 -c 1000 http://<service-ip>/ generates the synthetic load.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic single-hop question; requires human review to verify."
+    },
+    {
+      "id": "seed_025",
+      "query": "What are the four update modes supported by Kubernetes VPA?",
+      "query_type": "answerable_single_hop",
+      "difficulty": "hard",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "pods_autoscale.html"
+      ],
+      "expected_sections": [
+        "Why the CPU Request Increased to 126m Instead of 200m"
+      ],
+      "evidence_quotes": [
+        "updateMode: \"Off\" | \"Initial\" | \"Recreate\" | \"Auto\""
+      ],
+      "candidate_chunk_ids": [
+        "951973ef-00b5-56e7-b8f5-fd4e902592a5"
+      ],
+      "relevance_grades": {
+        "951973ef-00b5-56e7-b8f5-fd4e902592a5": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "951973ef-00b5-56e7-b8f5-fd4e902592a5"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "test",
+      "unanswerable_subtype": null,
+      "expected_answer": "Off, Initial, Recreate, and Auto.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic single-hop question; requires human review to verify."
+    },
+    {
+      "id": "seed_026",
+      "query": "What is the responsibility of the kube-scheduler component?",
+      "query_type": "answerable_single_hop",
+      "difficulty": "easy",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "architecture.pptx"
+      ],
+      "expected_sections": [
+        "Slide 12"
+      ],
+      "evidence_quotes": [
+        "kube-scheduler\nWatches for newly created pods that have no node assigned, and selects a node for them to run on."
+      ],
+      "candidate_chunk_ids": [
+        "a0679ae4-768b-5707-ab7e-5d2c4c497374"
+      ],
+      "relevance_grades": {
+        "a0679ae4-768b-5707-ab7e-5d2c4c497374": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "a0679ae4-768b-5707-ab7e-5d2c4c497374"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "test",
+      "unanswerable_subtype": null,
+      "expected_answer": "Assigning newly created pods with no assigned node to an appropriate worker node.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic single-hop question; requires human review to verify."
+    },
+    {
+      "id": "seed_027",
+      "query": "What does kube-proxy manage on each worker node?",
+      "query_type": "answerable_single_hop",
+      "difficulty": "medium",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "architecture.pptx"
+      ],
+      "expected_sections": [
+        "Node Components"
+      ],
+      "evidence_quotes": [
+        "kube-proxy\nkube-proxy maintains network rules on nodes. These network rules allow network communication to your Pods"
+      ],
+      "candidate_chunk_ids": [
+        "3b74d3dc-cc5e-5278-86f6-e8f62f11bbfb"
+      ],
+      "relevance_grades": {
+        "3b74d3dc-cc5e-5278-86f6-e8f62f11bbfb": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "3b74d3dc-cc5e-5278-86f6-e8f62f11bbfb"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "test",
+      "unanswerable_subtype": null,
+      "expected_answer": "It maintains network rules and connection forwarding to pods across the cluster.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic single-hop question; requires human review to verify."
+    },
+    {
+      "id": "seed_028",
+      "query": "What perl command is executed in the sample computing job to calculate Pi?",
+      "query_type": "answerable_single_hop",
+      "difficulty": "medium",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "monitor_job.docx"
+      ],
+      "expected_sections": [
+        "Creating Your First Kubernetes Job"
+      ],
+      "evidence_quotes": [
+        "perl -Mbignum=bpi -wle 'print bpi(2000)'"
+      ],
+      "candidate_chunk_ids": [
+        "970d2701-aab8-5f97-902b-438917febcf0"
+      ],
+      "relevance_grades": {
+        "970d2701-aab8-5f97-902b-438917febcf0": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "970d2701-aab8-5f97-902b-438917febcf0"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "test",
+      "unanswerable_subtype": null,
+      "expected_answer": "perl -Mbignum=bpi -wle 'print bpi(2000)' calculates 2000 digits of pi.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic single-hop question; requires human review to verify."
+    },
+    {
+      "id": "seed_029",
+      "query": "How do you view sorted creation events in Kubernetes using kubectl?",
+      "query_type": "answerable_single_hop",
+      "difficulty": "easy",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "monitor_job.docx"
+      ],
+      "expected_sections": [
+        "Checking Job Status with kubectl"
+      ],
+      "evidence_quotes": [
+        "kubectl get events --sort-by='.metadata.creationTimestamp'"
+      ],
+      "candidate_chunk_ids": [
+        "f8f23e79-1072-5d9e-a18e-48335d357ab2"
+      ],
+      "relevance_grades": {
+        "f8f23e79-1072-5d9e-a18e-48335d357ab2": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "f8f23e79-1072-5d9e-a18e-48335d357ab2"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "test",
+      "unanswerable_subtype": null,
+      "expected_answer": "kubectl get events --sort-by='.metadata.creationTimestamp'.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic single-hop question; requires human review to verify."
+    },
+    {
+      "id": "seed_030",
+      "query": "Which Databricks CLI command creates a new job from a JSON definition file?",
+      "query_type": "answerable_single_hop",
+      "difficulty": "medium",
+      "domain": "databricks_job_management",
+      "source_files": [
+        "job_management.html"
+      ],
+      "expected_sections": [
+        "Example: Create a job using the CLI"
+      ],
+      "evidence_quotes": [
+        "databricks jobs create --json-file"
+      ],
+      "candidate_chunk_ids": [
+        "65050403-7244-5c49-9ec2-4f8e52cc101e"
+      ],
+      "relevance_grades": {
+        "65050403-7244-5c49-9ec2-4f8e52cc101e": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "65050403-7244-5c49-9ec2-4f8e52cc101e"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "test",
+      "unanswerable_subtype": null,
+      "expected_answer": "databricks jobs create --json-file <path-to-json> creates the job.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic single-hop question; requires human review to verify."
+    },
+    {
+      "id": "seed_031",
+      "query": "How does a Kubernetes worker process discover tasks from Redis, and how does the Job manifest configure worker parallelism?",
+      "query_type": "answerable_multi_hop",
+      "difficulty": "medium",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "parallel_work_queue.txt"
+      ],
+      "expected_sections": [
+        "STEP 3: CREATE A CONTAINER IMAGE",
+        "STEP 4: DEFINING A JOB"
+      ],
+      "evidence_quotes": [
+        "q = rediswq.RedisWQ(name=\"job2\", host=host)",
+        "spec:\n      parallelism: 2"
+      ],
+      "candidate_chunk_ids": [
+        "d731bfd3-be36-57c0-827f-d1c85339dac3",
+        "38bfbdef-fa3f-542a-b5c0-6f739d9004cc",
+        "83358e9c-431c-51b4-97e8-baacb2d11344"
+      ],
+      "relevance_grades": {
+        "d731bfd3-be36-57c0-827f-d1c85339dac3": 2,
+        "38bfbdef-fa3f-542a-b5c0-6f739d9004cc": 2,
+        "83358e9c-431c-51b4-97e8-baacb2d11344": 1
+      },
+      "sufficient_evidence_sets": [
+        [
+          "d731bfd3-be36-57c0-827f-d1c85339dac3",
+          "38bfbdef-fa3f-542a-b5c0-6f739d9004cc"
+        ],
+        [
+          "83358e9c-431c-51b4-97e8-baacb2d11344",
+          "38bfbdef-fa3f-542a-b5c0-6f739d9004cc"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "dev",
+      "unanswerable_subtype": null,
+      "expected_answer": "The worker uses RedisWQ to lease items with timeout from Redis, while the Job manifest sets spec.parallelism: 2.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic multi-hop question with alternative sufficient evidence sets; unverified until human review."
+    },
+    {
+      "id": "seed_032",
+      "query": "What Pod restart policies are allowed for a Job, and what happens to the Job when backoffLimit is reached after failures?",
+      "query_type": "answerable_multi_hop",
+      "difficulty": "hard",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "cronjobs.docx"
+      ],
+      "expected_sections": [
+        "1. Restart Policy Requirements",
+        "Parallelism"
+      ],
+      "evidence_quotes": [
+        "Jobs have strict requirements for Pod restart policies:\nOnFailure: Kubelet restarts",
+        "backoffLimit: 6\nWhen failures exceed this limit, the controller marks the Job as Failed."
+      ],
+      "candidate_chunk_ids": [
+        "134fb45c-5ffa-5fd2-b5b8-02c405f097d9",
+        "81a4f786-ef7a-52e5-9af0-339d7dd76240"
+      ],
+      "relevance_grades": {
+        "134fb45c-5ffa-5fd2-b5b8-02c405f097d9": 2,
+        "81a4f786-ef7a-52e5-9af0-339d7dd76240": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "134fb45c-5ffa-5fd2-b5b8-02c405f097d9",
+          "81a4f786-ef7a-52e5-9af0-339d7dd76240"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "dev",
+      "unanswerable_subtype": null,
+      "expected_answer": "Allowed restart policies are OnFailure or Never; when consecutive failures reach backoffLimit (default 6), the Job fails.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic multi-hop question with alternative sufficient evidence sets; unverified until human review."
+    },
+    {
+      "id": "seed_033",
+      "query": "How does ttlSecondsAfterFinished interact with activeDeadlineSeconds in controlling Kubernetes Job lifecycle?",
+      "query_type": "answerable_multi_hop",
+      "difficulty": "hard",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "cronjobs.docx"
+      ],
+      "expected_sections": [
+        "Indexed Mode",
+        "NonIndexed (Default)"
+      ],
+      "evidence_quotes": [
+        "activeDeadlineSeconds: 600\nThis sets a strict execution ceiling",
+        "ttlSecondsAfterFinished: 86400\nThe TTL-after-finished controller automatically cleans up"
+      ],
+      "candidate_chunk_ids": [
+        "dd8b3b09-eaf6-59dd-b6d3-1844d69b8901",
+        "28cb15bb-064d-5f01-a0fc-0b0c718ed336"
+      ],
+      "relevance_grades": {
+        "dd8b3b09-eaf6-59dd-b6d3-1844d69b8901": 2,
+        "28cb15bb-064d-5f01-a0fc-0b0c718ed336": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "dd8b3b09-eaf6-59dd-b6d3-1844d69b8901",
+          "28cb15bb-064d-5f01-a0fc-0b0c718ed336"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "dev",
+      "unanswerable_subtype": null,
+      "expected_answer": "activeDeadlineSeconds forces a ceiling on execution duration while running, and ttlSecondsAfterFinished governs retention duration after completion.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic multi-hop question with alternative sufficient evidence sets; unverified until human review."
+    },
+    {
+      "id": "seed_034",
+      "query": "How does Metrics Server enable HPA pod autoscaling, and what parameter allows communication with kubelets having self-signed certificates?",
+      "query_type": "answerable_multi_hop",
+      "difficulty": "hard",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "pods_autoscale.html"
+      ],
+      "expected_sections": [
+        "Introduction to Kubernetes Autoscaling",
+        "Metric Server Setup"
+      ],
+      "evidence_quotes": [
+        "Autoscaling in Kubernetes ensures that your application can handle varying loads",
+        "- --kubelet-insecure-tls"
+      ],
+      "candidate_chunk_ids": [
+        "c0f1220e-829c-50f0-bf0d-2e48be167355",
+        "6abf9610-2c0e-589b-b750-9721ae48209d",
+        "4c8a8363-c0ff-51a5-8d81-3a2451d86e18"
+      ],
+      "relevance_grades": {
+        "c0f1220e-829c-50f0-bf0d-2e48be167355": 2,
+        "6abf9610-2c0e-589b-b750-9721ae48209d": 2,
+        "4c8a8363-c0ff-51a5-8d81-3a2451d86e18": 1
+      },
+      "sufficient_evidence_sets": [
+        [
+          "c0f1220e-829c-50f0-bf0d-2e48be167355",
+          "6abf9610-2c0e-589b-b750-9721ae48209d"
+        ],
+        [
+          "4c8a8363-c0ff-51a5-8d81-3a2451d86e18",
+          "6abf9610-2c0e-589b-b750-9721ae48209d"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "dev",
+      "unanswerable_subtype": null,
+      "expected_answer": "Metrics Server collects pod CPU/memory metrics used by HPA; --kubelet-insecure-tls allows insecure communication with kubelets.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic multi-hop question with alternative sufficient evidence sets; unverified until human review."
+    },
+    {
+      "id": "seed_035",
+      "query": "What control plane component schedules pods onto nodes, and how does kubelet on the target node execute them?",
+      "query_type": "answerable_multi_hop",
+      "difficulty": "hard",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "architecture.pptx"
+      ],
+      "expected_sections": [
+        "Slide 12",
+        "kube-scheduler"
+      ],
+      "evidence_quotes": [
+        "kube-scheduler\nWatches for newly created pods that have no node assigned",
+        "kubelet\nAn agent that runs on each node in the cluster. It makes sure that containers are running"
+      ],
+      "candidate_chunk_ids": [
+        "a0679ae4-768b-5707-ab7e-5d2c4c497374",
+        "6d56e8c5-bbe7-5b5c-bfc9-d70f78860f8a",
+        "acb1333f-abc9-5354-aefd-d1c7e5363ac7"
+      ],
+      "relevance_grades": {
+        "a0679ae4-768b-5707-ab7e-5d2c4c497374": 2,
+        "6d56e8c5-bbe7-5b5c-bfc9-d70f78860f8a": 2,
+        "acb1333f-abc9-5354-aefd-d1c7e5363ac7": 1
+      },
+      "sufficient_evidence_sets": [
+        [
+          "a0679ae4-768b-5707-ab7e-5d2c4c497374",
+          "6d56e8c5-bbe7-5b5c-bfc9-d70f78860f8a"
+        ],
+        [
+          "acb1333f-abc9-5354-aefd-d1c7e5363ac7",
+          "6d56e8c5-bbe7-5b5c-bfc9-d70f78860f8a"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "dev",
+      "unanswerable_subtype": null,
+      "expected_answer": "Kube-scheduler watches for unassigned pods and selects a node; kubelet on that node ensures the containers run as specified in PodSpecs.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic multi-hop question with alternative sufficient evidence sets; unverified until human review."
+    },
+    {
+      "id": "seed_036",
+      "query": "How do you install the Databricks CLI, and what command runs an existing job immediately by ID?",
+      "query_type": "answerable_multi_hop",
+      "difficulty": "hard",
+      "domain": "databricks_job_management",
+      "source_files": [
+        "job_management.html"
+      ],
+      "expected_sections": [
+        "Get started with the Databricks CLI",
+        "Run a job using the CLI"
+      ],
+      "evidence_quotes": [
+        "curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh",
+        "databricks jobs run-now --job-id"
+      ],
+      "candidate_chunk_ids": [
+        "b78e305c-b8e8-5dbb-83c5-1c82aa074a81",
+        "ec8addca-27cd-551c-ae24-160f9dbd48d9"
+      ],
+      "relevance_grades": {
+        "b78e305c-b8e8-5dbb-83c5-1c82aa074a81": 2,
+        "ec8addca-27cd-551c-ae24-160f9dbd48d9": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "b78e305c-b8e8-5dbb-83c5-1c82aa074a81",
+          "ec8addca-27cd-551c-ae24-160f9dbd48d9"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "dev",
+      "unanswerable_subtype": null,
+      "expected_answer": "Install with curl script to setup-cli, and trigger with databricks jobs run-now --job-id.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic multi-hop question with alternative sufficient evidence sets; unverified until human review."
+    },
+    {
+      "id": "seed_037",
+      "query": "How do completions and parallelism settings interact with concurrencyPolicy when executing recurring batch workloads?",
+      "query_type": "answerable_multi_hop",
+      "difficulty": "hard",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "cronjobs.docx"
+      ],
+      "expected_sections": [
+        "Completions",
+        "Schedule Configuration"
+      ],
+      "evidence_quotes": [
+        "Completions specifies how many Pods must terminate successfully",
+        "concurrencyPolicy: Allow | Forbid | Replace"
+      ],
+      "candidate_chunk_ids": [
+        "035b47c7-23b2-50c0-ba48-3fc7c1618743",
+        "978f78e6-b72f-5e0e-b3f5-02537347e6f9"
+      ],
+      "relevance_grades": {
+        "035b47c7-23b2-50c0-ba48-3fc7c1618743": 2,
+        "978f78e6-b72f-5e0e-b3f5-02537347e6f9": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "035b47c7-23b2-50c0-ba48-3fc7c1618743",
+          "978f78e6-b72f-5e0e-b3f5-02537347e6f9"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "test",
+      "unanswerable_subtype": null,
+      "expected_answer": "Completions and parallelism determine how many pods must finish and how many run in parallel for each Job, while concurrencyPolicy governs concurrent Job runs in CronJobs.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic multi-hop question with alternative sufficient evidence sets; unverified until human review."
+    },
+    {
+      "id": "seed_038",
+      "query": "How does Apache Bench simulate load to trigger HPA, and how does HPA determine whether to increase pod replicas?",
+      "query_type": "answerable_multi_hop",
+      "difficulty": "hard",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "pods_autoscale.html"
+      ],
+      "expected_sections": [
+        "Advantages of VPA",
+        "Step 3: Create an HPA"
+      ],
+      "evidence_quotes": [
+        "averageUtilization: 50",
+        "ab -n 500000 -c 1000"
+      ],
+      "candidate_chunk_ids": [
+        "e073ea7e-0849-56f7-ad12-f65a1b4f98ab",
+        "641b2b5f-33d3-5c99-9bdf-73aaa6b5c7a0"
+      ],
+      "relevance_grades": {
+        "e073ea7e-0849-56f7-ad12-f65a1b4f98ab": 2,
+        "641b2b5f-33d3-5c99-9bdf-73aaa6b5c7a0": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "e073ea7e-0849-56f7-ad12-f65a1b4f98ab",
+          "641b2b5f-33d3-5c99-9bdf-73aaa6b5c7a0"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "test",
+      "unanswerable_subtype": null,
+      "expected_answer": "Apache Bench sends concurrent HTTP requests; HPA queries Metrics Server and increases replicas when average CPU exceeds averageUtilization.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic multi-hop question with alternative sufficient evidence sets; unverified until human review."
+    },
+    {
+      "id": "seed_039",
+      "query": "How do you start a Minikube cluster and verify its installation before monitoring job execution?",
+      "query_type": "answerable_multi_hop",
+      "difficulty": "hard",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "monitor_job.docx"
+      ],
+      "expected_sections": [
+        "Installing Minikube",
+        "Starting Minikube"
+      ],
+      "evidence_quotes": [
+        "minikube version",
+        "minikube start --driver=docker"
+      ],
+      "candidate_chunk_ids": [
+        "d7ffbe9f-96d5-5b67-97a6-f427a438db9f",
+        "3dd9d259-0b91-5980-9630-5951638d7349",
+        "aaa73a7c-a388-55be-9693-2f14f69dc961"
+      ],
+      "relevance_grades": {
+        "d7ffbe9f-96d5-5b67-97a6-f427a438db9f": 2,
+        "3dd9d259-0b91-5980-9630-5951638d7349": 2,
+        "aaa73a7c-a388-55be-9693-2f14f69dc961": 1
+      },
+      "sufficient_evidence_sets": [
+        [
+          "d7ffbe9f-96d5-5b67-97a6-f427a438db9f",
+          "3dd9d259-0b91-5980-9630-5951638d7349"
+        ],
+        [
+          "aaa73a7c-a388-55be-9693-2f14f69dc961",
+          "3dd9d259-0b91-5980-9630-5951638d7349"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "test",
+      "unanswerable_subtype": null,
+      "expected_answer": "Start Minikube with minikube start --driver=docker and verify with minikube version and kubectl cluster-info.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic multi-hop question with alternative sufficient evidence sets; unverified until human review."
+    },
+    {
+      "id": "seed_040",
+      "query": "What is the difference between etcd and kube-apiserver in state persistence and cluster coordination?",
+      "query_type": "answerable_multi_hop",
+      "difficulty": "hard",
+      "domain": "kubernetes_workloads",
+      "source_files": [
+        "architecture.pptx"
+      ],
+      "expected_sections": [
+        "Master Components",
+        "kube-apiserver"
+      ],
+      "evidence_quotes": [
+        "kube-apiserver\netcd",
+        "Consistent and highly-available key value store used as Kubernetes' backing store"
+      ],
+      "candidate_chunk_ids": [
+        "acb1333f-abc9-5354-aefd-d1c7e5363ac7",
+        "ae33514d-f6dd-5196-88fb-5c2bdfd486ca"
+      ],
+      "relevance_grades": {
+        "acb1333f-abc9-5354-aefd-d1c7e5363ac7": 2,
+        "ae33514d-f6dd-5196-88fb-5c2bdfd486ca": 2
+      },
+      "sufficient_evidence_sets": [
+        [
+          "acb1333f-abc9-5354-aefd-d1c7e5363ac7",
+          "ae33514d-f6dd-5196-88fb-5c2bdfd486ca"
+        ]
+      ],
+      "verification_status": "unverified_synthetic",
+      "split": "test",
+      "unanswerable_subtype": null,
+      "expected_answer": "kube-apiserver exposes the Kubernetes API and validates requests; etcd is the backing distributed key-value store holding cluster state.",
+      "reviewer_decision": null,
+      "notes": "Seed synthetic multi-hop question with alternative sufficient evidence sets; unverified until human review."
+    },
+    {
+      "id": "seed_041",
+      "query": "How do you configure Apache Kafka partition rebalancing on Kubernetes using Strimzi?",
+      "query_type": "unanswerable",
+      "difficulty": "medium",
+      "domain": "kubernetes_workloads",
+      "source_files": [],
+      "expected_sections": [],
+      "evidence_quotes": [],
+      "candidate_chunk_ids": [],
+      "relevance_grades": {},
+      "sufficient_evidence_sets": [],
+      "verification_status": "unverified_synthetic",
+      "split": "dev",
+      "unanswerable_subtype": "corpus_unanswerable",
+      "expected_answer": "I cannot answer this question based on the provided technical documentation.",
+      "reviewer_decision": null,
+      "notes": "Corpus unanswerable: Apache Kafka and Strimzi operators are completely absent from the approved documentation."
+    },
+    {
+      "id": "seed_042",
+      "query": "What configuration sets up Cassandra SSTable replication factors in a Kubernetes StatefulSet?",
+      "query_type": "unanswerable",
+      "difficulty": "medium",
+      "domain": "kubernetes_workloads",
+      "source_files": [],
+      "expected_sections": [],
+      "evidence_quotes": [],
+      "candidate_chunk_ids": [],
+      "relevance_grades": {},
+      "sufficient_evidence_sets": [],
+      "verification_status": "unverified_synthetic",
+      "split": "dev",
+      "unanswerable_subtype": "corpus_unanswerable",
+      "expected_answer": "I cannot answer this question based on the provided technical documentation.",
+      "reviewer_decision": null,
+      "notes": "Corpus unanswerable: Apache Cassandra database clustering is not covered in the indexed documents."
+    },
+    {
+      "id": "seed_043",
+      "query": "How do you configure Istio service mesh mutual TLS strict mode between pods?",
+      "query_type": "unanswerable",
+      "difficulty": "medium",
+      "domain": "kubernetes_workloads",
+      "source_files": [],
+      "expected_sections": [],
+      "evidence_quotes": [],
+      "candidate_chunk_ids": [],
+      "relevance_grades": {},
+      "sufficient_evidence_sets": [],
+      "verification_status": "unverified_synthetic",
+      "split": "dev",
+      "unanswerable_subtype": "corpus_unanswerable",
+      "expected_answer": "I cannot answer this question based on the provided technical documentation.",
+      "reviewer_decision": null,
+      "notes": "Corpus unanswerable: Istio service mesh and mTLS traffic policies are absent from the indexed documents."
+    },
+    {
+      "id": "seed_044",
+      "query": "How do you configure Ceph CSI driver volume snapshot classes for persistent volume claims?",
+      "query_type": "unanswerable",
+      "difficulty": "hard",
+      "domain": "kubernetes_workloads",
+      "source_files": [],
+      "expected_sections": [],
+      "evidence_quotes": [],
+      "candidate_chunk_ids": [],
+      "relevance_grades": {},
+      "sufficient_evidence_sets": [],
+      "verification_status": "unverified_synthetic",
+      "split": "dev",
+      "unanswerable_subtype": "corpus_unanswerable",
+      "expected_answer": "I cannot answer this question based on the provided technical documentation.",
+      "reviewer_decision": null,
+      "notes": "Corpus unanswerable: Ceph storage CSI snapshots are absent from the indexed documents."
+    },
+    {
+      "id": "seed_045",
+      "query": "What are the exact custom Prometheus adapter PrometheusRule YAML thresholds for external scaling metrics in HPA?",
+      "query_type": "unanswerable",
+      "difficulty": "hard",
+      "domain": "kubernetes_workloads",
+      "source_files": [],
+      "expected_sections": [],
+      "evidence_quotes": [],
+      "candidate_chunk_ids": [],
+      "relevance_grades": {},
+      "sufficient_evidence_sets": [],
+      "verification_status": "unverified_synthetic",
+      "split": "dev",
+      "unanswerable_subtype": "unresolved_evidence",
+      "expected_answer": "I cannot answer this question based on the provided technical documentation.",
+      "reviewer_decision": null,
+      "notes": "Unresolved evidence: The approved documents cover HPA resource metrics (CPU) and Metrics Server setup, but do not provide external PrometheusRule metric definitions."
+    },
+    {
+      "id": "seed_046",
+      "query": "What are the specific AWS Karpenter node pool consolidation parameters for autoscaling worker nodes running the parallel Redis queue?",
+      "query_type": "unanswerable",
+      "difficulty": "hard",
+      "domain": "kubernetes_workloads",
+      "source_files": [],
+      "expected_sections": [],
+      "evidence_quotes": [],
+      "candidate_chunk_ids": [],
+      "relevance_grades": {},
+      "sufficient_evidence_sets": [],
+      "verification_status": "unverified_synthetic",
+      "split": "dev",
+      "unanswerable_subtype": "unresolved_evidence",
+      "expected_answer": "I cannot answer this question based on the provided technical documentation.",
+      "reviewer_decision": null,
+      "notes": "Unresolved evidence: The documents discuss Redis work queues and Minikube/Docker environments, but Karpenter provider consolidation flags are not present."
+    },
+    {
+      "id": "seed_047",
+      "query": "How do you configure RabbitMQ quorum queues with the Cluster Operator on Kubernetes?",
+      "query_type": "unanswerable",
+      "difficulty": "medium",
+      "domain": "kubernetes_workloads",
+      "source_files": [],
+      "expected_sections": [],
+      "evidence_quotes": [],
+      "candidate_chunk_ids": [],
+      "relevance_grades": {},
+      "sufficient_evidence_sets": [],
+      "verification_status": "unverified_synthetic",
+      "split": "test",
+      "unanswerable_subtype": "corpus_unanswerable",
+      "expected_answer": "I cannot answer this question based on the provided technical documentation.",
+      "reviewer_decision": null,
+      "notes": "Corpus unanswerable: RabbitMQ operators and quorum queues are completely absent from the indexed documents."
+    },
+    {
+      "id": "seed_048",
+      "query": "What are the steps to configure Cilium eBPF host routing to replace kube-proxy in Kubernetes v1.28?",
+      "query_type": "unanswerable",
+      "difficulty": "hard",
+      "domain": "kubernetes_workloads",
+      "source_files": [],
+      "expected_sections": [],
+      "evidence_quotes": [],
+      "candidate_chunk_ids": [],
+      "relevance_grades": {},
+      "sufficient_evidence_sets": [],
+      "verification_status": "unverified_synthetic",
+      "split": "test",
+      "unanswerable_subtype": "corpus_unanswerable",
+      "expected_answer": "I cannot answer this question based on the provided technical documentation.",
+      "reviewer_decision": null,
+      "notes": "Corpus unanswerable: Cilium eBPF replacement for kube-proxy is absent from the indexed corpus."
+    },
+    {
+      "id": "seed_049",
+      "query": "What are the exact GPU time-slicing configuration profiles for NVIDIA container runtime pods in the job-wq-2 manifest?",
+      "query_type": "unanswerable",
+      "difficulty": "hard",
+      "domain": "kubernetes_workloads",
+      "source_files": [],
+      "expected_sections": [],
+      "evidence_quotes": [],
+      "candidate_chunk_ids": [],
+      "relevance_grades": {},
+      "sufficient_evidence_sets": [],
+      "verification_status": "unverified_synthetic",
+      "split": "test",
+      "unanswerable_subtype": "unresolved_evidence",
+      "expected_answer": "I cannot answer this question based on the provided technical documentation.",
+      "reviewer_decision": null,
+      "notes": "Unresolved evidence: The job-wq-2 manifest specifies CPU and image fields, but NVIDIA GPU time-slicing profiles are unresolved in the text."
+    },
+    {
+      "id": "seed_050",
+      "query": "What Active Directory gMSA credential spec annotations are required for Windows containers in Kubernetes Jobs?",
+      "query_type": "unanswerable",
+      "difficulty": "hard",
+      "domain": "kubernetes_workloads",
+      "source_files": [],
+      "expected_sections": [],
+      "evidence_quotes": [],
+      "candidate_chunk_ids": [],
+      "relevance_grades": {},
+      "sufficient_evidence_sets": [],
+      "verification_status": "unverified_synthetic",
+      "split": "test",
+      "unanswerable_subtype": "unresolved_evidence",
+      "expected_answer": "I cannot answer this question based on the provided technical documentation.",
+      "reviewer_decision": null,
+      "notes": "Unresolved evidence: Job restart policies and batch specifications are documented, but Windows container gMSA security contexts are absent."
+    }
+  ]
+}
