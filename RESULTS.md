@@ -16,13 +16,15 @@
 
 ## 2. Retrieval Evolution (Legacy Baseline vs Full v2 Corpus)
 
-| Configuration / Mode | Dataset | Run Timestamp | Recall@15 | Source Hit@5 | Section Hit@5 | Key Hit@5 | Source MRR | Citation |
+| Configuration / Mode | Dataset | Run Timestamp | Source Hit@15 (Pre-rerank)* | Source Hit@5 | Section Hit@5 | Key Hit@5 | Source MRR | Citation |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | Legacy Baseline (Old Chunking, Dense) | Golden 15 | 2026-10-16 (Phase 0) | not measured | 1.0000 | n/a | not measured | 0.9060 | `baseline_retrieval.json` |
 | Full v2 Dense (TinyBERT rerank) | Golden 15 | 2026-10-18 13:37:38 | 1.0000 | 1.0000 | 0.8 | 0.9333 | 0.9667 | `retrieval_ab_full.json` |
 | Full v2 Hybrid (TinyBERT rerank) | Golden 15 | 2026-10-18 13:37:38 | 1.0000 | 1.0000 | 0.7333 | 1.0000 | 0.9667 | `retrieval_ab_full.json` |
 | Full v2 Dense (TinyBERT rerank) | Hard 22 | 2026-10-18 13:37:38 | 1.0000 | 0.9545 | 0.8636 | 0.8182 | 0.9091 | `retrieval_ab_full.json` |
 | Full v2 Hybrid (TinyBERT rerank) | Hard 22 | 2026-10-18 13:37:38 | 1.0000 | 1.0000 | 0.8636 | 0.9091 | 0.9318 | `retrieval_ab_full.json` |
+
+*\*Note on Source Hit@15 (Pre-rerank): Historically labeled "Recall@15" in early Phase 2 scripts. It reflects a binary hit rate of whether any chunk from the expected source document appeared in the top-15 pre-reranking candidate pool, not strict chunk-level Information Retrieval recall.*
 
 ## 3. Reranker Ablation Benchmark (Top 15 Candidate Pool, Full v2 Collection)
 

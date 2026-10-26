@@ -15,7 +15,7 @@ The system distinguishes between technical target documentation and noisy enterp
 - **Heterogeneous Document Ingestion**: Ingests `.pdf`, `.docx`, `.pptx`, `.html`, `.md`, and `.txt` locally on-device with section-aware chunking, small-fragment merging, and SHA-256 deduplication.
 - **Persistent Conversational Memory**: SQLite checkpointer with Write-Ahead Logging (WAL) enabled for local concurrency, and drop-in connection-pooled `PostgresSaver` support for cloud scale.
 - **Full Distributed Observability**: End-to-end distributed tracing across all agent nodes and LLM requests via **Pydantic Logfire** and **LangSmith**.
-- **Rigorous Evaluation Suite**: 37-question retrieval test set, 22-case guardrail benchmark, and comprehensive audit logs documented in [RESULTS.md](RESULTS.md).
+- **Rigorous Evaluation Suite**: 50-question golden retrieval benchmark, 22-case guardrail benchmark, paired candidate-pool ablations ($K=15$ vs $K=25$), and verified audit logs documented in [RESULTS.md](RESULTS.md) and [Final Evaluation Report](evals/results/final_report_20261027_004500/final_evaluation_report.md).
 
 ---
 

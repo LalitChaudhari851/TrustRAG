@@ -3,7 +3,12 @@ Phase 2 — RAGAS + Tool Correctness metrics.
 Uses JUDGE_GROQ key so production GROQ_API_KEY is never exhausted by eval runs.
 All LLM-based metrics run in batches of 5 with 30s cooldowns between sub-batches
 and 60s cooldowns between experiments — calibrated for Groq's 6,000 TPM on_demand tier.
-Contexts are truncated to 300 chars (2 chunks max) so no single request exceeds the limit.
+
+METHODOLOGICAL NOTICE:
+1. Contexts are truncated to 300 chars (2 chunks max) and responses to 300 chars to fit free-tier TPM limits.
+2. Unhandled API exceptions (e.g. 429 rate limits) default to 0.0 in _batched_score.
+Consequently, historical RAGAS scores reflect rate-limit dropouts and truncation artifacts.
+For rigorous, deterministic IR benchmarking, use evals/retrieval_metrics.py.
 """
 
 

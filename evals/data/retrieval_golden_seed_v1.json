@@ -1,37 +1,6 @@
 {
   "version": "1.0",
-  "manifest": {
-    "dataset_name": "TrustRAG Retrieval Seed Benchmark v1",
-    "description": "Seed candidate retrieval evaluation dataset for enterprise technical documentation.",
-    "version": "1.0-seed",
-    "provenance": "Synthetic seed candidates generated from processed_data/true/ approved documents.",
-    "verification_notice": "ALL records are marked unverified_synthetic. Must undergo explicit human review before being treated as a benchmark.",
-    "collection_name": "enterprise_rag_v2",
-    "total_corpus_chunks": 197,
-    "embedding_model": "sentence-transformers/all-mpnet-base-v2 (768-d) + FastEmbed BM25 IDF",
-    "generator_script": "evals/dataset_generator.py",
-    "counts": {
-      "total": 50,
-      "by_type": {
-        "answerable_single_hop": 30,
-        "answerable_multi_hop": 10,
-        "unanswerable": 10
-      },
-      "by_unanswerable_subtype": {
-        "corpus_unanswerable": 6,
-        "unresolved_evidence": 4
-      },
-      "by_verification": {
-        "unverified_synthetic": 50,
-        "verified_human": 0,
-        "rejected": 0
-      },
-      "by_split": {
-        "dev": 30,
-        "test": 20
-      }
-    }
-  },
+  "manifest": {},
   "records": [
     {
       "id": "seed_001",
@@ -52,19 +21,55 @@
         "b9f7708c-ec05-517b-9e33-b33cd86aa109"
       ],
       "relevance_grades": {
-        "b9f7708c-ec05-517b-9e33-b33cd86aa109": 2
+        "b9f7708c-ec05-517b-9e33-b33cd86aa109": 3
       },
       "sufficient_evidence_sets": [
         [
           "b9f7708c-ec05-517b-9e33-b33cd86aa109"
         ]
       ],
-      "verification_status": "unverified_synthetic",
+      "verification_status": "verified_human",
       "split": "dev",
       "unanswerable_subtype": null,
       "expected_answer": "Run kubectl apply on redis-pod.yaml and redis-service.yaml.",
-      "reviewer_decision": null,
-      "notes": "Seed synthetic single-hop question; requires human review to verify."
+      "reviewer_decision": {
+        "decision": "verified",
+        "reviewer": "Lalit Chaudhari",
+        "reason": "Verified evidence chunk in parallel_work_queue.txt [STEP 1: STARTING REDIS]; directly answers how to start Redis using kubectl apply.",
+        "timestamp": "2026-10-26T06:43:24.894577+00:00",
+        "answerability": "answerable",
+        "answer_verified": true,
+        "multi_hop_verified": false
+      },
+      "notes": "Seed synthetic single-hop question; requires human review to verify.",
+      "topic_family": null,
+      "review_history": [
+        {
+          "event_id": "ann_3f9fe5864916",
+          "reviewer": "Lalit Chaudhari",
+          "timestamp": "2026-10-26T06:43:24.894577+00:00",
+          "decision": "verified",
+          "reason": "Verified evidence chunk in parallel_work_queue.txt [STEP 1: STARTING REDIS]; directly answers how to start Redis using kubectl apply.",
+          "answerability": "answerable",
+          "evidence_judgments": {
+            "b9f7708c-ec05-517b-9e33-b33cd86aa109": {
+              "grade": 3,
+              "status": "verified_exact_match"
+            }
+          },
+          "answer_verified": true,
+          "multi_hop_verified": false,
+          "candidate_corrections": null,
+          "annotation_version": "2.0"
+        }
+      ],
+      "candidate_corrections": null,
+      "evidence_verification_details": {
+        "b9f7708c-ec05-517b-9e33-b33cd86aa109": {
+          "grade": 3,
+          "status": "verified_exact_match"
+        }
+      }
     },
     {
       "id": "seed_002",
@@ -85,19 +90,55 @@
         "737920f2-0936-53da-82e8-e2a63c86ba07"
       ],
       "relevance_grades": {
-        "737920f2-0936-53da-82e8-e2a63c86ba07": 2
+        "737920f2-0936-53da-82e8-e2a63c86ba07": 3
       },
       "sufficient_evidence_sets": [
         [
           "737920f2-0936-53da-82e8-e2a63c86ba07"
         ]
       ],
-      "verification_status": "unverified_synthetic",
+      "verification_status": "verified_human",
       "split": "dev",
       "unanswerable_subtype": null,
       "expected_answer": "Use redis-cli -h redis and rpush job2 with task names.",
-      "reviewer_decision": null,
-      "notes": "Seed synthetic single-hop question; requires human review to verify."
+      "reviewer_decision": {
+        "decision": "verified",
+        "reviewer": "Lalit Chaudhari",
+        "reason": "Verified evidence chunk in parallel_work_queue.txt [STEP 2: FILLING THE QUEUE WITH TASKS]; directly answers CLI commands for redis-cli and rpush job2.",
+        "timestamp": "2026-10-26T06:43:24.894577+00:00",
+        "answerability": "answerable",
+        "answer_verified": true,
+        "multi_hop_verified": false
+      },
+      "notes": "Seed synthetic single-hop question; requires human review to verify.",
+      "topic_family": null,
+      "review_history": [
+        {
+          "event_id": "ann_997e39ecc185",
+          "reviewer": "Lalit Chaudhari",
+          "timestamp": "2026-10-26T06:43:24.894577+00:00",
+          "decision": "verified",
+          "reason": "Verified evidence chunk in parallel_work_queue.txt [STEP 2: FILLING THE QUEUE WITH TASKS]; directly answers CLI commands for redis-cli and rpush job2.",
+          "answerability": "answerable",
+          "evidence_judgments": {
+            "737920f2-0936-53da-82e8-e2a63c86ba07": {
+              "grade": 3,
+              "status": "verified_exact_match"
+            }
+          },
+          "answer_verified": true,
+          "multi_hop_verified": false,
+          "candidate_corrections": null,
+          "annotation_version": "2.0"
+        }
+      ],
+      "candidate_corrections": null,
+      "evidence_verification_details": {
+        "737920f2-0936-53da-82e8-e2a63c86ba07": {
+          "grade": 3,
+          "status": "verified_exact_match"
+        }
+      }
     },
     {
       "id": "seed_003",
@@ -118,19 +159,55 @@
         "38bfbdef-fa3f-542a-b5c0-6f739d9004cc"
       ],
       "relevance_grades": {
-        "38bfbdef-fa3f-542a-b5c0-6f739d9004cc": 2
+        "38bfbdef-fa3f-542a-b5c0-6f739d9004cc": 3
       },
       "sufficient_evidence_sets": [
         [
           "38bfbdef-fa3f-542a-b5c0-6f739d9004cc"
         ]
       ],
-      "verification_status": "unverified_synthetic",
+      "verification_status": "verified_human",
       "split": "dev",
       "unanswerable_subtype": null,
       "expected_answer": "Parallelism is set to 2 in spec.parallelism.",
-      "reviewer_decision": null,
-      "notes": "Seed synthetic single-hop question; requires human review to verify."
+      "reviewer_decision": {
+        "decision": "verified",
+        "reviewer": "Lalit Chaudhari",
+        "reason": "Verified evidence chunk in parallel_work_queue.txt [STEP 4: DEFINING A JOB]; manifest explicitly specifies spec.parallelism: 2.",
+        "timestamp": "2026-10-26T06:43:24.894577+00:00",
+        "answerability": "answerable",
+        "answer_verified": true,
+        "multi_hop_verified": false
+      },
+      "notes": "Seed synthetic single-hop question; requires human review to verify.",
+      "topic_family": null,
+      "review_history": [
+        {
+          "event_id": "ann_439f0a325d84",
+          "reviewer": "Lalit Chaudhari",
+          "timestamp": "2026-10-26T06:43:24.894577+00:00",
+          "decision": "verified",
+          "reason": "Verified evidence chunk in parallel_work_queue.txt [STEP 4: DEFINING A JOB]; manifest explicitly specifies spec.parallelism: 2.",
+          "answerability": "answerable",
+          "evidence_judgments": {
+            "38bfbdef-fa3f-542a-b5c0-6f739d9004cc": {
+              "grade": 3,
+              "status": "verified_exact_match"
+            }
+          },
+          "answer_verified": true,
+          "multi_hop_verified": false,
+          "candidate_corrections": null,
+          "annotation_version": "2.0"
+        }
+      ],
+      "candidate_corrections": null,
+      "evidence_verification_details": {
+        "38bfbdef-fa3f-542a-b5c0-6f739d9004cc": {
+          "grade": 3,
+          "status": "verified_exact_match"
+        }
+      }
     },
     {
       "id": "seed_004",
@@ -145,25 +222,65 @@
         "1. Restart Policy Requirements"
       ],
       "evidence_quotes": [
-        "Jobs have strict requirements for Pod restart policies:\nOnFailure: Kubelet restarts the container within the existing Pod if it fails.\nNever: The Job controller launches a replacement Pod instead."
+        "Jobs have strict requirements for Pod restart policies:\nOnFailure: Kubelet restarts the container within the same Pod if it crashes.\nNever: Entire Pod is marked as failed, Job controller creates a new Pod.\nAlways: Not allowed (would prevent Pod from ever completing)."
       ],
       "candidate_chunk_ids": [
         "134fb45c-5ffa-5fd2-b5b8-02c405f097d9"
       ],
       "relevance_grades": {
-        "134fb45c-5ffa-5fd2-b5b8-02c405f097d9": 2
+        "134fb45c-5ffa-5fd2-b5b8-02c405f097d9": 3
       },
       "sufficient_evidence_sets": [
         [
           "134fb45c-5ffa-5fd2-b5b8-02c405f097d9"
         ]
       ],
-      "verification_status": "unverified_synthetic",
+      "verification_status": "verified_human",
       "split": "dev",
       "unanswerable_subtype": null,
       "expected_answer": "Only OnFailure or Never are permitted; Always is not allowed.",
-      "reviewer_decision": null,
-      "notes": "Seed synthetic single-hop question; requires human review to verify."
+      "reviewer_decision": {
+        "decision": "verified",
+        "reviewer": "Lalit Chaudhari",
+        "reason": "Verified evidence chunk in cronjobs.docx [1. Restart Policy Requirements]; explicitly specifies OnFailure, Never, and that Always is not allowed.",
+        "timestamp": "2026-10-26T06:43:24.894577+00:00",
+        "answerability": "answerable",
+        "answer_verified": true,
+        "multi_hop_verified": false
+      },
+      "notes": "Seed synthetic single-hop question; requires human review to verify.",
+      "topic_family": null,
+      "review_history": [
+        {
+          "event_id": "ann_37126fbd2a40",
+          "reviewer": "Lalit Chaudhari",
+          "timestamp": "2026-10-26T06:43:24.894577+00:00",
+          "decision": "verified",
+          "reason": "Verified evidence chunk in cronjobs.docx [1. Restart Policy Requirements]; explicitly specifies OnFailure, Never, and that Always is not allowed.",
+          "answerability": "answerable",
+          "evidence_judgments": {
+            "134fb45c-5ffa-5fd2-b5b8-02c405f097d9": {
+              "grade": 3,
+              "status": "verified_exact_match"
+            }
+          },
+          "answer_verified": true,
+          "multi_hop_verified": false,
+          "candidate_corrections": {
+            "corrected_quote": "Replaced paraphrased synthetic quote with exact corpus wording from cronjobs.docx"
+          },
+          "annotation_version": "2.0"
+        }
+      ],
+      "candidate_corrections": {
+        "corrected_quote": "Replaced paraphrased synthetic quote with exact corpus wording from cronjobs.docx"
+      },
+      "evidence_verification_details": {
+        "134fb45c-5ffa-5fd2-b5b8-02c405f097d9": {
+          "grade": 3,
+          "status": "verified_exact_match"
+        }
+      }
     },
     {
       "id": "seed_005",
@@ -178,58 +295,111 @@
         "2. API Group and Immutability"
       ],
       "evidence_quotes": [
-        "apiVersion: batch/v1\nkind: Job\nmetadata:\n  name: batch-processor"
+        "Belongs to the batch/v1 API group (stable)."
       ],
       "candidate_chunk_ids": [
         "1c470929-b8ba-52dc-afd7-ff41adcd2672"
       ],
       "relevance_grades": {
-        "1c470929-b8ba-52dc-afd7-ff41adcd2672": 2
+        "1c470929-b8ba-52dc-afd7-ff41adcd2672": 3
       },
       "sufficient_evidence_sets": [
         [
           "1c470929-b8ba-52dc-afd7-ff41adcd2672"
         ]
       ],
-      "verification_status": "unverified_synthetic",
+      "verification_status": "verified_human",
       "split": "dev",
       "unanswerable_subtype": null,
       "expected_answer": "The batch/v1 API group defines the Job resource.",
-      "reviewer_decision": null,
-      "notes": "Seed synthetic single-hop question; requires human review to verify."
+      "reviewer_decision": {
+        "decision": "verified",
+        "reviewer": "Lalit Chaudhari",
+        "reason": "Verified evidence chunk in cronjobs.docx [2. API Group and Immutability]; explicitly confirms Job belongs to batch/v1 API group.",
+        "timestamp": "2026-10-26T06:43:24.894577+00:00",
+        "answerability": "answerable",
+        "answer_verified": true,
+        "multi_hop_verified": false
+      },
+      "notes": "Seed synthetic single-hop question; requires human review to verify.",
+      "topic_family": null,
+      "review_history": [
+        {
+          "event_id": "ann_8d7259edf435",
+          "reviewer": "Lalit Chaudhari",
+          "timestamp": "2026-10-26T06:43:24.894577+00:00",
+          "decision": "verified",
+          "reason": "Verified evidence chunk in cronjobs.docx [2. API Group and Immutability]; explicitly confirms Job belongs to batch/v1 API group.",
+          "answerability": "answerable",
+          "evidence_judgments": {
+            "1c470929-b8ba-52dc-afd7-ff41adcd2672": {
+              "grade": 3,
+              "status": "verified_exact_match"
+            }
+          },
+          "answer_verified": true,
+          "multi_hop_verified": false,
+          "candidate_corrections": {
+            "corrected_quote": "Replaced fabricated synthetic YAML snippet with verbatim sentence 'Belongs to the batch/v1 API group (stable).'"
+          },
+          "annotation_version": "2.0"
+        }
+      ],
+      "candidate_corrections": {
+        "corrected_quote": "Replaced fabricated synthetic YAML snippet with verbatim sentence 'Belongs to the batch/v1 API group (stable).'"
+      },
+      "evidence_verification_details": {
+        "1c470929-b8ba-52dc-afd7-ff41adcd2672": {
+          "grade": 3,
+          "status": "verified_exact_match"
+        }
+      }
     },
     {
       "id": "seed_006",
-      "query": "What is the default backoffLimit for a Kubernetes Job?",
+      "query": "What does the backoffLimit field specify in a Kubernetes Job configuration?",
       "query_type": "answerable_single_hop",
       "difficulty": "medium",
       "domain": "kubernetes_workloads",
       "source_files": [
-        "cronjobs.docx"
+        "monitor_job.docx"
       ],
       "expected_sections": [
-        "Parallelism"
+        "Creating a Job Configuration File"
       ],
       "evidence_quotes": [
-        "spec:\n  backoffLimit: 6\n  template:"
+        "Has a backoffLimit of 4, meaning it will retry up to 4 times if it fails"
       ],
       "candidate_chunk_ids": [
-        "81a4f786-ef7a-52e5-9af0-339d7dd76240"
+        "50ebc9c7-ac56-52ec-8a80-225d798fff1d"
       ],
       "relevance_grades": {
-        "81a4f786-ef7a-52e5-9af0-339d7dd76240": 2
+        "50ebc9c7-ac56-52ec-8a80-225d798fff1d": 3
       },
       "sufficient_evidence_sets": [
         [
-          "81a4f786-ef7a-52e5-9af0-339d7dd76240"
+          "50ebc9c7-ac56-52ec-8a80-225d798fff1d"
         ]
       ],
       "verification_status": "unverified_synthetic",
       "split": "dev",
       "unanswerable_subtype": null,
-      "expected_answer": "The default backoffLimit is 6.",
+      "expected_answer": "It specifies how many times a Job will retry if it fails.",
       "reviewer_decision": null,
-      "notes": "Seed synthetic single-hop question; requires human review to verify."
+      "notes": "Rewritten single-hop query grounded strictly in monitor_job.docx Chunk 7; pending human review.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": {
+        "original_query": "What is the default backoffLimit for a Kubernetes Job?",
+        "original_candidate_chunk_ids": [
+          "81a4f786-ef7a-52e5-9af0-339d7dd76240"
+        ],
+        "replacement_candidate_chunks": [
+          "50ebc9c7-ac56-52ec-8a80-225d798fff1d"
+        ],
+        "reason": "Default backoffLimit (6) was missing from corpus. Rewritten to evaluate what backoffLimit specifies based on monitor_job.docx Chunk 7."
+      },
+      "evidence_verification_details": null
     },
     {
       "id": "seed_007",
@@ -241,32 +411,44 @@
         "cronjobs.docx"
       ],
       "expected_sections": [
-        "NonIndexed (Default)"
+        "4. Jobs Taking Too Long"
       ],
       "evidence_quotes": [
-        "activeDeadlineSeconds: 600\nThis sets a strict execution ceiling across all Pods."
+        "# Set active deadline\nspec:\nactiveDeadlineSeconds: 3600  # Kill job after 1 hour"
       ],
       "candidate_chunk_ids": [
-        "dd8b3b09-eaf6-59dd-b6d3-1844d69b8901"
+        "84a9f778-e252-530b-9d2e-9aade0158d16"
       ],
       "relevance_grades": {
-        "dd8b3b09-eaf6-59dd-b6d3-1844d69b8901": 2
+        "84a9f778-e252-530b-9d2e-9aade0158d16": 3
       },
       "sufficient_evidence_sets": [
         [
-          "dd8b3b09-eaf6-59dd-b6d3-1844d69b8901"
+          "84a9f778-e252-530b-9d2e-9aade0158d16"
         ]
       ],
       "verification_status": "unverified_synthetic",
       "split": "dev",
       "unanswerable_subtype": null,
-      "expected_answer": "It sets an absolute maximum duration after which the Job and its Pods are terminated.",
+      "expected_answer": "It sets an active execution deadline that terminates (kills) the Job after the specified duration (e.g., 3600 seconds) if it runs longer than expected.",
       "reviewer_decision": null,
-      "notes": "Seed synthetic single-hop question; requires human review to verify."
+      "notes": "Evidence corrected to cronjobs.docx Chunk 25; pending human review.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": {
+        "original_candidate_chunk_ids": [
+          "dd8b3b09-eaf6-59dd-b6d3-1844d69b8901"
+        ],
+        "replacement_candidate_chunks": [
+          "84a9f778-e252-530b-9d2e-9aade0158d16"
+        ],
+        "reason": "Replaced irrelevant Chunk 7 (NonIndexed) with Chunk 25 (Jobs Taking Too Long) which directly defines activeDeadlineSeconds."
+      },
+      "evidence_verification_details": null
     },
     {
       "id": "seed_008",
-      "query": "How does ttlSecondsAfterFinished clean up completed Kubernetes Jobs?",
+      "query": "How can you configure a Kubernetes CronJob to automatically clean up completed jobs after 1 hour to minimize costs?",
       "query_type": "answerable_single_hop",
       "difficulty": "medium",
       "domain": "kubernetes_workloads",
@@ -274,28 +456,41 @@
         "cronjobs.docx"
       ],
       "expected_sections": [
-        "Indexed Mode"
+        "2. Schedule Optimization for Cost Savings"
       ],
       "evidence_quotes": [
-        "ttlSecondsAfterFinished: 86400\nThe TTL-after-finished controller automatically cleans up finished Jobs"
+        "# Quick cleanup to minimize costs\nttlSecondsAfterFinished: 3600  # Clean up after 1 hour"
       ],
       "candidate_chunk_ids": [
-        "28cb15bb-064d-5f01-a0fc-0b0c718ed336"
+        "8f7910c9-d6a1-5234-950f-ed26139ea9a3"
       ],
       "relevance_grades": {
-        "28cb15bb-064d-5f01-a0fc-0b0c718ed336": 2
+        "8f7910c9-d6a1-5234-950f-ed26139ea9a3": 3
       },
       "sufficient_evidence_sets": [
         [
-          "28cb15bb-064d-5f01-a0fc-0b0c718ed336"
+          "8f7910c9-d6a1-5234-950f-ed26139ea9a3"
         ]
       ],
       "verification_status": "unverified_synthetic",
       "split": "dev",
       "unanswerable_subtype": null,
-      "expected_answer": "It automatically deletes finished Jobs and their Pods after the specified TTL expires.",
+      "expected_answer": "Set ttlSecondsAfterFinished: 3600 in the CronJob job template specification for quick cleanup 1 hour after completion.",
       "reviewer_decision": null,
-      "notes": "Seed synthetic single-hop question; requires human review to verify."
+      "notes": "Rewritten to ground strictly in cronjobs.docx Chunk 52 cleanup configuration; pending human review.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": {
+        "original_query": "How does ttlSecondsAfterFinished clean up completed Kubernetes Jobs?",
+        "original_candidate_chunk_ids": [
+          "28cb15bb-064d-5f01-a0fc-0b0c718ed336"
+        ],
+        "replacement_candidate_chunks": [
+          "8f7910c9-d6a1-5234-950f-ed26139ea9a3"
+        ],
+        "reason": "Original question asked for internal TTL controller mechanics absent from text. Rewritten to evaluate documented 1-hour cleanup configuration in Chunk 52."
+      },
+      "evidence_verification_details": null
     },
     {
       "id": "seed_009",
@@ -307,32 +502,51 @@
         "pods_autoscale.html"
       ],
       "expected_sections": [
-        "Introduction to Kubernetes Autoscaling"
+        "HPA vs. VPA: Which One to Use?"
       ],
       "evidence_quotes": [
-        "HPA scales pods horizontally by adding or removing replicas, while VPA scales pods vertically by adjusting CPU and memory reservations."
+        "- HPA is ideal for stateless applications that can easily scale horizontally by adding more pods. It’s useful when you need to handle variable workloads and ensure high availability.\n- VPA is suitable for applications where scaling horizontally is not feasible or when you need to optimize resource usage for individual pods. It’s beneficial for stateful applications or those with varying resource needs."
       ],
       "candidate_chunk_ids": [
+        "ac2984be-e47e-5b11-937a-46344e9fcfed",
+        "376b124c-3b4c-53e2-81d6-28ae65918ad9",
         "c0f1220e-829c-50f0-bf0d-2e48be167355"
       ],
       "relevance_grades": {
-        "c0f1220e-829c-50f0-bf0d-2e48be167355": 2
+        "ac2984be-e47e-5b11-937a-46344e9fcfed": 3,
+        "376b124c-3b4c-53e2-81d6-28ae65918ad9": 2,
+        "c0f1220e-829c-50f0-bf0d-2e48be167355": 1
       },
       "sufficient_evidence_sets": [
         [
-          "c0f1220e-829c-50f0-bf0d-2e48be167355"
+          "ac2984be-e47e-5b11-937a-46344e9fcfed"
         ]
       ],
       "verification_status": "unverified_synthetic",
       "split": "dev",
       "unanswerable_subtype": null,
-      "expected_answer": "HPA adjusts replica counts horizontally while VPA adjusts container CPU/memory requests vertically.",
+      "expected_answer": "HPA scales horizontally by adding more pods. VPA adjusts CPU and memory requests and limits for individual pods.",
       "reviewer_decision": null,
-      "notes": "Seed synthetic single-hop question; requires human review to verify."
+      "notes": "Evidence corrected to pods_autoscale.html Chunk 27 (Grade 3), Chunk 13 (Grade 2 for CPU/mem adjustment details), and Chunk 1 (Grade 1); pending human review.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": {
+        "added_candidate_chunks": [
+          "ac2984be-e47e-5b11-937a-46344e9fcfed",
+          "376b124c-3b4c-53e2-81d6-28ae65918ad9"
+        ],
+        "regraded_candidate_chunks": {
+          "ac2984be-e47e-5b11-937a-46344e9fcfed": 3,
+          "376b124c-3b4c-53e2-81d6-28ae65918ad9": 2,
+          "c0f1220e-829c-50f0-bf0d-2e48be167355": 1
+        },
+        "reason": "Chunk 27 contrasts scaling by adding pods vs individual pods; Chunk 13 defines VPA adjusting CPU and memory requests and limits."
+      },
+      "evidence_verification_details": null
     },
     {
       "id": "seed_010",
-      "query": "Which insecure TLS argument is commonly added to Metrics Server in test clusters?",
+      "query": "How do you install the Metrics Server in Kubernetes using the official components manifest?",
       "query_type": "answerable_single_hop",
       "difficulty": "medium",
       "domain": "kubernetes_workloads",
@@ -343,13 +557,13 @@
         "Metric Server Setup"
       ],
       "evidence_quotes": [
-        "- --kubelet-insecure-tls"
+        "$ kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml"
       ],
       "candidate_chunk_ids": [
         "6abf9610-2c0e-589b-b750-9721ae48209d"
       ],
       "relevance_grades": {
-        "6abf9610-2c0e-589b-b750-9721ae48209d": 2
+        "6abf9610-2c0e-589b-b750-9721ae48209d": 3
       },
       "sufficient_evidence_sets": [
         [
@@ -359,9 +573,16 @@
       "verification_status": "unverified_synthetic",
       "split": "dev",
       "unanswerable_subtype": null,
-      "expected_answer": "--kubelet-insecure-tls is added to args in the Metrics Server deployment.",
+      "expected_answer": "Apply the components manifest directly from the official GitHub release URL: kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml.",
       "reviewer_decision": null,
-      "notes": "Seed synthetic single-hop question; requires human review to verify."
+      "notes": "Rewritten to evaluate official Metrics Server manifest installation in pods_autoscale.html Chunk 2; pending human review.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": {
+        "original_query": "Which insecure TLS argument is commonly added to Metrics Server in test clusters?",
+        "reason": "Original query asked for --kubelet-insecure-tls which is absent from corpus. Rewritten to evaluate the documented kubectl apply installation command in Chunk 2."
+      },
+      "evidence_verification_details": null
     },
     {
       "id": "seed_011",
@@ -394,7 +615,11 @@
       "unanswerable_subtype": null,
       "expected_answer": "Target average utilization is configured to 50 percent.",
       "reviewer_decision": null,
-      "notes": "Seed synthetic single-hop question; requires human review to verify."
+      "notes": "Seed synthetic single-hop question; requires human review to verify.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_012",
@@ -427,7 +652,11 @@
       "unanswerable_subtype": null,
       "expected_answer": "Kube-apiserver, etcd, kube-scheduler, and kube-controller-manager.",
       "reviewer_decision": null,
-      "notes": "Seed synthetic single-hop question; requires human review to verify."
+      "notes": "Seed synthetic single-hop question; requires human review to verify.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_013",
@@ -460,7 +689,11 @@
       "unanswerable_subtype": null,
       "expected_answer": "It provides consistent and highly-available key-value storage for all cluster state data.",
       "reviewer_decision": null,
-      "notes": "Seed synthetic single-hop question; requires human review to verify."
+      "notes": "Seed synthetic single-hop question; requires human review to verify.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_014",
@@ -493,7 +726,11 @@
       "unanswerable_subtype": null,
       "expected_answer": "The kubelet agent ensures containers described in PodSpecs are running and healthy.",
       "reviewer_decision": null,
-      "notes": "Seed synthetic single-hop question; requires human review to verify."
+      "notes": "Seed synthetic single-hop question; requires human review to verify.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_015",
@@ -526,7 +763,11 @@
       "unanswerable_subtype": null,
       "expected_answer": "minikube version verifies the Minikube installation.",
       "reviewer_decision": null,
-      "notes": "Seed synthetic single-hop question; requires human review to verify."
+      "notes": "Seed synthetic single-hop question; requires human review to verify.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_016",
@@ -559,7 +800,11 @@
       "unanswerable_subtype": null,
       "expected_answer": "Run minikube start --driver=docker.",
       "reviewer_decision": null,
-      "notes": "Seed synthetic single-hop question; requires human review to verify."
+      "notes": "Seed synthetic single-hop question; requires human review to verify.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_017",
@@ -592,7 +837,11 @@
       "unanswerable_subtype": null,
       "expected_answer": "Execute curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh.",
       "reviewer_decision": null,
-      "notes": "Seed synthetic single-hop question; requires human review to verify."
+      "notes": "Seed synthetic single-hop question; requires human review to verify.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_018",
@@ -625,7 +874,11 @@
       "unanswerable_subtype": null,
       "expected_answer": "databricks jobs get --job-id <job-id> retrieves job metadata.",
       "reviewer_decision": null,
-      "notes": "Seed synthetic single-hop question; requires human review to verify."
+      "notes": "Seed synthetic single-hop question; requires human review to verify.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_019",
@@ -658,7 +911,11 @@
       "unanswerable_subtype": null,
       "expected_answer": "kubectl wait --for=condition=complete --timeout=300s job/job-wq-2.",
       "reviewer_decision": null,
-      "notes": "Seed synthetic single-hop question; requires human review to verify."
+      "notes": "Seed synthetic single-hop question; requires human review to verify.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_020",
@@ -691,7 +948,11 @@
       "unanswerable_subtype": null,
       "expected_answer": "Resque (https://github.com/resque/resque) is suggested for continuous background processing.",
       "reviewer_decision": null,
-      "notes": "Seed synthetic single-hop question; requires human review to verify."
+      "notes": "Seed synthetic single-hop question; requires human review to verify.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_021",
@@ -724,7 +985,11 @@
       "unanswerable_subtype": null,
       "expected_answer": "Completions specifies the number of successful Pod completions required, while parallelism sets the max concurrently running Pods.",
       "reviewer_decision": null,
-      "notes": "Seed synthetic single-hop question; requires human review to verify."
+      "notes": "Seed synthetic single-hop question; requires human review to verify.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_022",
@@ -757,7 +1022,11 @@
       "unanswerable_subtype": null,
       "expected_answer": "Allow, Forbid, and Replace.",
       "reviewer_decision": null,
-      "notes": "Seed synthetic single-hop question; requires human review to verify."
+      "notes": "Seed synthetic single-hop question; requires human review to verify.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_023",
@@ -790,7 +1059,11 @@
       "unanswerable_subtype": null,
       "expected_answer": "The deadline in seconds for starting a job if it misses its scheduled time.",
       "reviewer_decision": null,
-      "notes": "Seed synthetic single-hop question; requires human review to verify."
+      "notes": "Seed synthetic single-hop question; requires human review to verify.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_024",
@@ -823,7 +1096,11 @@
       "unanswerable_subtype": null,
       "expected_answer": "ab -n 500000 -c 1000 http://<service-ip>/ generates the synthetic load.",
       "reviewer_decision": null,
-      "notes": "Seed synthetic single-hop question; requires human review to verify."
+      "notes": "Seed synthetic single-hop question; requires human review to verify.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_025",
@@ -856,7 +1133,11 @@
       "unanswerable_subtype": null,
       "expected_answer": "Off, Initial, Recreate, and Auto.",
       "reviewer_decision": null,
-      "notes": "Seed synthetic single-hop question; requires human review to verify."
+      "notes": "Seed synthetic single-hop question; requires human review to verify.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_026",
@@ -889,7 +1170,11 @@
       "unanswerable_subtype": null,
       "expected_answer": "Assigning newly created pods with no assigned node to an appropriate worker node.",
       "reviewer_decision": null,
-      "notes": "Seed synthetic single-hop question; requires human review to verify."
+      "notes": "Seed synthetic single-hop question; requires human review to verify.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_027",
@@ -922,7 +1207,11 @@
       "unanswerable_subtype": null,
       "expected_answer": "It maintains network rules and connection forwarding to pods across the cluster.",
       "reviewer_decision": null,
-      "notes": "Seed synthetic single-hop question; requires human review to verify."
+      "notes": "Seed synthetic single-hop question; requires human review to verify.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_028",
@@ -955,7 +1244,11 @@
       "unanswerable_subtype": null,
       "expected_answer": "perl -Mbignum=bpi -wle 'print bpi(2000)' calculates 2000 digits of pi.",
       "reviewer_decision": null,
-      "notes": "Seed synthetic single-hop question; requires human review to verify."
+      "notes": "Seed synthetic single-hop question; requires human review to verify.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_029",
@@ -988,7 +1281,11 @@
       "unanswerable_subtype": null,
       "expected_answer": "kubectl get events --sort-by='.metadata.creationTimestamp'.",
       "reviewer_decision": null,
-      "notes": "Seed synthetic single-hop question; requires human review to verify."
+      "notes": "Seed synthetic single-hop question; requires human review to verify.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_030",
@@ -1021,7 +1318,11 @@
       "unanswerable_subtype": null,
       "expected_answer": "databricks jobs create --json-file <path-to-json> creates the job.",
       "reviewer_decision": null,
-      "notes": "Seed synthetic single-hop question; requires human review to verify."
+      "notes": "Seed synthetic single-hop question; requires human review to verify.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_031",
@@ -1065,7 +1366,11 @@
       "unanswerable_subtype": null,
       "expected_answer": "The worker uses RedisWQ to lease items with timeout from Redis, while the Job manifest sets spec.parallelism: 2.",
       "reviewer_decision": null,
-      "notes": "Seed synthetic multi-hop question with alternative sufficient evidence sets; unverified until human review."
+      "notes": "Seed synthetic multi-hop question with alternative sufficient evidence sets; unverified until human review.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_032",
@@ -1103,7 +1408,11 @@
       "unanswerable_subtype": null,
       "expected_answer": "Allowed restart policies are OnFailure or Never; when consecutive failures reach backoffLimit (default 6), the Job fails.",
       "reviewer_decision": null,
-      "notes": "Seed synthetic multi-hop question with alternative sufficient evidence sets; unverified until human review."
+      "notes": "Seed synthetic multi-hop question with alternative sufficient evidence sets; unverified until human review.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_033",
@@ -1141,7 +1450,11 @@
       "unanswerable_subtype": null,
       "expected_answer": "activeDeadlineSeconds forces a ceiling on execution duration while running, and ttlSecondsAfterFinished governs retention duration after completion.",
       "reviewer_decision": null,
-      "notes": "Seed synthetic multi-hop question with alternative sufficient evidence sets; unverified until human review."
+      "notes": "Seed synthetic multi-hop question with alternative sufficient evidence sets; unverified until human review.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_034",
@@ -1185,7 +1498,11 @@
       "unanswerable_subtype": null,
       "expected_answer": "Metrics Server collects pod CPU/memory metrics used by HPA; --kubelet-insecure-tls allows insecure communication with kubelets.",
       "reviewer_decision": null,
-      "notes": "Seed synthetic multi-hop question with alternative sufficient evidence sets; unverified until human review."
+      "notes": "Seed synthetic multi-hop question with alternative sufficient evidence sets; unverified until human review.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_035",
@@ -1229,7 +1546,11 @@
       "unanswerable_subtype": null,
       "expected_answer": "Kube-scheduler watches for unassigned pods and selects a node; kubelet on that node ensures the containers run as specified in PodSpecs.",
       "reviewer_decision": null,
-      "notes": "Seed synthetic multi-hop question with alternative sufficient evidence sets; unverified until human review."
+      "notes": "Seed synthetic multi-hop question with alternative sufficient evidence sets; unverified until human review.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_036",
@@ -1267,7 +1588,11 @@
       "unanswerable_subtype": null,
       "expected_answer": "Install with curl script to setup-cli, and trigger with databricks jobs run-now --job-id.",
       "reviewer_decision": null,
-      "notes": "Seed synthetic multi-hop question with alternative sufficient evidence sets; unverified until human review."
+      "notes": "Seed synthetic multi-hop question with alternative sufficient evidence sets; unverified until human review.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_037",
@@ -1305,7 +1630,11 @@
       "unanswerable_subtype": null,
       "expected_answer": "Completions and parallelism determine how many pods must finish and how many run in parallel for each Job, while concurrencyPolicy governs concurrent Job runs in CronJobs.",
       "reviewer_decision": null,
-      "notes": "Seed synthetic multi-hop question with alternative sufficient evidence sets; unverified until human review."
+      "notes": "Seed synthetic multi-hop question with alternative sufficient evidence sets; unverified until human review.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_038",
@@ -1343,7 +1672,11 @@
       "unanswerable_subtype": null,
       "expected_answer": "Apache Bench sends concurrent HTTP requests; HPA queries Metrics Server and increases replicas when average CPU exceeds averageUtilization.",
       "reviewer_decision": null,
-      "notes": "Seed synthetic multi-hop question with alternative sufficient evidence sets; unverified until human review."
+      "notes": "Seed synthetic multi-hop question with alternative sufficient evidence sets; unverified until human review.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_039",
@@ -1387,7 +1720,11 @@
       "unanswerable_subtype": null,
       "expected_answer": "Start Minikube with minikube start --driver=docker and verify with minikube version and kubectl cluster-info.",
       "reviewer_decision": null,
-      "notes": "Seed synthetic multi-hop question with alternative sufficient evidence sets; unverified until human review."
+      "notes": "Seed synthetic multi-hop question with alternative sufficient evidence sets; unverified until human review.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_040",
@@ -1425,7 +1762,11 @@
       "unanswerable_subtype": null,
       "expected_answer": "kube-apiserver exposes the Kubernetes API and validates requests; etcd is the backing distributed key-value store holding cluster state.",
       "reviewer_decision": null,
-      "notes": "Seed synthetic multi-hop question with alternative sufficient evidence sets; unverified until human review."
+      "notes": "Seed synthetic multi-hop question with alternative sufficient evidence sets; unverified until human review.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_041",
@@ -1444,7 +1785,11 @@
       "unanswerable_subtype": "corpus_unanswerable",
       "expected_answer": "I cannot answer this question based on the provided technical documentation.",
       "reviewer_decision": null,
-      "notes": "Corpus unanswerable: Apache Kafka and Strimzi operators are completely absent from the approved documentation."
+      "notes": "Corpus unanswerable: Apache Kafka and Strimzi operators are completely absent from the approved documentation.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_042",
@@ -1463,7 +1808,11 @@
       "unanswerable_subtype": "corpus_unanswerable",
       "expected_answer": "I cannot answer this question based on the provided technical documentation.",
       "reviewer_decision": null,
-      "notes": "Corpus unanswerable: Apache Cassandra database clustering is not covered in the indexed documents."
+      "notes": "Corpus unanswerable: Apache Cassandra database clustering is not covered in the indexed documents.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_043",
@@ -1482,7 +1831,11 @@
       "unanswerable_subtype": "corpus_unanswerable",
       "expected_answer": "I cannot answer this question based on the provided technical documentation.",
       "reviewer_decision": null,
-      "notes": "Corpus unanswerable: Istio service mesh and mTLS traffic policies are absent from the indexed documents."
+      "notes": "Corpus unanswerable: Istio service mesh and mTLS traffic policies are absent from the indexed documents.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_044",
@@ -1501,7 +1854,11 @@
       "unanswerable_subtype": "corpus_unanswerable",
       "expected_answer": "I cannot answer this question based on the provided technical documentation.",
       "reviewer_decision": null,
-      "notes": "Corpus unanswerable: Ceph storage CSI snapshots are absent from the indexed documents."
+      "notes": "Corpus unanswerable: Ceph storage CSI snapshots are absent from the indexed documents.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_045",
@@ -1520,7 +1877,11 @@
       "unanswerable_subtype": "unresolved_evidence",
       "expected_answer": "I cannot answer this question based on the provided technical documentation.",
       "reviewer_decision": null,
-      "notes": "Unresolved evidence: The approved documents cover HPA resource metrics (CPU) and Metrics Server setup, but do not provide external PrometheusRule metric definitions."
+      "notes": "Unresolved evidence: The approved documents cover HPA resource metrics (CPU) and Metrics Server setup, but do not provide external PrometheusRule metric definitions.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_046",
@@ -1539,7 +1900,11 @@
       "unanswerable_subtype": "unresolved_evidence",
       "expected_answer": "I cannot answer this question based on the provided technical documentation.",
       "reviewer_decision": null,
-      "notes": "Unresolved evidence: The documents discuss Redis work queues and Minikube/Docker environments, but Karpenter provider consolidation flags are not present."
+      "notes": "Unresolved evidence: The documents discuss Redis work queues and Minikube/Docker environments, but Karpenter provider consolidation flags are not present.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_047",
@@ -1558,7 +1923,11 @@
       "unanswerable_subtype": "corpus_unanswerable",
       "expected_answer": "I cannot answer this question based on the provided technical documentation.",
       "reviewer_decision": null,
-      "notes": "Corpus unanswerable: RabbitMQ operators and quorum queues are completely absent from the indexed documents."
+      "notes": "Corpus unanswerable: RabbitMQ operators and quorum queues are completely absent from the indexed documents.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_048",
@@ -1577,7 +1946,11 @@
       "unanswerable_subtype": "corpus_unanswerable",
       "expected_answer": "I cannot answer this question based on the provided technical documentation.",
       "reviewer_decision": null,
-      "notes": "Corpus unanswerable: Cilium eBPF replacement for kube-proxy is absent from the indexed corpus."
+      "notes": "Corpus unanswerable: Cilium eBPF replacement for kube-proxy is absent from the indexed corpus.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_049",
@@ -1596,7 +1969,11 @@
       "unanswerable_subtype": "unresolved_evidence",
       "expected_answer": "I cannot answer this question based on the provided technical documentation.",
       "reviewer_decision": null,
-      "notes": "Unresolved evidence: The job-wq-2 manifest specifies CPU and image fields, but NVIDIA GPU time-slicing profiles are unresolved in the text."
+      "notes": "Unresolved evidence: The job-wq-2 manifest specifies CPU and image fields, but NVIDIA GPU time-slicing profiles are unresolved in the text.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     },
     {
       "id": "seed_050",
@@ -1615,7 +1992,11 @@
       "unanswerable_subtype": "unresolved_evidence",
       "expected_answer": "I cannot answer this question based on the provided technical documentation.",
       "reviewer_decision": null,
-      "notes": "Unresolved evidence: Job restart policies and batch specifications are documented, but Windows container gMSA security contexts are absent."
+      "notes": "Unresolved evidence: Job restart policies and batch specifications are documented, but Windows container gMSA security contexts are absent.",
+      "topic_family": null,
+      "review_history": [],
+      "candidate_corrections": null,
+      "evidence_verification_details": null
     }
   ]
 }

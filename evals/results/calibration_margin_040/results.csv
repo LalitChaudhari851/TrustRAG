@@ -1,0 +1,54 @@
+id,split,query,expected_answer,app_answer,verdict,verdict_reason,retrieved_chunk_ids,retrieved_ranks,retrieved_scores,relevant_evidence_retrieved,context_evidence_present,abstention_status,latency_ms,error_category,evaluator_method,review_required
+seed_001,dev,How do you start Redis for a Kubernetes work queue?,Run kubectl apply on redis-pod.yaml and redis-service.yaml.,"To start Redis for a Kubernetes work queue, you need to start a single instance of Redis by running the following commands:
+
+```bash
+kubectl apply -f https://k8s.io/examples/application/job/redis/redis-pod.yaml
+kubectl apply -f https://k8s.io/examples/application/job/redis/redis-service.yaml
+```",CORRECT,Cites both redis-pod.yaml and redis-service.yaml manifests with kubectl apply.,fb426547-e0c6-5f14-acbb-28fec27555e9;737920f2-0936-53da-82e8-e2a63c86ba07;d731bfd3-be36-57c0-827f-d1c85339dac3;83358e9c-431c-51b4-97e8-baacb2d11344;b9f7708c-ec05-517b-9e33-b33cd86aa109,1;2;3;4;5,0.5714286;0.6666667;0.75;0.325;0.39285713,True,False,none,3501,none,deterministic_v1,False
+seed_002,dev,Which CLI commands push tasks into the Redis queue named job2?,Use redis-cli -h redis and rpush job2 with task names.,"The CLI commands that push tasks into the Redis queue named `job2` are:
+
+```
+rpush job2 ""apple""
+rpush job2 ""banana""
+rpush job2 ""cherry""
+rpush job2 ""date""
+rpush job2 ""fig""
+rpush job2 ""grape""
+rpush job2 ""lemon""
+rpush job2 ""melon""
+rpush job2 ""orange""
+```",CORRECT,Correctly cites rpush job2 command syntax to enqueue tasks.,737920f2-0936-53da-82e8-e2a63c86ba07;fb426547-e0c6-5f14-acbb-28fec27555e9;d731bfd3-be36-57c0-827f-d1c85339dac3,1;2;3,1.0;0.4166667;0.6666667,True,False,none,3028,none,deterministic_v1,False
+seed_003,dev,What parallelism value is specified in the job-wq-2 manifest?,Parallelism is set to 2 in spec.parallelism.,The parallelism value specified in the job-wq-2 manifest is 2.,CORRECT,Correctly states parallelism value of 2.,38bfbdef-fa3f-542a-b5c0-6f739d9004cc;7424732f-10bd-5a98-8ca5-99c710a76e10,1;2,0.7;0.25,True,False,none,3678,none,deterministic_v1,False
+seed_004,dev,What restart policies are permitted for Kubernetes Job pods?,Only OnFailure or Never are permitted; Always is not allowed.,"Based on the provided technical context, the permitted restart policies for Kubernetes Job pods are:
+
+*   **OnFailure**: The Kubelet restarts the container within the same Pod if it crashes.
+*   **Never**: The entire Pod is marked as failed, and the Job controller creates a new Pod.
+
+The **Always** restart policy is **not allowed** because it would prevent the Pod from ever completing.",CORRECT,Correctly identifies OnFailure and Never policies.,134fb45c-5ffa-5fd2-b5b8-02c405f097d9;f1c45816-07d6-5318-83aa-5d6dccd47392;ba1e09b3-043d-5832-9ca5-b17a745bb223;3b73d5c9-bddb-50ac-a916-f0cf09212b6a;e7dfc040-e760-51bd-9bc4-7750535f27b9,1;2;3;4;5,1.0;0.25757575;0.30952382;0.45833334;0.3409091,True,False,none,2939,none,deterministic_v1,False
+seed_005,dev,Which API group and version defines the Kubernetes Job resource?,The batch/v1 API group defines the Job resource.,"Based on the provided technical context, the Kubernetes Job resource is defined by the API group and version **batch/v1**.
+
+This is explicitly shown in the YAML example under the section ""Using Labels for Job Organization"":
+```yaml
+apiVersion: batch/v1
+kind: Job
+```",CORRECT,Correctly states the batch/v1 API group and version.,ba1e09b3-043d-5832-9ca5-b17a745bb223;fdbfc06c-359f-5549-864a-835236601cf0;f1c45816-07d6-5318-83aa-5d6dccd47392;ed6a4294-b09c-5dcc-a30f-0ff0072893a3;8c2fb0de-7276-56be-b074-8cd2df2e9ae4,1;2;3;4;5,0.64285713;0.125;0.33333334;0.125;0.23809525,False,False,none,4420,none,deterministic_v1,False
+seed_006,dev,What does the backoffLimit field specify in a Kubernetes Job configuration?,It specifies how many times a Job will retry if it fails.,"Based on the provided technical context, the `backoffLimit` field specifies that the job will retry up to 4 times if it fails.",CORRECT,Accurately explains backoffLimit specifies the number of retries before Job failure.,50ebc9c7-ac56-52ec-8a80-225d798fff1d;f1c45816-07d6-5318-83aa-5d6dccd47392;ba1e09b3-043d-5832-9ca5-b17a745bb223,1;2;3,0.5;0.2;0.5,True,False,none,3145,none,deterministic_v1,True
+seed_007,dev,What does activeDeadlineSeconds do when applied to a Job?,"It sets an active execution deadline that terminates (kills) the Job after the specified duration (e.g., 3600 seconds) if it runs longer than expected.","Based on the provided technical context, `activeDeadlineSeconds` is used to **kill the job** after a specified duration.
+
+Specific examples from the documentation include:
+*   Setting it to `3600` kills the job after 1 hour.
+*   Setting it to `1800` enforces a 30-minute maximum.
+*   Setting it to `86400` allows for 24 hours (noted in the context as ""too long without checkpoints"").",CORRECT,Explains active execution deadline terminating/killing the Job once exceeded.,84a9f778-e252-530b-9d2e-9aade0158d16;8a0b2285-6dfb-57c4-b007-b7b773ec50b1;c1983780-f5c8-5691-acfb-8a3090c692f0,1;2;3,0.5;0.33333334;0.25,True,False,none,2937,none,deterministic_v1,True
+seed_008,dev,How can you configure a Kubernetes CronJob to automatically clean up completed jobs after 1 hour to minimize costs?,Set ttlSecondsAfterFinished: 3600 in the CronJob job template specification for quick cleanup 1 hour after completion.,I cannot answer this question as the required information is not found in the documentation.,ABSTAINED,Model abstained ('Not Found in Documentation') for answerable question.,1dbed529-ff6e-513e-8a69-6a9198358165,1,0.5833334,False,False,refused_insufficient_context,2756,none,deterministic_v1,True
+seed_009,dev,What is the core difference between HPA and VPA in Kubernetes?,HPA scales horizontally by adding more pods. VPA adjusts CPU and memory requests and limits for individual pods.,"Based on the provided Technical Context, the core difference is that **Horizontal Pod Autoscaling (HPA)** automatically adjusts the **number of running pods**, while **Vertical Pod Autoscaling (VPA)** automatically adjusts the **resources allocated to them**.
+
+This is supported by the following statements in the context:
+*   ""Autoscaling in Kubernetes ensures that your application can handle varying loads by automatically adjusting the **number of running pods** or the **resources allocated to them**.""
+*   The text identifies these two main types of autoscaling as ""Horizontal Pod Autoscaling (HPA) and Vertical Pod Autoscaling (VPA).""",CORRECT,Clearly distinguishes HPA (horizontal pod scaling) from VPA (vertical resource adjustment).,4c8a8363-c0ff-51a5-8d81-3a2451d86e18;5ada0251-f1e9-5691-bd78-1fe21415ffe1;c0f1220e-829c-50f0-bf0d-2e48be167355;7b43a534-ed91-5551-93d4-c85f0cda644e,1;2;3;4,0.8333334;0.5833334;0.25;0.31111112,True,False,none,2863,none,deterministic_v1,True
+seed_010,dev,How do you install the Metrics Server in Kubernetes using the official components manifest?,Apply the components manifest directly from the official GitHub release URL: kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml.,"To install the Metrics Server in Kubernetes using the official components manifest, you should use the `kubectl apply` command to download and apply the Components manifest directly from the latest release of the Metrics Server. The specific command is:
+
+```
+$ kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+```
+
+This command fetches the YAML manifest for the latest release from the GitHub repository and applies it to your Kubernetes cluster.",CORRECT,Provides the official kubectl apply command with components.yaml manifest.,6abf9610-2c0e-589b-b750-9721ae48209d;91d079d5-e060-5074-982d-28da29ac4932,1;2,0.8333334;0.8333334,True,False,none,2943,none,deterministic_v1,True

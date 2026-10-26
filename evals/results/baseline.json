@@ -22,5 +22,5 @@
     "context_recall": 0.067,
     "answer_correctness": 0.133
   },
-  "notes": "Baseline evaluation confirms severe instability under unmitigated Groq OTPM limits: 10 of 15 queries failed with unhandled 429 rate limit exceptions, resulting in fallback internal errors. Tool correctness suffered due to planner routing fallback errors."
+  "notes": "Baseline evaluation confirms severe instability under unmitigated Groq OTPM limits: 10 of 15 queries failed with unhandled 429 rate limit exceptions, which defaulted to 0.0 in the metric scoring loop. Furthermore, contexts and answers were truncated to 300 characters, making these historical RAGAS scores unreliable as indicators of pipeline capability."
 }

@@ -14,13 +14,17 @@
 | **Source MRR** | 0.906 | 0.933 | +0.027 | ✅ Improved |
 | **Section Hit@5** | n/a (General fallback) | 0.800 (12/15) | +0.800 | ✅ Structured Section Resolution |
 | **Section MRR** | n/a (General fallback) | 0.722 | +0.722 | ✅ High-Precision Section MRR |
-| **Recall@15 (Pre-rerank)**| 1.000 | 1.000 | 0.000 | ✅ 100% Pre-rerank Recall |
+| **Source Hit@15 (Pre-rerank)**| 1.000 | 1.000 | 0.000 | ✅ 100% Pre-rerank Source Hit (formerly labeled Recall@15) |
 | **Corpus Point Count** | 276 (unfiltered) | 6,070 (199 True + 5,871 Noisy) | +5,794 | ✅ Distraction Stress Test |
 
-## 3. LLM-Judged Metrics (Omitted due to >10% Quota Failures)
+## 3. LLM-Judged Metrics (Omitted due to >10% Quota Failures & Pipeline Artifacts)
 - `faithfulness`: 86.7% failure rate (daily TPD limit reached)
 - `answer_relevancy`: 80.0% failure rate (daily TPD limit reached)
 - `context_precision`: 93.3% failure rate (daily TPD limit reached)
 - `context_recall`: 93.3% failure rate (daily TPD limit reached)
 - `answer_correctness`: 86.7% failure rate (daily TPD limit reached)
-- *Note:* Multi-day phased evaluation or Tier-1 Groq quota is required to compute statistically sound RAGAS scores.
+
+### Methodological Invalidation Notes:
+1. **API Quota Exceptions Converted to Zero**: In `evals/metrics.py:116-118`, unhandled HTTP 429 rate limit exceptions were caught and assigned a score of `0.0`. Reported baseline averages (e.g., Faithfulness 0.133, Context Precision 0.067 in `baseline.json`) represent rate-limit dropouts rather than true model performance.
+2. **Context & Response Truncation (300 Chars)**: In `evals/pipeline.py:17` (`RESPONSE_TRUNCATE = 300`) and `evals/metrics.py:36-37` (`CONTEXT_TRUNCATE = 300`, `CONTEXT_LIMIT = 2`), retrieved contexts and generated answers were truncated to 300 characters (~80% of context removed). The judge LLM was asked to evaluate factual faithfulness against truncated snippets, generating severe false-negative hallucination penalties.
+3. *Conclusion:* Deterministic Information Retrieval metrics (chunk-level Recall, Precision, Hit Rate, MRR, nDCG) and guardrail security benchmarks remain the authoritative, reproducible evaluation baseline.

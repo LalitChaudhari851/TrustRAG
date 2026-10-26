@@ -30,6 +30,10 @@ def execute_rag_pipeline(
     search_fn=None,
     rerank_fn=None,
     llm_fn=None,
+    return_trace: bool = False,
+    reranker_margin: Optional[float] = None,
+    reranker_min_score: Optional[float] = None,
+    candidate_limit: Optional[int] = None,
 ):
     """
     Unified RAG pipeline shared by both POST /query (stream=False)
@@ -61,7 +65,7 @@ def execute_rag_pipeline(
 
         if rail_fired:
             logfire.info(f"🛡️ Request blocked by guardrails | thread={thread_id}")
-            return {
+            res = {
                 "question": q,
                 "answer": rail_response,
                 "thought_process": ["Intent: Guardrails Fired", "Retrieval: Skipped"],
@@ -72,6 +76,10 @@ def execute_rag_pipeline(
                 "guard_mode": getattr(settings, "GUARD_MODE", "single_call"),
                 "guard_model_used": guard_model_used,
             }
+            if return_trace:
+                res["retrieval_trace"] = []
+                res["context_sent_to_llm"] = ""
+            return res
 
         # 2. Check for Social Chit-Chat
         if is_pure_chitchat(q):
@@ -103,11 +111,12 @@ USER QUESTION:
             }
 
         # 3. Knowledge Retrieval & Reranking
-        raw_results = search_func(q, limit=15)
+        cand_pool_limit = candidate_limit if candidate_limit is not None else 15
+        raw_results = search_func(q, limit=cand_pool_limit)
         if mode_used == "rrf":
             selected_docs = raw_results[:5]
         elif mode_used == "fusion":
-            reranked = rerank_func(q, raw_results, top_n=5)
+            reranked = rerank_func(q, raw_results, top_n=5, min_score=reranker_min_score, relative_margin=reranker_margin)
             seen = set()
             fused = []
             for d in reranked[:3]:
@@ -122,10 +131,10 @@ USER QUESTION:
                     fused.append(d)
             selected_docs = fused[:6]
         else:
-            selected_docs = rerank_func(q, raw_results, top_n=5)
+            selected_docs = rerank_func(q, raw_results, top_n=5, min_score=reranker_min_score, relative_margin=reranker_margin)
 
         if not selected_docs:
-            return {
+            res = {
                 "question": q,
                 "answer": INSUFFICIENT_CONTEXT_REFUSAL,
                 "thought_process": ["Intent: Technical", "Refusal: Insufficient Context"],
@@ -136,6 +145,14 @@ USER QUESTION:
                 "guard_mode": getattr(settings, "GUARD_MODE", "single_call"),
                 "guard_model_used": guard_model_used,
             }
+            if return_trace:
+                res["retrieval_trace"] = []
+                res["raw_search_count"] = len(raw_results)
+                res["candidate_pool_limit"] = cand_pool_limit
+                res["context_sent_to_llm"] = ""
+                res["effective_reranker_margin"] = reranker_margin if reranker_margin is not None else getattr(settings, "RERANKER_RELATIVE_MARGIN", 0.20)
+                res["effective_reranker_min_score"] = reranker_min_score if reranker_min_score is not None else getattr(settings, "RERANKER_MIN_SCORE", 0.08)
+            return res
 
         formatted_context = ""
         sources_list = []
@@ -173,7 +190,20 @@ USER QUESTION:
         content = resp.choices[0].message.content if getattr(resp, "choices", None) else ""
         model_returned = getattr(resp, "model", None) or getattr(settings, "GROQ_MODEL", "qwen/qwen3.8-27b")
 
-        return {
+        trace_data = [
+            {
+                "id": str(doc.get("id")),
+                "source": doc.get("source"),
+                "section": doc.get("section") or doc.get("slide_title"),
+                "chunk_index": doc.get("chunk_index"),
+                "score": doc.get("score"),
+                "rerank_score": doc.get("rerank_score"),
+                "content": doc.get("content", ""),
+            }
+            for doc in selected_docs
+        ]
+
+        res = {
             "question": q,
             "answer": content,
             "thought_process": ["Intent: Technical", f"Search Term: {q}", "Context Retrieved"],
@@ -184,6 +214,14 @@ USER QUESTION:
             "guard_mode": getattr(settings, "GUARD_MODE", "single_call"),
             "guard_model_used": guard_model_used,
         }
+        if return_trace:
+            res["retrieval_trace"] = trace_data
+            res["context_sent_to_llm"] = formatted_context
+            res["raw_search_count"] = len(raw_results)
+            res["candidate_pool_limit"] = cand_pool_limit
+            res["effective_reranker_margin"] = reranker_margin if reranker_margin is not None else getattr(settings, "RERANKER_RELATIVE_MARGIN", 0.20)
+            res["effective_reranker_min_score"] = reranker_min_score if reranker_min_score is not None else getattr(settings, "RERANKER_MIN_SCORE", 0.08)
+        return res
 
     # -----------------------------------------------------------------
     # STREAMING FLOW (POST /v1/chat/stream)
@@ -291,7 +329,7 @@ LATEST MESSAGE:
         if mode_used == "rrf":
             selected_docs = raw_results[:5]
         elif mode_used == "fusion":
-            reranked = rerank_func(q, raw_results, top_n=5)
+            reranked = rerank_func(q, raw_results, top_n=5, min_score=reranker_min_score, relative_margin=reranker_margin)
             seen = set()
             fused = []
             for d in reranked[:3]:
@@ -306,7 +344,7 @@ LATEST MESSAGE:
                     fused.append(d)
             selected_docs = fused[:6]
         else:
-            selected_docs = rerank_func(q, raw_results, top_n=5)
+            selected_docs = rerank_func(q, raw_results, top_n=5, min_score=reranker_min_score, relative_margin=reranker_margin)
 
         # Format and emit sources
         sources_payload = []
@@ -329,6 +367,21 @@ LATEST MESSAGE:
             formatted_context += f"[Source: {source_name} | Section: {section_val}]\n{content_text}\n\n"
 
         yield ("sources", sources_payload)
+
+        trace_payload = [
+            {
+                "id": str(doc.get("id")),
+                "source": doc.get("source"),
+                "section": doc.get("section") or doc.get("slide_title"),
+                "chunk_index": doc.get("chunk_index"),
+                "score": doc.get("score"),
+                "rerank_score": doc.get("rerank_score"),
+                "content": doc.get("content", ""),
+            }
+            for doc in selected_docs
+        ]
+        if return_trace:
+            yield ("trace", {"retrieved_docs": trace_payload, "context_sent_to_llm": formatted_context})
 
         # Check if retrieval yielded sufficient context
         if not selected_docs:

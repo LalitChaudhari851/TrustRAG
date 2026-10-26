@@ -39,7 +39,7 @@ def main():
 
     # 2. Baseline vs Full v2 Retrieval Comparison
     md.append("## 2. Retrieval Evolution (Legacy Baseline vs Full v2 Corpus)\n\n")
-    md.append("| Configuration / Mode | Dataset | Run Timestamp | Recall@15 | Source Hit@5 | Section Hit@5 | Key Hit@5 | Source MRR | Citation |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n")
+    md.append("| Configuration / Mode | Dataset | Run Timestamp | Source Hit@15 (Pre-rerank)* | Source Hit@5 | Section Hit@5 | Key Hit@5 | Source MRR | Citation |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n")
     if baseline:
         b_m = baseline["metrics"]
         md.append(f"| Legacy Baseline (Old Chunking, Dense) | Golden 15 | 2026-10-16 (Phase 0) | not measured | {b_m['hit@5']:.4f} | n/a | not measured | {b_m['mrr']:.4f} | `baseline_retrieval.json` |\n")

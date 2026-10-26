@@ -120,6 +120,10 @@ class QueryRequest(BaseModel):
     q: str
     thread_id: Optional[str] = "default_user"
     retrieval_mode: Optional[str] = None
+    return_trace: Optional[bool] = False
+    reranker_margin: Optional[float] = None
+    reranker_min_score: Optional[float] = None
+    candidate_limit: Optional[int] = None
     
     
 @app.get("/")
@@ -140,6 +144,8 @@ def get_server_config():
         "GUARDRAIL_MODEL": settings.GUARDRAIL_MODEL,
         "guard_model_used": get_active_guard_model(),
         "RETRIEVAL_MODE": settings.RETRIEVAL_MODE,
+        "RERANKER_RELATIVE_MARGIN": settings.RERANKER_RELATIVE_MARGIN,
+        "RERANKER_MIN_SCORE": settings.RERANKER_MIN_SCORE,
         "QUERY_REWRITE": settings.QUERY_REWRITE,
         "model_warnings": model_check.get("warnings", []),
     }
@@ -161,12 +167,22 @@ from app.agents.pipeline import execute_rag_pipeline
 
 
 @app.post("/query")
-def query(request: QueryRequest):
+def query(request: QueryRequest, http_request: Request):
     """
     Executes the shared LangGraph RAG flow with memory using a POST request.
     """
     q = request.q
     thread_id = request.thread_id
+    trace_req = bool(request.return_trace or (http_request.headers.get("x-eval-trace", "").lower() == "true"))
+
+    margin_header = http_request.headers.get("x-reranker-margin") if http_request else None
+    margin_override = request.reranker_margin if request.reranker_margin is not None else (float(margin_header) if margin_header else None)
+
+    floor_header = http_request.headers.get("x-reranker-min-score") if http_request else None
+    floor_override = request.reranker_min_score if request.reranker_min_score is not None else (float(floor_header) if floor_header else None)
+
+    cand_header = http_request.headers.get("x-candidate-limit") if http_request else None
+    cand_override = request.candidate_limit if request.candidate_limit is not None else (int(cand_header) if cand_header else None)
 
     try:
         return execute_rag_pipeline(
@@ -175,6 +191,10 @@ def query(request: QueryRequest):
             retrieval_mode=request.retrieval_mode,
             stream=False,
             guard_fn=guard,
+            return_trace=trace_req,
+            reranker_margin=margin_override,
+            reranker_min_score=floor_override,
+            candidate_limit=cand_override,
         )
     except Exception as e:
         logfire.error(f"❌ Backend Execution Failed: {e}")

@@ -297,7 +297,7 @@ def evaluate_dataset(
             if res["is_refused"]:
                 refusals_count += 1
 
-            # 1. Recall@15 before rerank (source)
+            # 1. Source Hit@15 before rerank (binary match on source document; historically labeled Recall@15)
             norm_exp_src = normalize_str(exp_src)
             src_in_top15 = any(norm_exp_src in normalize_str(s) or normalize_str(s) in norm_exp_src for s in pre_srcs)
             pre_recalls_15.append(1.0 if src_in_top15 else 0.0)
@@ -394,7 +394,8 @@ def evaluate_dataset(
             "apply_threshold": apply_thresh,
             "queries_count": len(questions),
             "metrics": {
-                "recall_15_before_rerank": round(mean_rec15, 4),
+                "source_hit_15_before_rerank": round(mean_rec15, 4),
+                "recall_15_before_rerank": round(mean_rec15, 4),  # legacy key alias
                 "source_hit_5_after_rerank": round(mean_src_hit5, 4),
                 "section_hit_5_after_rerank": sec_hit5_metric,
                 "source_mrr_after_rerank": round(mean_src_mrr, 4),
@@ -418,7 +419,7 @@ def evaluate_dataset(
         }
 
         print(f"  Results for {m_name}:")
-        print(f"    Recall@15 (pre):   {mean_rec15:.4f}")
+        print(f"    Source Hit@15 (pre): {mean_rec15:.4f}")
         print(f"    Source Hit@5:      {mean_src_hit5:.4f} | Source MRR:  {mean_src_mrr:.4f}")
         print(f"    Section Hit@5:     {sec_hit5_metric} | Section MRR: {sec_mrr_metric}")
         print(f"    Key Phrase Hit@5:  {mean_key_hit5:.4f} | Hit@15: {mean_key_hit15:.4f}")

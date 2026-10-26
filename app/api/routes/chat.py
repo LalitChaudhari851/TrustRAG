@@ -56,6 +56,7 @@ def chat_stream(payload: ChatStreamRequest, request: Request, response: Response
         upsert_thread(thread_id, user_id, title=q[:40].replace("\n", " ") or "New Conversation")
 
     request_id = str(uuid.uuid4())
+    trace_req = (request.headers.get("x-eval-trace", "").lower() == "true")
 
     def event_generator():
         try:
@@ -69,6 +70,7 @@ def chat_stream(payload: ChatStreamRequest, request: Request, response: Response
                 search_fn=search_enterprise_knowledge,
                 rerank_fn=rerank_documents,
                 llm_fn=execute_gateway_chat,
+                return_trace=trace_req,
             )
             for event_name, data in generator:
                 yield format_sse_event(event_name, data)

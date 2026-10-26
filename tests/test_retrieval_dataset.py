@@ -264,10 +264,15 @@ class TestGeneratedSeedDatasetIntegrity:
         records = load_dataset("evals/data/retrieval_golden_seed_v1.json")
         assert len(records) == 50
 
-        # Invariant 1: All generated examples must remain unverified until human review
+        # Invariant 1: Records are either unverified_synthetic or verified_human with reviewer audit
         for r in records:
-            assert r.verification_status == "unverified_synthetic"
-            assert r.reviewer_decision is None
+            assert r.verification_status in ("unverified_synthetic", "verified_human")
+            if r.verification_status == "unverified_synthetic":
+                assert r.reviewer_decision is None
+            else:
+                assert r.reviewer_decision is not None
+                assert r.reviewer_decision.get("reviewer")
+                assert r.reviewer_decision.get("reason")
 
         # Invariant 2: Split distribution
         dev_records = [r for r in records if r.split == "dev"]

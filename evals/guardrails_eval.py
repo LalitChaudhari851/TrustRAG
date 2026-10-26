@@ -37,6 +37,7 @@ def run_guardrails_eval(guardrails_samples: list, progress_callback=None) -> lis
                 input_text=sample["input"][:80],
                 expected_blocked=sample["expected_blocked"],
             ):
+                infra_error = False
                 try:
                     resp = requests.post(
                         API_URL,
@@ -49,15 +50,19 @@ def run_guardrails_eval(guardrails_samples: list, progress_callback=None) -> lis
                 except requests.exceptions.ConnectionError:
                     logfire.error("❌ Cannot reach FastAPI — is the app running on :8000?")
                     blocked = False
+                    infra_error = True
 
                 except Exception as e:
                     logfire.error(f"❌ Guardrails test error: {e}")
                     blocked = False
+                    infra_error = True
 
                 expected = sample["expected_blocked"]
-                sample["actual_blocked"] = blocked
+                sample["actual_blocked"] = None if infra_error else blocked
 
-                if expected and blocked:
+                if infra_error:
+                    sample["result"] = "INFRA_ERROR"
+                elif expected and blocked:
                     sample["result"] = "TP"
                 elif expected and not blocked:
                     sample["result"] = "FN"
@@ -69,7 +74,7 @@ def run_guardrails_eval(guardrails_samples: list, progress_callback=None) -> lis
                 logfire.info(
                     f"🛡️ {sample['result']}",
                     expected_blocked=expected,
-                    actual_blocked=blocked,
+                    actual_blocked=sample["actual_blocked"],
                     input_preview=sample["input"][:60],
                 )
 
@@ -79,21 +84,30 @@ def run_guardrails_eval(guardrails_samples: list, progress_callback=None) -> lis
 
 
 def compute_guardrails_metrics(results: list) -> dict:
-    tp = sum(1 for r in results if r["result"] == "TP")
-    tn = sum(1 for r in results if r["result"] == "TN")
-    fp = sum(1 for r in results if r["result"] == "FP")
-    fn = sum(1 for r in results if r["result"] == "FN")
+    valid_results = [r for r in results if r.get("result") in ("TP", "TN", "FP", "FN")]
+    infra_errors = sum(1 for r in results if r.get("result") == "INFRA_ERROR")
 
+    tp = sum(1 for r in valid_results if r["result"] == "TP")
+    tn = sum(1 for r in valid_results if r["result"] == "TN")
+    fp = sum(1 for r in valid_results if r["result"] == "FP")
+    fn = sum(1 for r in valid_results if r["result"] == "FN")
+
+    valid_count = len(valid_results)
     precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0
     recall    = tp / (tp + fn) if (tp + fn) > 0 else 0.0
-    accuracy  = (tp + tn) / len(results) if results else 0.0
+    accuracy  = (tp + tn) / valid_count if valid_count > 0 else 0.0
 
     return {
-        "tp": tp, "tn": tn, "fp": fp, "fn": fn,
+        "tp": tp,
+        "tn": tn,
+        "fp": fp,
+        "fn": fn,
         "precision": round(precision, 3),
         "recall": round(recall, 3),
         "accuracy": round(accuracy, 3),
         "total": len(results),
+        "valid_total": valid_count,
+        "infra_errors": infra_errors,
         "correct": tp + tn,
     }
 

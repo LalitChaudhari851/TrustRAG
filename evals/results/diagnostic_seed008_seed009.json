@@ -1,0 +1,541 @@
+[
+  {
+    "id": "seed_008",
+    "query": "How can you configure a Kubernetes CronJob to automatically clean up completed jobs after 1 hour to minimize costs?",
+    "dense_candidates": [
+      {
+        "rank": 1,
+        "id": "fcc65976-64a5-5e85-b4d3-10ba643e4944",
+        "score": 0.7123,
+        "source": "monitor_job.docx",
+        "section": "Creating a CronJob for Scheduled Execution",
+        "is_ground_truth": false,
+        "gt_label": null
+      },
+      {
+        "rank": 2,
+        "id": "75dc7373-ed93-5c90-a9c5-d21d9f48c3c9",
+        "score": 0.71,
+        "source": "cronjobs.docx",
+        "section": "Introduction",
+        "is_ground_truth": false,
+        "gt_label": null
+      },
+      {
+        "rank": 3,
+        "id": "1dbed529-ff6e-513e-8a69-6a9198358165",
+        "score": 0.6904,
+        "source": "architecture.pptx",
+        "section": "Jobs",
+        "is_ground_truth": false,
+        "gt_label": null
+      },
+      {
+        "rank": 4,
+        "id": "8f7910c9-d6a1-5234-950f-ed26139ea9a3",
+        "score": 0.6534,
+        "source": "cronjobs.docx",
+        "section": "2. Schedule Optimization for Cost Savings",
+        "is_ground_truth": true,
+        "gt_label": "Primary (Grade 3) \u2014 cronjobs.docx Chunk 52 (ttlSecondsAfterFinished: 3600)"
+      },
+      {
+        "rank": 5,
+        "id": "322ee397-a898-5a29-b25d-9e224c87cddf",
+        "score": 0.6497,
+        "source": "monitor_job.docx",
+        "section": "Cleaning Up",
+        "is_ground_truth": false,
+        "gt_label": null
+      }
+    ],
+    "sparse_candidates": [
+      {
+        "rank": 1,
+        "id": "8f7910c9-d6a1-5234-950f-ed26139ea9a3",
+        "score": 39.5122,
+        "source": "cronjobs.docx",
+        "section": "2. Schedule Optimization for Cost Savings",
+        "is_ground_truth": true,
+        "gt_label": "Primary (Grade 3) \u2014 cronjobs.docx Chunk 52 (ttlSecondsAfterFinished: 3600)"
+      },
+      {
+        "rank": 2,
+        "id": "1dbed529-ff6e-513e-8a69-6a9198358165",
+        "score": 36.1758,
+        "source": "architecture.pptx",
+        "section": "Jobs",
+        "is_ground_truth": false,
+        "gt_label": null
+      },
+      {
+        "rank": 3,
+        "id": "7c643bdd-f292-5ac4-bef9-126b117254a2",
+        "score": 31.6646,
+        "source": "cronjobs.docx",
+        "section": "Alerting Strategy",
+        "is_ground_truth": false,
+        "gt_label": null
+      },
+      {
+        "rank": 4,
+        "id": "678f516f-4ebe-56c9-bdf7-c67598e9962b",
+        "score": 30.8006,
+        "source": "monitor_job.docx",
+        "section": "Summary",
+        "is_ground_truth": false,
+        "gt_label": null
+      },
+      {
+        "rank": 5,
+        "id": "75dc7373-ed93-5c90-a9c5-d21d9f48c3c9",
+        "score": 29.4541,
+        "source": "cronjobs.docx",
+        "section": "Introduction",
+        "is_ground_truth": false,
+        "gt_label": null
+      }
+    ],
+    "rrf_candidates": [
+      {
+        "rank": 1,
+        "id": "8f7910c9-d6a1-5234-950f-ed26139ea9a3",
+        "score": 0.7,
+        "source": "cronjobs.docx",
+        "section": "2. Schedule Optimization for Cost Savings",
+        "is_ground_truth": true,
+        "gt_label": "Primary (Grade 3) \u2014 cronjobs.docx Chunk 52 (ttlSecondsAfterFinished: 3600)"
+      },
+      {
+        "rank": 2,
+        "id": "fcc65976-64a5-5e85-b4d3-10ba643e4944",
+        "score": 0.6,
+        "source": "monitor_job.docx",
+        "section": "Creating a CronJob for Scheduled Execution",
+        "is_ground_truth": false,
+        "gt_label": null
+      },
+      {
+        "rank": 3,
+        "id": "1dbed529-ff6e-513e-8a69-6a9198358165",
+        "score": 0.5833,
+        "source": "architecture.pptx",
+        "section": "Jobs",
+        "is_ground_truth": false,
+        "gt_label": null
+      },
+      {
+        "rank": 4,
+        "id": "75dc7373-ed93-5c90-a9c5-d21d9f48c3c9",
+        "score": 0.5,
+        "source": "cronjobs.docx",
+        "section": "Introduction",
+        "is_ground_truth": false,
+        "gt_label": null
+      },
+      {
+        "rank": 5,
+        "id": "7c643bdd-f292-5ac4-bef9-126b117254a2",
+        "score": 0.3269,
+        "source": "cronjobs.docx",
+        "section": "Alerting Strategy",
+        "is_ground_truth": false,
+        "gt_label": null
+      }
+    ],
+    "reranker_top_score": 0.4024,
+    "relative_cutoff": 0.322,
+    "reranker_candidates": [
+      {
+        "id": "1dbed529-ff6e-513e-8a69-6a9198358165",
+        "score": 0.4024,
+        "source": "architecture.pptx",
+        "section": "Jobs",
+        "is_ground_truth": false,
+        "gt_label": null,
+        "is_kept": true,
+        "drop_reason": null
+      },
+      {
+        "id": "8f7910c9-d6a1-5234-950f-ed26139ea9a3",
+        "score": 0.2055,
+        "source": "cronjobs.docx",
+        "section": "2. Schedule Optimization for Cost Savings",
+        "is_ground_truth": true,
+        "gt_label": "Primary (Grade 3) \u2014 cronjobs.docx Chunk 52 (ttlSecondsAfterFinished: 3600)",
+        "is_kept": false,
+        "drop_reason": "score (0.2055) < relative_cutoff (0.3220)"
+      },
+      {
+        "id": "fcc65976-64a5-5e85-b4d3-10ba643e4944",
+        "score": 0.1923,
+        "source": "monitor_job.docx",
+        "section": "Creating a CronJob for Scheduled Execution",
+        "is_ground_truth": false,
+        "gt_label": null,
+        "is_kept": false,
+        "drop_reason": "score (0.1923) < relative_cutoff (0.3220)"
+      },
+      {
+        "id": "75dc7373-ed93-5c90-a9c5-d21d9f48c3c9",
+        "score": 0.0574,
+        "source": "cronjobs.docx",
+        "section": "Introduction",
+        "is_ground_truth": false,
+        "gt_label": null,
+        "is_kept": false,
+        "drop_reason": "score (0.0574) < relative_cutoff (0.3220)"
+      },
+      {
+        "id": "678f516f-4ebe-56c9-bdf7-c67598e9962b",
+        "score": 0.0467,
+        "source": "monitor_job.docx",
+        "section": "Summary",
+        "is_ground_truth": false,
+        "gt_label": null,
+        "is_kept": false,
+        "drop_reason": "score (0.0467) < relative_cutoff (0.3220)"
+      },
+      {
+        "id": "7c643bdd-f292-5ac4-bef9-126b117254a2",
+        "score": 0.0271,
+        "source": "cronjobs.docx",
+        "section": "Alerting Strategy",
+        "is_ground_truth": false,
+        "gt_label": null,
+        "is_kept": false,
+        "drop_reason": "score (0.0271) < relative_cutoff (0.3220)"
+      },
+      {
+        "id": "322ee397-a898-5a29-b25d-9e224c87cddf",
+        "score": 0.0213,
+        "source": "monitor_job.docx",
+        "section": "Cleaning Up",
+        "is_ground_truth": false,
+        "gt_label": null,
+        "is_kept": false,
+        "drop_reason": "score (0.0213) < relative_cutoff (0.3220)"
+      },
+      {
+        "id": "98f25a8b-ec0a-54fc-9176-3d59cc5eebfc",
+        "score": 0.0134,
+        "source": "cronjobs.docx",
+        "section": "1. Job State Backup",
+        "is_ground_truth": false,
+        "gt_label": null,
+        "is_kept": false,
+        "drop_reason": "score (0.0134) < relative_cutoff (0.3220)"
+      }
+    ],
+    "presence_matrix": {
+      "8f7910c9-d6a1-5234-950f-ed26139ea9a3": {
+        "label": "Primary (Grade 3) \u2014 cronjobs.docx Chunk 52 (ttlSecondsAfterFinished: 3600)",
+        "dense_rank": 4,
+        "sparse_rank": 1,
+        "rrf_rank": 1,
+        "rerank_score": 0.2055,
+        "rerank_kept": false,
+        "in_tinybert": false,
+        "in_rrf": true,
+        "in_fusion": true
+      }
+    },
+    "tinybert_selected_ids": [
+      "1dbed529-ff6e-513e-8a69-6a9198358165"
+    ],
+    "rrf_selected_ids": [
+      "8f7910c9-d6a1-5234-950f-ed26139ea9a3",
+      "fcc65976-64a5-5e85-b4d3-10ba643e4944",
+      "1dbed529-ff6e-513e-8a69-6a9198358165",
+      "75dc7373-ed93-5c90-a9c5-d21d9f48c3c9",
+      "7c643bdd-f292-5ac4-bef9-126b117254a2"
+    ],
+    "fusion_selected_ids": [
+      "1dbed529-ff6e-513e-8a69-6a9198358165",
+      "8f7910c9-d6a1-5234-950f-ed26139ea9a3",
+      "fcc65976-64a5-5e85-b4d3-10ba643e4944"
+    ]
+  },
+  {
+    "id": "seed_009",
+    "query": "What is the core difference between HPA and VPA in Kubernetes?",
+    "dense_candidates": [
+      {
+        "rank": 1,
+        "id": "ac2984be-e47e-5b11-937a-46344e9fcfed",
+        "score": 0.838,
+        "source": "pods_autoscale.html",
+        "section": "HPA vs. VPA: Which One to Use?",
+        "is_ground_truth": true,
+        "gt_label": "Primary (Grade 3) \u2014 pods_autoscale.html Chunk 27 (HPA adds pods vs VPA adjusts CPU/mem)"
+      },
+      {
+        "rank": 2,
+        "id": "4c8a8363-c0ff-51a5-8d81-3a2451d86e18",
+        "score": 0.7463,
+        "source": "pods_autoscale.html",
+        "section": "\u21e2 HPA & VPA in Kubernetes with a Practical Example",
+        "is_ground_truth": false,
+        "gt_label": null
+      },
+      {
+        "rank": 3,
+        "id": "5ada0251-f1e9-5691-bd78-1fe21415ffe1",
+        "score": 0.6695,
+        "source": "pods_autoscale.html",
+        "section": "Conclusion",
+        "is_ground_truth": false,
+        "gt_label": null
+      },
+      {
+        "rank": 4,
+        "id": "7b43a534-ed91-5551-93d4-c85f0cda644e",
+        "score": 0.6382,
+        "source": "pods_autoscale.html",
+        "section": "HPA Practical Example",
+        "is_ground_truth": false,
+        "gt_label": null
+      },
+      {
+        "rank": 5,
+        "id": "82947926-44d3-5fb2-90f3-d05f872d58ed",
+        "score": 0.595,
+        "source": "pods_autoscale.html",
+        "section": "How Does VPA Work?",
+        "is_ground_truth": false,
+        "gt_label": null
+      }
+    ],
+    "sparse_candidates": [
+      {
+        "rank": 1,
+        "id": "4c8a8363-c0ff-51a5-8d81-3a2451d86e18",
+        "score": 30.0537,
+        "source": "pods_autoscale.html",
+        "section": "\u21e2 HPA & VPA in Kubernetes with a Practical Example",
+        "is_ground_truth": false,
+        "gt_label": null
+      },
+      {
+        "rank": 2,
+        "id": "5ada0251-f1e9-5691-bd78-1fe21415ffe1",
+        "score": 26.1192,
+        "source": "pods_autoscale.html",
+        "section": "Conclusion",
+        "is_ground_truth": false,
+        "gt_label": null
+      },
+      {
+        "rank": 3,
+        "id": "c0f1220e-829c-50f0-bf0d-2e48be167355",
+        "score": 25.6607,
+        "source": "pods_autoscale.html",
+        "section": "Introduction to Kubernetes Autoscaling",
+        "is_ground_truth": true,
+        "gt_label": "Peripheral (Grade 1) \u2014 pods_autoscale.html Chunk 0 (Introductory animation)"
+      },
+      {
+        "rank": 4,
+        "id": "6abf9610-2c0e-589b-b750-9721ae48209d",
+        "score": 23.4178,
+        "source": "pods_autoscale.html",
+        "section": "Metric Server Setup",
+        "is_ground_truth": false,
+        "gt_label": null
+      },
+      {
+        "rank": 5,
+        "id": "91d079d5-e060-5074-982d-28da29ac4932",
+        "score": 23.0586,
+        "source": "pods_autoscale.html",
+        "section": "Metric Server Setup",
+        "is_ground_truth": false,
+        "gt_label": null
+      }
+    ],
+    "rrf_candidates": [
+      {
+        "rank": 1,
+        "id": "4c8a8363-c0ff-51a5-8d81-3a2451d86e18",
+        "score": 0.8333,
+        "source": "pods_autoscale.html",
+        "section": "\u21e2 HPA & VPA in Kubernetes with a Practical Example",
+        "is_ground_truth": false,
+        "gt_label": null
+      },
+      {
+        "rank": 2,
+        "id": "ac2984be-e47e-5b11-937a-46344e9fcfed",
+        "score": 0.6429,
+        "source": "pods_autoscale.html",
+        "section": "HPA vs. VPA: Which One to Use?",
+        "is_ground_truth": true,
+        "gt_label": "Primary (Grade 3) \u2014 pods_autoscale.html Chunk 27 (HPA adds pods vs VPA adjusts CPU/mem)"
+      },
+      {
+        "rank": 3,
+        "id": "5ada0251-f1e9-5691-bd78-1fe21415ffe1",
+        "score": 0.5833,
+        "source": "pods_autoscale.html",
+        "section": "Conclusion",
+        "is_ground_truth": false,
+        "gt_label": null
+      },
+      {
+        "rank": 4,
+        "id": "7b43a534-ed91-5551-93d4-c85f0cda644e",
+        "score": 0.3111,
+        "source": "pods_autoscale.html",
+        "section": "HPA Practical Example",
+        "is_ground_truth": false,
+        "gt_label": null
+      },
+      {
+        "rank": 5,
+        "id": "c0f1220e-829c-50f0-bf0d-2e48be167355",
+        "score": 0.25,
+        "source": "pods_autoscale.html",
+        "section": "Introduction to Kubernetes Autoscaling",
+        "is_ground_truth": true,
+        "gt_label": "Peripheral (Grade 1) \u2014 pods_autoscale.html Chunk 0 (Introductory animation)"
+      }
+    ],
+    "reranker_top_score": 0.9943,
+    "relative_cutoff": 0.7954,
+    "reranker_candidates": [
+      {
+        "id": "4c8a8363-c0ff-51a5-8d81-3a2451d86e18",
+        "score": 0.9943,
+        "source": "pods_autoscale.html",
+        "section": "\u21e2 HPA & VPA in Kubernetes with a Practical Example",
+        "is_ground_truth": false,
+        "gt_label": null,
+        "is_kept": true,
+        "drop_reason": null
+      },
+      {
+        "id": "5ada0251-f1e9-5691-bd78-1fe21415ffe1",
+        "score": 0.9328,
+        "source": "pods_autoscale.html",
+        "section": "Conclusion",
+        "is_ground_truth": false,
+        "gt_label": null,
+        "is_kept": true,
+        "drop_reason": null
+      },
+      {
+        "id": "c0f1220e-829c-50f0-bf0d-2e48be167355",
+        "score": 0.8687,
+        "source": "pods_autoscale.html",
+        "section": "Introduction to Kubernetes Autoscaling",
+        "is_ground_truth": true,
+        "gt_label": "Peripheral (Grade 1) \u2014 pods_autoscale.html Chunk 0 (Introductory animation)",
+        "is_kept": true,
+        "drop_reason": null
+      },
+      {
+        "id": "7b43a534-ed91-5551-93d4-c85f0cda644e",
+        "score": 0.7486,
+        "source": "pods_autoscale.html",
+        "section": "HPA Practical Example",
+        "is_ground_truth": false,
+        "gt_label": null,
+        "is_kept": false,
+        "drop_reason": "score (0.7486) < relative_cutoff (0.7954)"
+      },
+      {
+        "id": "6abf9610-2c0e-589b-b750-9721ae48209d",
+        "score": 0.5661,
+        "source": "pods_autoscale.html",
+        "section": "Metric Server Setup",
+        "is_ground_truth": false,
+        "gt_label": null,
+        "is_kept": false,
+        "drop_reason": "score (0.5661) < relative_cutoff (0.7954)"
+      },
+      {
+        "id": "ac2984be-e47e-5b11-937a-46344e9fcfed",
+        "score": 0.5287,
+        "source": "pods_autoscale.html",
+        "section": "HPA vs. VPA: Which One to Use?",
+        "is_ground_truth": true,
+        "gt_label": "Primary (Grade 3) \u2014 pods_autoscale.html Chunk 27 (HPA adds pods vs VPA adjusts CPU/mem)",
+        "is_kept": false,
+        "drop_reason": "score (0.5287) < relative_cutoff (0.7954)"
+      },
+      {
+        "id": "b5b56f24-57b5-5ac3-9e72-72dfd931bb77",
+        "score": 0.0077,
+        "source": "pods_autoscale.html",
+        "section": "How Does HPA Work?",
+        "is_ground_truth": false,
+        "gt_label": null,
+        "is_kept": false,
+        "drop_reason": "score (0.0077) < relative_cutoff (0.7954)"
+      },
+      {
+        "id": "311aeaea-fd31-52a9-8dcb-8b0dfde57048",
+        "score": 0.0064,
+        "source": "pods_autoscale.html",
+        "section": "Step 1: Install VPA",
+        "is_ground_truth": false,
+        "gt_label": null,
+        "is_kept": false,
+        "drop_reason": "score (0.0064) < relative_cutoff (0.7954)"
+      }
+    ],
+    "presence_matrix": {
+      "ac2984be-e47e-5b11-937a-46344e9fcfed": {
+        "label": "Primary (Grade 3) \u2014 pods_autoscale.html Chunk 27 (HPA adds pods vs VPA adjusts CPU/mem)",
+        "dense_rank": 1,
+        "sparse_rank": 6,
+        "rrf_rank": 2,
+        "rerank_score": 0.5287,
+        "rerank_kept": false,
+        "in_tinybert": false,
+        "in_rrf": true,
+        "in_fusion": true
+      },
+      "376b124c-3b4c-53e2-81d6-28ae65918ad9": {
+        "label": "Supporting (Grade 2) \u2014 pods_autoscale.html Chunk 28",
+        "dense_rank": 10,
+        "sparse_rank": null,
+        "rrf_rank": 15,
+        "rerank_score": 0.0016,
+        "rerank_kept": false,
+        "in_tinybert": false,
+        "in_rrf": false,
+        "in_fusion": false
+      },
+      "c0f1220e-829c-50f0-bf0d-2e48be167355": {
+        "label": "Peripheral (Grade 1) \u2014 pods_autoscale.html Chunk 0 (Introductory animation)",
+        "dense_rank": null,
+        "sparse_rank": 3,
+        "rrf_rank": 5,
+        "rerank_score": 0.8687,
+        "rerank_kept": true,
+        "in_tinybert": true,
+        "in_rrf": true,
+        "in_fusion": true
+      }
+    },
+    "tinybert_selected_ids": [
+      "4c8a8363-c0ff-51a5-8d81-3a2451d86e18",
+      "5ada0251-f1e9-5691-bd78-1fe21415ffe1",
+      "c0f1220e-829c-50f0-bf0d-2e48be167355"
+    ],
+    "rrf_selected_ids": [
+      "4c8a8363-c0ff-51a5-8d81-3a2451d86e18",
+      "ac2984be-e47e-5b11-937a-46344e9fcfed",
+      "5ada0251-f1e9-5691-bd78-1fe21415ffe1",
+      "7b43a534-ed91-5551-93d4-c85f0cda644e",
+      "c0f1220e-829c-50f0-bf0d-2e48be167355"
+    ],
+    "fusion_selected_ids": [
+      "4c8a8363-c0ff-51a5-8d81-3a2451d86e18",
+      "5ada0251-f1e9-5691-bd78-1fe21415ffe1",
+      "c0f1220e-829c-50f0-bf0d-2e48be167355",
+      "ac2984be-e47e-5b11-937a-46344e9fcfed"
+    ]
+  }
+]

@@ -1,0 +1,24 @@
+{
+  "command": ".venv\\Scripts\\python.exe scripts/run_paired_k_validation.py",
+  "run_id": "20261027_003257_72eb",
+  "timestamp": "2026-10-27T00:41:15.300485",
+  "dataset_sha256": "0b63bf1b40684ff7ef18e3fa63b7edb31d628f339bc71d2dea7e023fbe798451",
+  "server_config": {
+    "GROQ_MODEL": "qwen/qwen3.8-27b",
+    "GUARD_MODE": "single_call",
+    "code_default_guard_mode": "single_call",
+    "GUARDRAIL_MODEL": "openai/gpt-oss-20b",
+    "guard_model_used": "openai/gpt-oss-20b",
+    "RETRIEVAL_MODE": "tinybert",
+    "RERANKER_RELATIVE_MARGIN": 0.2,
+    "RERANKER_MIN_SCORE": 0.08,
+    "QUERY_REWRITE": "followup_only",
+    "model_warnings": []
+  },
+  "candidate_limits": [
+    15,
+    25
+  ],
+  "reranker_margin": 0.2,
+  "reranker_min_score": 0.08
+}
