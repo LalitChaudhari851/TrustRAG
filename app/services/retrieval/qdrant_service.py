@@ -1,3 +1,4 @@
+import os
 import time
 import logfire
 from qdrant_client import QdrantClient
@@ -5,11 +6,37 @@ from qdrant_client.http import models
 from app.config import settings
 from app.services.retrieval.embedding import embed_query, embed_sparse_query
 
-# Initialize Qdrant Client
-client = QdrantClient(
-    url=settings.QDRANT_URL,
-    api_key=settings.QDRANT_API_KEY
-)
+LOCAL_QDRANT_PATH = "data/local_qdrant"
+
+
+def get_qdrant_client() -> QdrantClient:
+    """
+    Initializes Qdrant client with automatic failover to local embedded storage
+    if the remote cluster is unreachable or unconfigured.
+    """
+    url = getattr(settings, "QDRANT_URL", None)
+    api_key = getattr(settings, "QDRANT_API_KEY", None)
+
+    if not url or url.lower() in ("local", ":memory:", "none") or os.path.exists(url):
+        target = url if (url and os.path.exists(url)) else LOCAL_QDRANT_PATH
+        logfire.info(f"Using local embedded Qdrant storage at '{target}'")
+        return QdrantClient(path=target)
+
+    try:
+        remote_client = QdrantClient(url=url, api_key=api_key, timeout=3.0)
+        remote_client.get_collections()
+        logfire.info(f"Connected to remote Qdrant cluster at {url}")
+        return remote_client
+    except Exception as e:
+        logfire.warning(
+            f"⚠️ Remote Qdrant cluster '{url}' unreachable ({e}). "
+            f"Failing over to local embedded storage at '{LOCAL_QDRANT_PATH}'."
+        )
+        return QdrantClient(path=LOCAL_QDRANT_PATH)
+
+
+# Initialize Qdrant Client (with automatic resilient fallback)
+client = get_qdrant_client()
 
 
 def compute_python_rrf(dense_ranks: list[str], sparse_ranks: list[str], k: int = 60) -> list[tuple[str, float]]:
@@ -120,4 +147,52 @@ def search_enterprise_knowledge(
 
     except Exception as e:
         logfire.error(f"❌ Qdrant Search Failed on {collection}: {e}")
-        return []
+        # If remote search failed, attempt one fallback retry on local storage
+        try:
+            logfire.warning(f"Retrying query against local embedded storage '{LOCAL_QDRANT_PATH}'...")
+            local_client = QdrantClient(path=LOCAL_QDRANT_PATH)
+            if use_hybrid and sparse_vector is not None:
+                response = local_client.query_points(
+                    collection_name=collection,
+                    prefetch=[
+                        models.Prefetch(query=dense_vector, using="dense", limit=limit, filter=query_filter),
+                        models.Prefetch(query=sparse_vector, using="sparse", limit=limit, filter=query_filter),
+                    ],
+                    query=models.FusionQuery(fusion=models.Fusion.RRF),
+                    limit=limit,
+                    with_payload=True,
+                )
+            else:
+                response = local_client.query_points(
+                    collection_name=collection,
+                    query=dense_vector,
+                    using="dense",
+                    limit=limit,
+                    query_filter=query_filter,
+                    with_payload=True,
+                )
+            results = []
+            for res in response.points:
+                payload = res.payload or {}
+                results.append({
+                    "id": str(res.id),
+                    "content": payload.get("text", ""),
+                    "source": payload.get("source", "Unknown"),
+                    "source_type": payload.get("source_type", ""),
+                    "page": payload.get("page"),
+                    "total_pages": payload.get("total_pages"),
+                    "slide": payload.get("slide"),
+                    "slide_title": payload.get("slide_title"),
+                    "section": payload.get("section"),
+                    "chunk_index": payload.get("chunk_index"),
+                    "score": res.score,
+                    "latency_stage": {
+                        "embed_ms": embed_latency_ms,
+                        "qdrant_ms": (time.perf_counter() - t_qdrant_start) * 1000.0,
+                    }
+                })
+            logfire.info(f"✅ Local fallback search succeeded with {len(results)} points.")
+            return results
+        except Exception as fallback_err:
+            logfire.error(f"❌ Local fallback search also failed: {fallback_err}")
+            return []

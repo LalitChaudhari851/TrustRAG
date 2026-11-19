@@ -419,7 +419,8 @@ if user_query:
                 "q": user_query,
                 "thread_id": st.session_state.session_id,
             }
-            res = requests.post(stream_url, json=stream_payload, stream=True, timeout=90)
+            stream_headers = {"X-User-ID": st.session_state.session_id}
+            res = requests.post(stream_url, json=stream_payload, headers=stream_headers, stream=True, timeout=90)
 
             if res.status_code == 200 and "text/event-stream" in res.headers.get(
                 "content-type", ""
@@ -510,7 +511,7 @@ if user_query:
                 status_box.update(label="⚡ Processing...", state="running")
                 query_url = f"{BASE_URL}/query"
                 q_payload = {"q": user_query, "thread_id": st.session_state.session_id}
-                res = requests.post(query_url, json=q_payload, timeout=90)
+                res = requests.post(query_url, json=q_payload, headers={"X-User-ID": st.session_state.session_id}, timeout=90)
                 data = res.json()
 
                 meta["answer_text"] = data.get("answer", "No response generated.")

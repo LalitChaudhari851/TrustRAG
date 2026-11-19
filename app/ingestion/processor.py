@@ -26,12 +26,10 @@ logfire.configure(service_name="enterprise-ingestion-service")
 PROCESSED_DATA_DIR = "processed_data"
 PROJECT_UUID_NAMESPACE = uuid.UUID(settings.PROJECT_UUID_NAMESPACE)
 
-# Global Qdrant Client for ingestion
-qdrant_client = QdrantClient(
-    url=settings.QDRANT_URL,
-    api_key=settings.QDRANT_API_KEY,
-    timeout=60.0,
-)
+from app.services.retrieval.qdrant_service import get_qdrant_client
+
+# Global Qdrant Client for ingestion (with automatic local failover)
+qdrant_client = get_qdrant_client()
 
 
 def compute_point_id(filename: str, chunk_index: int, text: str) -> str:
